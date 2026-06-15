@@ -4,6 +4,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "platform.h"
+
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
@@ -18,8 +20,8 @@ extern int yylineno;
 void yyerror(const char *s);
 
 static int variables[26];
-static inline int  var_get(char c) { return variables[(unsigned char)c - 'A']; }
-static inline void var_set(char c, int v){ variables[(unsigned char)c - 'A'] = v; }
+static inline int  var_get(char c) { return variables[toupper((unsigned char)c) - 'A']; }
+static inline void var_set(char c, int v){ variables[toupper((unsigned char)c) - 'A'] = v; }
 
 #define MAX_LINES    1000
 #define MAX_LINE_LEN  256
@@ -34,6 +36,7 @@ static int   running   = 0;
 static void prog_store(int num, const char *text) 
 {
     int i;
+
     for (i = 0; i < prog_size; i++) 
     {
         if (program[i].num == num) 
@@ -42,16 +45,18 @@ static void prog_store(int num, const char *text)
             program[i].text[MAX_LINE_LEN-1] = '\0';
             return;
         }
+
         if (program[i].num > num) 
         {
             if (prog_size < MAX_LINES) 
             {
                 memmove(&program[i+1], &program[i],(prog_size - i) * sizeof(Line));
                 prog_size++;
-                program[i].num = num;
+                program[i].num = num;                
                 strncpy(program[i].text, text, MAX_LINE_LEN-1);
                 program[i].text[MAX_LINE_LEN-1] = '\0';
             }
+
             return;
         }
     }
@@ -69,6 +74,7 @@ static int prog_find(int num)
 {
     for (int i = 0; i < prog_size; i++)
         if (program[i].num == num) return i;
+
     return -1;
 }
 
@@ -86,7 +92,7 @@ static void stack_push(int ret_pc)
 {
     if (stack_top >= STACK_DEPTH) 
     { 
-        fprintf(stderr,"GOSUB stack overflow\n"); 
+        PRINT_ERR("GOSUB stack overflow\n"); 
         return; 
     }
 
@@ -97,7 +103,7 @@ static int stack_pop(void)
 {
     if (stack_top <= 0) 
     { 
-        fprintf(stderr,"RETURN without GOSUB\n"); 
+        PRINT_ERR("RETURN without GOSUB\n"); 
         return 0; 
     }
 
@@ -147,22 +153,26 @@ line
     ;
 
 statement
-    : PRINT expr_list          { if (!if_skip) printf("\n"); }
+    : PRINT expr_list          { if (!if_skip) PRINTF("\n"); }
 
     | IF expression relop expression
         {
-            int ok;
-            switch ($3) {
-                case 0: ok = ($2 <  $4); break;
-                case 1: ok = ($2 <= $4); break;
-                case 2: ok = ($2 != $4); break;
-                case 3: ok = ($2 >  $4); break;
-                case 4: ok = ($2 >= $4); break;
-                case 5: ok = ($2 == $4); break;
-                default: ok = 0;
-            }
+            // Only evaluate the condition if we're not already skipping due to an outer IF.
+            if (!if_skip)
+            {
+                int expression_result;
+                switch ($3) {
+                    case 0: expression_result = ($2 <  $4); break;
+                    case 1: expression_result = ($2 <= $4); break;
+                    case 2: expression_result = ($2 != $4); break;
+                    case 3: expression_result = ($2 >  $4); break;
+                    case 4: expression_result = ($2 >= $4); break;
+                    case 5: expression_result = ($2 == $4); break;
+                    default: expression_result = 0;
+                }
 
-            if_skip = !ok;
+                if_skip = !expression_result;
+            }
         }
       THEN statement
 
@@ -197,7 +207,7 @@ statement
         {
             if (!if_skip) {
                 for (int i = 0; i < prog_size; i++)
-                    printf("%d %s\n", program[i].num, program[i].text);
+                    PRINTF("%d %s\n", program[i].num, program[i].text);
             }
         }
 
@@ -219,13 +229,13 @@ expr_item
                 int len = strlen(s);
                 
                 // Strip surrounding quotes.
-                if (len >= 2) { s[len-1] = '\0'; printf("%s", s+1); }
+                if (len >= 2) { s[len-1] = '\0'; PRINTF("%s", s+1); }
                 free($1);
             }
         }
     | expression
         {
-            if (!if_skip) printf("%d", $1);
+            if (!if_skip) PRINTF("%d", $1);
         }
     ;
 
@@ -234,7 +244,7 @@ var_list
         {
             if (!if_skip) 
             {
-                int v; printf("? "); fflush(stdout);
+                int v; PRINTF("? "); fflush(stdout);
                 if (scanf("%d", &v) == 1) 
                     var_set($1, v);
                 
@@ -246,7 +256,7 @@ var_list
         {
             if (!if_skip) 
             {
-                int v; printf("? "); 
+                int v; PRINTF("? "); 
                 fflush(stdout);
 
                 if (scanf("%d", &v) == 1) 
@@ -280,7 +290,7 @@ term
     | term '*' factor            { $$ = $1 * $3; }
     | term '/' factor
         {
-            if ($3 == 0) { fprintf(stderr,"Division by zero\n"); $$ = 0; }
+            if ($3 == 0) { PRINT_ERR("Division by zero\n"); $$ = 0; }
             else          $$ = $1 / $3;
         }
     ;
@@ -295,7 +305,7 @@ factor
 
 void yyerror(const char *s) 
 {
-    fprintf(stderr, "Error: %s\n", s);
+    PRINT_ERR("Error: %s\n", s);
 }
 
 static void do_run(void) 
@@ -325,7 +335,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    fprintf(stderr,"Undefined line %d\n", jump_target); 
+                    PRINT_ERR("Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -338,7 +348,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    fprintf(stderr,"Undefined line %d\n", jump_target); 
+                    PRINT_ERR("Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -364,11 +374,11 @@ int main(void)
 {
     char line[MAX_LINE_LEN];
     memset(variables, 0, sizeof(variables));
-    printf("Tiny BASIC  (type END or Ctrl-D to quit)\n");
+    PRINTF("Tiny BASIC  (type END or Ctrl-D to quit)\n");
 
     while (1) 
     {
-        printf("> "); fflush(stdout);
+        PRINTF("> "); fflush(stdout);
 
         if (!fgets(line, sizeof(line), stdin)) 
             break;
@@ -420,6 +430,6 @@ int main(void)
         }
     }
 
-    printf("\n");
+    PRINTF("\n");
     return 0;
 }
