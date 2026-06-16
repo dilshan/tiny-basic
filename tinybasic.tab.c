@@ -162,7 +162,7 @@ static void stack_push(int ret_pc)
 {
     if (stack_top >= STACK_DEPTH) 
     { 
-        PRINT_ERR("GOSUB stack overflow\n"); 
+        PPRINT_ERR("GOSUB stack overflow\n"); 
         return; 
     }
 
@@ -173,7 +173,7 @@ static int stack_pop(void)
 {
     if (stack_top <= 0) 
     { 
-        PRINT_ERR("RETURN without GOSUB\n"); 
+        PPRINT_ERR("RETURN without GOSUB\n"); 
         return 0; 
     }
 
@@ -188,9 +188,10 @@ static int stack_pop(void)
 static int jump_pending = JUMP_NONE;
 static int jump_target  = 0;
 static int if_skip = 0;
+static int is_continue = 1;
 
 
-#line 194 "tinybasic.tab.c"
+#line 195 "tinybasic.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -237,33 +238,34 @@ enum yysymbol_kind_t
   YYSYMBOL_RUN = 16,                       /* RUN  */
   YYSYMBOL_END = 17,                       /* END  */
   YYSYMBOL_CR = 18,                        /* CR  */
-  YYSYMBOL_REL_LT = 19,                    /* REL_LT  */
-  YYSYMBOL_REL_LE = 20,                    /* REL_LE  */
-  YYSYMBOL_REL_NE = 21,                    /* REL_NE  */
-  YYSYMBOL_REL_GT = 22,                    /* REL_GT  */
-  YYSYMBOL_REL_GE = 23,                    /* REL_GE  */
-  YYSYMBOL_24_ = 24,                       /* '+'  */
-  YYSYMBOL_25_ = 25,                       /* '-'  */
-  YYSYMBOL_26_ = 26,                       /* '*'  */
-  YYSYMBOL_27_ = 27,                       /* '/'  */
-  YYSYMBOL_UMINUS = 28,                    /* UMINUS  */
-  YYSYMBOL_UPLUS = 29,                     /* UPLUS  */
-  YYSYMBOL_30_ = 30,                       /* '='  */
-  YYSYMBOL_31_ = 31,                       /* ','  */
-  YYSYMBOL_32_ = 32,                       /* '('  */
-  YYSYMBOL_33_ = 33,                       /* ')'  */
-  YYSYMBOL_YYACCEPT = 34,                  /* $accept  */
-  YYSYMBOL_program = 35,                   /* program  */
-  YYSYMBOL_line = 36,                      /* line  */
-  YYSYMBOL_statement = 37,                 /* statement  */
-  YYSYMBOL_38_1 = 38,                      /* $@1  */
-  YYSYMBOL_expr_list = 39,                 /* expr_list  */
-  YYSYMBOL_expr_item = 40,                 /* expr_item  */
-  YYSYMBOL_var_list = 41,                  /* var_list  */
-  YYSYMBOL_relop = 42,                     /* relop  */
-  YYSYMBOL_expression = 43,                /* expression  */
-  YYSYMBOL_term = 44,                      /* term  */
-  YYSYMBOL_factor = 45                     /* factor  */
+  YYSYMBOL_RAND = 19,                      /* RAND  */
+  YYSYMBOL_REL_LT = 20,                    /* REL_LT  */
+  YYSYMBOL_REL_LE = 21,                    /* REL_LE  */
+  YYSYMBOL_REL_NE = 22,                    /* REL_NE  */
+  YYSYMBOL_REL_GT = 23,                    /* REL_GT  */
+  YYSYMBOL_REL_GE = 24,                    /* REL_GE  */
+  YYSYMBOL_25_ = 25,                       /* '+'  */
+  YYSYMBOL_26_ = 26,                       /* '-'  */
+  YYSYMBOL_27_ = 27,                       /* '*'  */
+  YYSYMBOL_28_ = 28,                       /* '/'  */
+  YYSYMBOL_UMINUS = 29,                    /* UMINUS  */
+  YYSYMBOL_UPLUS = 30,                     /* UPLUS  */
+  YYSYMBOL_31_ = 31,                       /* '='  */
+  YYSYMBOL_32_ = 32,                       /* ','  */
+  YYSYMBOL_33_ = 33,                       /* '('  */
+  YYSYMBOL_34_ = 34,                       /* ')'  */
+  YYSYMBOL_YYACCEPT = 35,                  /* $accept  */
+  YYSYMBOL_program = 36,                   /* program  */
+  YYSYMBOL_line = 37,                      /* line  */
+  YYSYMBOL_statement = 38,                 /* statement  */
+  YYSYMBOL_39_1 = 39,                      /* $@1  */
+  YYSYMBOL_expr_list = 40,                 /* expr_list  */
+  YYSYMBOL_expr_item = 41,                 /* expr_item  */
+  YYSYMBOL_var_list = 42,                  /* var_list  */
+  YYSYMBOL_relop = 43,                     /* relop  */
+  YYSYMBOL_expression = 44,                /* expression  */
+  YYSYMBOL_term = 45,                      /* term  */
+  YYSYMBOL_factor = 46                     /* factor  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -589,21 +591,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  35
+#define YYFINAL  36
 /* YYLAST -- Last index in YYTABLE.  */
 #define YYLAST   87
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  34
+#define YYNTOKENS  35
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  12
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  40
+#define YYNRULES  41
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  67
+#define YYNSTATES  68
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   280
+#define YYMAXUTOK   281
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -621,9 +623,9 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      32,    33,    26,    24,    31,    25,     2,    27,     2,     2,
+      33,    34,    27,    25,    32,    26,     2,    28,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    30,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,    31,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -644,19 +646,19 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23,    28,
-      29
+      15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      29,    30
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   146,   146,   150,   151,   152,   156,   159,   158,   179,
-     184,   186,   191,   196,   201,   206,   214,   216,   220,   221,
-     225,   236,   243,   255,   272,   273,   274,   275,   276,   277,
-     281,   282,   283,   284,   285,   289,   290,   291,   299,   300,
-     301
+       0,   148,   148,   152,   153,   154,   158,   161,   160,   181,
+     186,   188,   193,   198,   203,   208,   216,   218,   222,   223,
+     227,   238,   245,   257,   274,   275,   276,   277,   278,   279,
+     283,   284,   285,   286,   287,   288,   292,   293,   294,   302,
+     303,   304
 };
 #endif
 
@@ -674,11 +676,11 @@ static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "NUMBER", "VAR",
   "STRING", "PRINT", "IF", "THEN", "GOTO", "INPUT", "LET", "GOSUB",
-  "RETURN", "CLEAR", "LIST", "RUN", "END", "CR", "REL_LT", "REL_LE",
-  "REL_NE", "REL_GT", "REL_GE", "'+'", "'-'", "'*'", "'/'", "UMINUS",
-  "UPLUS", "'='", "','", "'('", "')'", "$accept", "program", "line",
-  "statement", "$@1", "expr_list", "expr_item", "var_list", "relop",
-  "expression", "term", "factor", YY_NULLPTR
+  "RETURN", "CLEAR", "LIST", "RUN", "END", "CR", "RAND", "REL_LT",
+  "REL_LE", "REL_NE", "REL_GT", "REL_GE", "'+'", "'-'", "'*'", "'/'",
+  "UMINUS", "UPLUS", "'='", "','", "'('", "')'", "$accept", "program",
+  "line", "statement", "$@1", "expr_list", "expr_item", "var_list",
+  "relop", "expression", "term", "factor", YY_NULLPTR
 };
 
 static const char *
@@ -688,7 +690,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-16)
+#define YYPACT_NINF (-19)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -702,13 +704,13 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      56,    30,     3,     0,     0,     7,    14,     0,   -16,   -16,
-     -16,   -16,   -16,   -16,    22,   -16,     8,    13,   -16,   -16,
-     -16,     6,     6,     0,    17,   -16,    -8,    -7,   -16,    57,
-      -8,   -16,    18,    21,    -8,   -16,   -16,   -16,    -7,    -7,
-     -10,     3,     6,     6,     6,     6,   -16,   -16,   -16,   -16,
-     -16,   -16,     0,    49,     0,   -16,   -16,    -7,    -7,   -16,
-     -16,    -8,   -16,    -8,    46,    30,   -16
+      57,    32,     4,     0,     0,     2,     8,     0,   -19,   -19,
+     -19,   -19,   -19,   -19,    31,   -19,    14,    18,   -19,   -19,
+     -19,   -19,     7,     7,     0,    20,   -19,    -8,    -7,   -19,
+      56,    -8,   -19,    22,    19,    -8,   -19,   -19,   -19,    -7,
+      -7,   -10,     4,     7,     7,     7,     7,   -19,   -19,   -19,
+     -19,   -19,   -19,     0,    51,     0,   -19,   -19,    -7,    -7,
+     -19,   -19,    -8,   -19,    -8,    48,    32,   -19
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -717,26 +719,26 @@ static const yytype_int8 yypact[] =
 static const yytype_int8 yydefact[] =
 {
        0,     0,     0,     0,     0,     0,     0,     0,    13,    14,
-      15,    16,    17,     5,     0,     2,     0,     0,    39,    38,
-      20,     0,     0,     0,     6,    18,    21,    30,    35,     0,
-       9,    22,    10,     0,    12,     1,     4,     3,    31,    32,
-       0,     0,     0,     0,     0,     0,    24,    25,    26,    27,
-      28,    29,     0,     0,     0,    40,    19,    33,    34,    36,
-      37,     7,    23,    11,     0,     0,     8
+      15,    16,    17,     5,     0,     2,     0,     0,    40,    39,
+      20,    35,     0,     0,     0,     6,    18,    21,    30,    36,
+       0,     9,    22,    10,     0,    12,     1,     4,     3,    31,
+      32,     0,     0,     0,     0,     0,     0,    24,    25,    26,
+      27,    28,    29,     0,     0,     0,    41,    19,    33,    34,
+      37,    38,     7,    23,    11,     0,     0,     8
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -16,   -16,   -16,    -1,   -16,   -16,    15,   -16,   -16,    -2,
-      -9,   -15
+     -19,   -19,   -19,    -1,   -19,   -19,    15,   -19,   -19,    -2,
+      -9,   -18
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,    14,    15,    16,    64,    24,    25,    32,    52,    26,
-      27,    28
+       0,    14,    15,    16,    65,    25,    26,    33,    53,    27,
+      28,    29
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -744,28 +746,28 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      17,    29,    30,    18,    19,    34,    18,    19,    20,    18,
-      19,    31,    38,    39,    42,    43,    42,    43,    33,    44,
-      45,    40,    35,    55,    21,    22,    36,    21,    22,    59,
-      60,    37,    23,    57,    58,    23,     2,     3,    23,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    41,    53,
-      61,    54,    63,    62,    65,     0,    56,     0,     0,     1,
-       0,     0,     2,     3,    66,     4,     5,     6,     7,     8,
-       9,    10,    11,    12,    13,     0,    46,    47,    48,    49,
-      50,    42,    43,     0,     0,     0,     0,    51
+      17,    30,    31,    18,    19,    35,    32,    18,    19,    20,
+      18,    19,    34,    39,    40,    43,    44,    43,    44,    21,
+      45,    46,    41,    21,    56,    22,    23,    60,    61,    22,
+      23,    36,    37,    24,    58,    59,    38,    24,     2,     3,
+      24,     4,     5,     6,     7,     8,     9,    10,    11,    12,
+      55,    62,    42,    64,    54,    63,    66,    57,     0,     0,
+       1,     0,     0,     2,     3,    67,     4,     5,     6,     7,
+       8,     9,    10,    11,    12,    13,    47,    48,    49,    50,
+      51,    43,    44,     0,     0,     0,     0,    52
 };
 
 static const yytype_int8 yycheck[] =
 {
-       1,     3,     4,     3,     4,     7,     3,     4,     5,     3,
-       4,     4,    21,    22,    24,    25,    24,    25,     4,    26,
-      27,    23,     0,    33,    24,    25,    18,    24,    25,    44,
-      45,    18,    32,    42,    43,    32,     6,     7,    32,     9,
-      10,    11,    12,    13,    14,    15,    16,    17,    31,    31,
-      52,    30,    54,     4,     8,    -1,    41,    -1,    -1,     3,
-      -1,    -1,     6,     7,    65,     9,    10,    11,    12,    13,
-      14,    15,    16,    17,    18,    -1,    19,    20,    21,    22,
-      23,    24,    25,    -1,    -1,    -1,    -1,    30
+       1,     3,     4,     3,     4,     7,     4,     3,     4,     5,
+       3,     4,     4,    22,    23,    25,    26,    25,    26,    19,
+      27,    28,    24,    19,    34,    25,    26,    45,    46,    25,
+      26,     0,    18,    33,    43,    44,    18,    33,     6,     7,
+      33,     9,    10,    11,    12,    13,    14,    15,    16,    17,
+      31,    53,    32,    55,    32,     4,     8,    42,    -1,    -1,
+       3,    -1,    -1,     6,     7,    66,     9,    10,    11,    12,
+      13,    14,    15,    16,    17,    18,    20,    21,    22,    23,
+      24,    25,    26,    -1,    -1,    -1,    -1,    31
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -773,22 +775,22 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,     6,     7,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    35,    36,    37,    37,     3,     4,
-       5,    24,    25,    32,    39,    40,    43,    44,    45,    43,
-      43,     4,    41,     4,    43,     0,    18,    18,    44,    44,
-      43,    31,    24,    25,    26,    27,    19,    20,    21,    22,
-      23,    30,    42,    31,    30,    33,    40,    44,    44,    45,
-      45,    43,     4,    43,    38,     8,    37
+      15,    16,    17,    18,    36,    37,    38,    38,     3,     4,
+       5,    19,    25,    26,    33,    40,    41,    44,    45,    46,
+      44,    44,     4,    42,     4,    44,     0,    18,    18,    45,
+      45,    44,    32,    25,    26,    27,    28,    20,    21,    22,
+      23,    24,    31,    43,    32,    31,    34,    41,    45,    45,
+      46,    46,    44,     4,    44,    39,     8,    38
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    34,    35,    36,    36,    36,    37,    38,    37,    37,
-      37,    37,    37,    37,    37,    37,    37,    37,    39,    39,
-      40,    40,    41,    41,    42,    42,    42,    42,    42,    42,
-      43,    43,    43,    43,    43,    44,    44,    44,    45,    45,
-      45
+       0,    35,    36,    37,    37,    37,    38,    39,    38,    38,
+      38,    38,    38,    38,    38,    38,    38,    38,    40,    40,
+      41,    41,    42,    42,    43,    43,    43,    43,    43,    43,
+      44,    44,    44,    44,    44,    44,    45,    45,    45,    46,
+      46,    46
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -797,8 +799,8 @@ static const yytype_int8 yyr2[] =
        0,     2,     1,     3,     2,     1,     2,     0,     7,     2,
        2,     4,     2,     1,     1,     1,     1,     1,     1,     3,
        1,     1,     1,     3,     1,     1,     1,     1,     1,     1,
-       1,     2,     2,     3,     3,     1,     3,     3,     1,     1,
-       3
+       1,     2,     2,     3,     3,     1,     1,     3,     3,     1,
+       1,     3
 };
 
 
@@ -1262,13 +1264,13 @@ yyreduce:
   switch (yyn)
     {
   case 6: /* statement: PRINT expr_list  */
-#line 156 "tinybasic.y"
-                               { if (!if_skip) PRINTF("\n"); }
-#line 1268 "tinybasic.tab.c"
+#line 158 "tinybasic.y"
+                               { if (!if_skip) PPRINTF("\n"); }
+#line 1270 "tinybasic.tab.c"
     break;
 
   case 7: /* $@1: %empty  */
-#line 159 "tinybasic.y"
+#line 161 "tinybasic.y"
         {
             // Only evaluate the condition if we're not already skipping due to an outer IF.
             if (!if_skip)
@@ -1287,236 +1289,242 @@ yyreduce:
                 if_skip = !expression_result;
             }
         }
-#line 1291 "tinybasic.tab.c"
+#line 1293 "tinybasic.tab.c"
     break;
 
   case 9: /* statement: GOTO expression  */
-#line 180 "tinybasic.y"
+#line 182 "tinybasic.y"
         {
             if (!if_skip) { jump_pending = JUMP_GOTO; jump_target = (yyvsp[0].ival); }
         }
-#line 1299 "tinybasic.tab.c"
+#line 1301 "tinybasic.tab.c"
     break;
 
   case 11: /* statement: LET VAR '=' expression  */
-#line 187 "tinybasic.y"
+#line 189 "tinybasic.y"
         {
             if (!if_skip) var_set((yyvsp[-2].cval), (yyvsp[0].ival));
         }
-#line 1307 "tinybasic.tab.c"
+#line 1309 "tinybasic.tab.c"
     break;
 
   case 12: /* statement: GOSUB expression  */
-#line 192 "tinybasic.y"
+#line 194 "tinybasic.y"
         {
             if (!if_skip) { jump_pending = JUMP_GOSUB; jump_target = (yyvsp[0].ival); }
         }
-#line 1315 "tinybasic.tab.c"
+#line 1317 "tinybasic.tab.c"
     break;
 
   case 13: /* statement: RETURN  */
-#line 197 "tinybasic.y"
+#line 199 "tinybasic.y"
         {
             if (!if_skip) { pc = stack_pop(); jump_pending = JUMP_RETURN; }
         }
-#line 1323 "tinybasic.tab.c"
+#line 1325 "tinybasic.tab.c"
     break;
 
   case 14: /* statement: CLEAR  */
-#line 202 "tinybasic.y"
+#line 204 "tinybasic.y"
         {
             if (!if_skip) prog_clear();
         }
-#line 1331 "tinybasic.tab.c"
+#line 1333 "tinybasic.tab.c"
     break;
 
   case 15: /* statement: LIST  */
-#line 207 "tinybasic.y"
+#line 209 "tinybasic.y"
         {
             if (!if_skip) {
                 for (int i = 0; i < prog_size; i++)
-                    PRINTF("%d %s\n", program[i].num, program[i].text);
+                    PPRINTF("%d %s\n", program[i].num, program[i].text);
             }
         }
-#line 1342 "tinybasic.tab.c"
+#line 1344 "tinybasic.tab.c"
     break;
 
   case 16: /* statement: RUN  */
-#line 214 "tinybasic.y"
-                                                  { if (!if_skip) { running = 1; pc = 0; } }
-#line 1348 "tinybasic.tab.c"
+#line 216 "tinybasic.y"
+            { if (!if_skip) { running = 1; pc = 0; } }
+#line 1350 "tinybasic.tab.c"
     break;
 
   case 17: /* statement: END  */
-#line 216 "tinybasic.y"
-                                                  { if (!if_skip) { if(!running) exit(0); else running = 0; } }
-#line 1354 "tinybasic.tab.c"
+#line 218 "tinybasic.y"
+            { if (!if_skip) { if(!running) is_continue = 0; else running = 0; } }
+#line 1356 "tinybasic.tab.c"
     break;
 
   case 20: /* expr_item: STRING  */
-#line 226 "tinybasic.y"
+#line 228 "tinybasic.y"
         {
             if (!if_skip) {
                 char *s = (yyvsp[0].sval);
                 int len = strlen(s);
                 
                 // Strip surrounding quotes.
-                if (len >= 2) { s[len-1] = '\0'; PRINTF("%s", s+1); }
+                if (len >= 2) { s[len-1] = '\0'; PPRINTF("%s", s+1); }
                 free((yyvsp[0].sval));
             }
         }
-#line 1369 "tinybasic.tab.c"
+#line 1371 "tinybasic.tab.c"
     break;
 
   case 21: /* expr_item: expression  */
-#line 237 "tinybasic.y"
+#line 239 "tinybasic.y"
         {
-            if (!if_skip) PRINTF("%d", (yyvsp[0].ival));
+            if (!if_skip) PPRINTF("%d", (yyvsp[0].ival));
         }
-#line 1377 "tinybasic.tab.c"
+#line 1379 "tinybasic.tab.c"
     break;
 
   case 22: /* var_list: VAR  */
-#line 244 "tinybasic.y"
+#line 246 "tinybasic.y"
         {
             if (!if_skip) 
             {
-                int v; PRINTF("? "); fflush(stdout);
-                if (scanf("%d", &v) == 1) 
+                int v; PPRINTF("? "); fflush(stdout);
+                if (PSCANF("%d", &v) == 1) 
                     var_set((yyvsp[0].cval), v);
                 
                 // Consume the rest of the line to avoid affecting the next input.
-                scanf("%*c");
+                PSCANF("%*c");
             }
         }
-#line 1393 "tinybasic.tab.c"
+#line 1395 "tinybasic.tab.c"
     break;
 
   case 23: /* var_list: var_list ',' VAR  */
-#line 256 "tinybasic.y"
+#line 258 "tinybasic.y"
         {
             if (!if_skip) 
             {
-                int v; PRINTF("? "); 
+                int v; PPRINTF("? "); 
                 fflush(stdout);
 
-                if (scanf("%d", &v) == 1) 
+                if (PSCANF("%d", &v) == 1) 
                     var_set((yyvsp[0].cval), v);
                 
                 // See above: consume the rest of the line.
-                scanf("%*c");
+                PSCANF("%*c");
             }
         }
-#line 1411 "tinybasic.tab.c"
+#line 1413 "tinybasic.tab.c"
     break;
 
   case 24: /* relop: REL_LT  */
-#line 272 "tinybasic.y"
+#line 274 "tinybasic.y"
                 { (yyval.ival) = 0; }
-#line 1417 "tinybasic.tab.c"
+#line 1419 "tinybasic.tab.c"
     break;
 
   case 25: /* relop: REL_LE  */
-#line 273 "tinybasic.y"
+#line 275 "tinybasic.y"
                 { (yyval.ival) = 1; }
-#line 1423 "tinybasic.tab.c"
+#line 1425 "tinybasic.tab.c"
     break;
 
   case 26: /* relop: REL_NE  */
-#line 274 "tinybasic.y"
+#line 276 "tinybasic.y"
                 { (yyval.ival) = 2; }
-#line 1429 "tinybasic.tab.c"
+#line 1431 "tinybasic.tab.c"
     break;
 
   case 27: /* relop: REL_GT  */
-#line 275 "tinybasic.y"
+#line 277 "tinybasic.y"
                 { (yyval.ival) = 3; }
-#line 1435 "tinybasic.tab.c"
+#line 1437 "tinybasic.tab.c"
     break;
 
   case 28: /* relop: REL_GE  */
-#line 276 "tinybasic.y"
+#line 278 "tinybasic.y"
                 { (yyval.ival) = 4; }
-#line 1441 "tinybasic.tab.c"
+#line 1443 "tinybasic.tab.c"
     break;
 
   case 29: /* relop: '='  */
-#line 277 "tinybasic.y"
+#line 279 "tinybasic.y"
                 { (yyval.ival) = 5; }
-#line 1447 "tinybasic.tab.c"
+#line 1449 "tinybasic.tab.c"
     break;
 
   case 30: /* expression: term  */
-#line 281 "tinybasic.y"
+#line 283 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1453 "tinybasic.tab.c"
+#line 1455 "tinybasic.tab.c"
     break;
 
   case 31: /* expression: '+' term  */
-#line 282 "tinybasic.y"
+#line 284 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1459 "tinybasic.tab.c"
+#line 1461 "tinybasic.tab.c"
     break;
 
   case 32: /* expression: '-' term  */
-#line 283 "tinybasic.y"
+#line 285 "tinybasic.y"
                                  { (yyval.ival) = -(yyvsp[0].ival); }
-#line 1465 "tinybasic.tab.c"
+#line 1467 "tinybasic.tab.c"
     break;
 
   case 33: /* expression: expression '+' term  */
-#line 284 "tinybasic.y"
+#line 286 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) + (yyvsp[0].ival); }
-#line 1471 "tinybasic.tab.c"
+#line 1473 "tinybasic.tab.c"
     break;
 
   case 34: /* expression: expression '-' term  */
-#line 285 "tinybasic.y"
+#line 287 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) - (yyvsp[0].ival); }
-#line 1477 "tinybasic.tab.c"
+#line 1479 "tinybasic.tab.c"
     break;
 
-  case 35: /* term: factor  */
-#line 289 "tinybasic.y"
-                                 { (yyval.ival) = (yyvsp[0].ival); }
-#line 1483 "tinybasic.tab.c"
+  case 35: /* expression: RAND  */
+#line 288 "tinybasic.y"
+                                 { (yyval.ival) = RANDOM() % 32768; }
+#line 1485 "tinybasic.tab.c"
     break;
 
-  case 36: /* term: term '*' factor  */
-#line 290 "tinybasic.y"
-                                 { (yyval.ival) = (yyvsp[-2].ival) * (yyvsp[0].ival); }
-#line 1489 "tinybasic.tab.c"
-    break;
-
-  case 37: /* term: term '/' factor  */
+  case 36: /* term: factor  */
 #line 292 "tinybasic.y"
+                                 { (yyval.ival) = (yyvsp[0].ival); }
+#line 1491 "tinybasic.tab.c"
+    break;
+
+  case 37: /* term: term '*' factor  */
+#line 293 "tinybasic.y"
+                                 { (yyval.ival) = (yyvsp[-2].ival) * (yyvsp[0].ival); }
+#line 1497 "tinybasic.tab.c"
+    break;
+
+  case 38: /* term: term '/' factor  */
+#line 295 "tinybasic.y"
         {
-            if ((yyvsp[0].ival) == 0) { PRINT_ERR("Division by zero\n"); (yyval.ival) = 0; }
+            if ((yyvsp[0].ival) == 0) { PPRINT_ERR("Division by zero\n"); (yyval.ival) = 0; }
             else          (yyval.ival) = (yyvsp[-2].ival) / (yyvsp[0].ival);
         }
-#line 1498 "tinybasic.tab.c"
+#line 1506 "tinybasic.tab.c"
     break;
 
-  case 38: /* factor: VAR  */
-#line 299 "tinybasic.y"
+  case 39: /* factor: VAR  */
+#line 302 "tinybasic.y"
                                  { (yyval.ival) = var_get((yyvsp[0].cval)); }
-#line 1504 "tinybasic.tab.c"
+#line 1512 "tinybasic.tab.c"
     break;
 
-  case 39: /* factor: NUMBER  */
-#line 300 "tinybasic.y"
+  case 40: /* factor: NUMBER  */
+#line 303 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1510 "tinybasic.tab.c"
+#line 1518 "tinybasic.tab.c"
     break;
 
-  case 40: /* factor: '(' expression ')'  */
-#line 301 "tinybasic.y"
+  case 41: /* factor: '(' expression ')'  */
+#line 304 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-1].ival); }
-#line 1516 "tinybasic.tab.c"
+#line 1524 "tinybasic.tab.c"
     break;
 
 
-#line 1520 "tinybasic.tab.c"
+#line 1528 "tinybasic.tab.c"
 
       default: break;
     }
@@ -1709,12 +1717,12 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 304 "tinybasic.y"
+#line 307 "tinybasic.y"
 
 
 void yyerror(const char *s) 
 {
-    PRINT_ERR("Error: %s\n", s);
+    PPRINT_ERR("Error: %s\n", s);
 }
 
 static void do_run(void) 
@@ -1744,7 +1752,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PRINT_ERR("Undefined line %d\n", jump_target); 
+                    PPRINT_ERR("Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -1757,7 +1765,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PRINT_ERR("Undefined line %d\n", jump_target); 
+                    PPRINT_ERR("Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -1783,11 +1791,11 @@ int main(void)
 {
     char line[MAX_LINE_LEN];
     memset(variables, 0, sizeof(variables));
-    PRINTF("Tiny BASIC  (type END or Ctrl-D to quit)\n");
+    PPRINTF("Tiny BASIC  (type END or Ctrl-D to quit)\n");
 
-    while (1) 
+    while (is_continue) 
     {
-        PRINTF("> "); fflush(stdout);
+        PPRINTF("> "); fflush(stdout);
 
         if (!fgets(line, sizeof(line), stdin)) 
             break;
@@ -1839,6 +1847,6 @@ int main(void)
         }
     }
 
-    PRINTF("\n");
+    PPRINTF("\n");
     return 0;
 }

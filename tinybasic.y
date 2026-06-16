@@ -92,7 +92,7 @@ static void stack_push(int ret_pc)
 {
     if (stack_top >= STACK_DEPTH) 
     { 
-        PRINT_ERR("GOSUB stack overflow\n"); 
+        PPRINT_ERR("GOSUB stack overflow\n"); 
         return; 
     }
 
@@ -103,7 +103,7 @@ static int stack_pop(void)
 {
     if (stack_top <= 0) 
     { 
-        PRINT_ERR("RETURN without GOSUB\n"); 
+        PPRINT_ERR("RETURN without GOSUB\n"); 
         return 0; 
     }
 
@@ -118,6 +118,7 @@ static int stack_pop(void)
 static int jump_pending = JUMP_NONE;
 static int jump_target  = 0;
 static int if_skip = 0;
+static int is_continue = 1;
 
 %}
 
@@ -132,6 +133,7 @@ static int if_skip = 0;
 %token <sval> STRING
 
 %token PRINT IF THEN GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
+%token RAND
 %token REL_LT REL_LE REL_NE REL_GT REL_GE
 
 %type <ival> expression term factor relop
@@ -153,7 +155,7 @@ line
     ;
 
 statement
-    : PRINT expr_list          { if (!if_skip) PRINTF("\n"); }
+    : PRINT expr_list          { if (!if_skip) PPRINTF("\n"); }
 
     | IF expression relop expression
         {
@@ -207,13 +209,13 @@ statement
         {
             if (!if_skip) {
                 for (int i = 0; i < prog_size; i++)
-                    PRINTF("%d %s\n", program[i].num, program[i].text);
+                    PPRINTF("%d %s\n", program[i].num, program[i].text);
             }
         }
 
-    | RUN                                         { if (!if_skip) { running = 1; pc = 0; } }
+    | RUN   { if (!if_skip) { running = 1; pc = 0; } }
 
-    | END                                         { if (!if_skip) { if(!running) exit(0); else running = 0; } }
+    | END   { if (!if_skip) { if(!running) is_continue = 0; else running = 0; } }
     ;
 
 expr_list
@@ -229,13 +231,13 @@ expr_item
                 int len = strlen(s);
                 
                 // Strip surrounding quotes.
-                if (len >= 2) { s[len-1] = '\0'; PRINTF("%s", s+1); }
+                if (len >= 2) { s[len-1] = '\0'; PPRINTF("%s", s+1); }
                 free($1);
             }
         }
     | expression
         {
-            if (!if_skip) PRINTF("%d", $1);
+            if (!if_skip) PPRINTF("%d", $1);
         }
     ;
 
@@ -244,26 +246,26 @@ var_list
         {
             if (!if_skip) 
             {
-                int v; PRINTF("? "); fflush(stdout);
-                if (scanf("%d", &v) == 1) 
+                int v; PPRINTF("? "); fflush(stdout);
+                if (PSCANF("%d", &v) == 1) 
                     var_set($1, v);
                 
                 // Consume the rest of the line to avoid affecting the next input.
-                scanf("%*c");
+                PSCANF("%*c");
             }
         }
     | var_list ',' VAR
         {
             if (!if_skip) 
             {
-                int v; PRINTF("? "); 
+                int v; PPRINTF("? "); 
                 fflush(stdout);
 
-                if (scanf("%d", &v) == 1) 
+                if (PSCANF("%d", &v) == 1) 
                     var_set($3, v);
                 
                 // See above: consume the rest of the line.
-                scanf("%*c");
+                PSCANF("%*c");
             }
         }
     ;
@@ -283,6 +285,7 @@ expression
     | '-' term   %prec UMINUS    { $$ = -$2; }
     | expression '+' term        { $$ = $1 + $3; }
     | expression '-' term        { $$ = $1 - $3; }
+    | RAND                       { $$ = RANDOM() % 32768; }
     ;
 
 term
@@ -290,7 +293,7 @@ term
     | term '*' factor            { $$ = $1 * $3; }
     | term '/' factor
         {
-            if ($3 == 0) { PRINT_ERR("Division by zero\n"); $$ = 0; }
+            if ($3 == 0) { PPRINT_ERR("Division by zero\n"); $$ = 0; }
             else          $$ = $1 / $3;
         }
     ;
@@ -305,7 +308,7 @@ factor
 
 void yyerror(const char *s) 
 {
-    PRINT_ERR("Error: %s\n", s);
+    PPRINT_ERR("Error: %s\n", s);
 }
 
 static void do_run(void) 
@@ -335,7 +338,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PRINT_ERR("Undefined line %d\n", jump_target); 
+                    PPRINT_ERR("Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -348,7 +351,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PRINT_ERR("Undefined line %d\n", jump_target); 
+                    PPRINT_ERR("Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -374,11 +377,11 @@ int main(void)
 {
     char line[MAX_LINE_LEN];
     memset(variables, 0, sizeof(variables));
-    PRINTF("Tiny BASIC  (type END or Ctrl-D to quit)\n");
+    PPRINTF("Tiny BASIC  (type END or Ctrl-D to quit)\n");
 
-    while (1) 
+    while (is_continue) 
     {
-        PRINTF("> "); fflush(stdout);
+        PPRINTF("> "); fflush(stdout);
 
         if (!fgets(line, sizeof(line), stdin)) 
             break;
@@ -430,6 +433,6 @@ int main(void)
         }
     }
 
-    PRINTF("\n");
+    PPRINTF("\n");
     return 0;
 }

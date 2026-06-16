@@ -25,6 +25,7 @@ digit [0-9]
 (?i:list)    { return LIST;   }
 (?i:run)     { return RUN;    }
 (?i:end)     { return END;    }
+(?i:rand)    { return RAND;   }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
@@ -49,5 +50,5 @@ digit [0-9]
 \n           { return CR; }
 [ \t\r]+     { /* ignore. */ }
 
-.            { PRINT_ERR("Unknown character '%s' at line %d\n", yytext, yylineno); }
+.            { PPRINT_ERR("Unknown character '%s' at line %d\n", yytext, yylineno); }
 %%
