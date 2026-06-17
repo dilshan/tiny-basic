@@ -71,13 +71,17 @@ extern int yydebug;
     END = 272,                     /* END  */
     CR = 273,                      /* CR  */
     RAND = 274,                    /* RAND  */
-    REL_LT = 275,                  /* REL_LT  */
-    REL_LE = 276,                  /* REL_LE  */
-    REL_NE = 277,                  /* REL_NE  */
-    REL_GT = 278,                  /* REL_GT  */
-    REL_GE = 279,                  /* REL_GE  */
-    UMINUS = 280,                  /* UMINUS  */
-    UPLUS = 281                    /* UPLUS  */
+    FOR = 275,                     /* FOR  */
+    TO = 276,                      /* TO  */
+    STEP = 277,                    /* STEP  */
+    NEXT = 278,                    /* NEXT  */
+    REL_LT = 279,                  /* REL_LT  */
+    REL_LE = 280,                  /* REL_LE  */
+    REL_NE = 281,                  /* REL_NE  */
+    REL_GT = 282,                  /* REL_GT  */
+    REL_GE = 283,                  /* REL_GE  */
+    UMINUS = 284,                  /* UMINUS  */
+    UPLUS = 285                    /* UPLUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -86,13 +90,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 125 "tinybasic.y"
+#line 139 "tinybasic.y"
 
     int   ival;     /* For numeric literals. */
     char  cval;     /* For single-letter variables. */
     char* sval;     
 
-#line 96 "tinybasic.tab.h"
+#line 100 "tinybasic.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

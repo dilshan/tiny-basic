@@ -25,13 +25,27 @@ static inline void var_set(char c, int v){ variables[toupper((unsigned char)c) -
 
 #define MAX_LINES    1000
 #define MAX_LINE_LEN  256
+#define FOR_STACK_DEPTH 16
 
-typedef struct { int num; char text[MAX_LINE_LEN]; } Line;
+typedef struct { 
+    int num; 
+    char text[MAX_LINE_LEN]; 
+} Line;
+
+typedef struct {
+    char var;
+    int  limit;
+    int  step;
+    int  ret_pc;
+} ForFrame;
 
 static Line  program[MAX_LINES];
-static int   prog_size = 0;
-static int   pc        = 0;
-static int   running   = 0;
+static ForFrame for_stack[FOR_STACK_DEPTH];
+
+static int prog_size = 0;
+static int pc        = 0;
+static int running   = 0;
+static int for_top = 0;
 
 static void prog_store(int num, const char *text) 
 {
@@ -133,7 +147,7 @@ static int is_continue = 1;
 %token <sval> STRING
 
 %token PRINT IF THEN GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
-%token RAND
+%token RAND FOR TO STEP NEXT
 %token REL_LT REL_LE REL_NE REL_GT REL_GE
 
 %type <ival> expression term factor relop
@@ -156,6 +170,72 @@ line
 
 statement
     : PRINT expr_list          { if (!if_skip) PPRINTF("\n"); }
+
+    | FOR VAR '=' expression TO expression
+        {
+            if (!if_skip) 
+            {
+                if (for_top >= FOR_STACK_DEPTH) 
+                {
+                    PPRINT_ERR("FOR stack overflow\n");
+                } 
+                else 
+                {
+                    var_set($2, $4);
+                    for_stack[for_top].var    = toupper($2);
+                    for_stack[for_top].limit  = $6;
+                    for_stack[for_top].step   = 1;
+                    for_stack[for_top].ret_pc = pc + 1;
+                    for_top++;
+                }
+            }
+        }
+    | FOR VAR '=' expression TO expression STEP expression
+        {
+            if (!if_skip) 
+            {
+                if (for_top >= FOR_STACK_DEPTH) 
+                {
+                    PPRINT_ERR("FOR stack overflow\n");
+                } 
+                else 
+                {
+                    var_set($2, $4);
+                    for_stack[for_top].var    = toupper($2);
+                    for_stack[for_top].limit  = $6;
+                    for_stack[for_top].step   = $8;
+                    for_stack[for_top].ret_pc = pc + 1;
+                    for_top++;
+                }
+            }
+        }
+    | NEXT VAR
+       {
+            if (!if_skip) 
+            {
+                if (for_top <= 0 || for_stack[for_top-1].var != toupper($2)) 
+                {
+                    PPRINT_ERR("NEXT without matching FOR\n");
+                } 
+                else 
+                {
+                    ForFrame *f = &for_stack[for_top - 1];
+                    int newval = var_get(f->var) + f->step;
+                    var_set(f->var, newval);
+
+                    int done = (f->step > 0) ? (newval > f->limit) : (newval < f->limit);
+                    if (!done) 
+                    {
+                        jump_pending = JUMP_GOTO;
+                        jump_target  = program[f->ret_pc].num; 
+                    } 
+                    else 
+                    {
+                        for_top--;
+                    }
+                }
+            }
+       }
 
     | IF expression relop expression
         {

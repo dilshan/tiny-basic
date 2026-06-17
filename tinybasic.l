@@ -26,6 +26,10 @@ digit [0-9]
 (?i:run)     { return RUN;    }
 (?i:end)     { return END;    }
 (?i:rand)    { return RAND;   }
+(?i:for)     { return FOR;    }
+(?i:to)      { return TO;     }
+(?i:step)    { return STEP;   }
+(?i:next)    { return NEXT;   }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
