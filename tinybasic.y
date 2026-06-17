@@ -293,7 +293,7 @@ statement
             }
         }
 
-    | RUN   { if (!if_skip) { running = 1; pc = 0; } }
+    | RUN   { if (!if_skip) { if(!running) { running = 1; pc = 0; } } }
 
     | END   { if (!if_skip) { if(!running) is_continue = 0; else running = 0; } }
     ;

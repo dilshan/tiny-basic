@@ -1447,7 +1447,7 @@ yyreduce:
 
   case 19: /* statement: RUN  */
 #line 296 "tinybasic.y"
-            { if (!if_skip) { running = 1; pc = 0; } }
+            { if (!if_skip) { if(!running) { running = 1; pc = 0; } } }
 #line 1452 "tinybasic.tab.c"
     break;
 
