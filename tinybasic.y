@@ -28,7 +28,7 @@ static inline void var_set(char c, int v){ variables[toupper((unsigned char)c) -
 #define FOR_STACK_DEPTH 16
 
 typedef struct { 
-    int num; 
+    short num; 
     char text[MAX_LINE_LEN]; 
 } Line;
 
@@ -36,16 +36,16 @@ typedef struct {
     char var;
     int  limit;
     int  step;
-    int  ret_pc;
+    unsigned short  ret_pc;
 } ForFrame;
 
 static Line  program[MAX_LINES];
 static ForFrame for_stack[FOR_STACK_DEPTH];
 
-static int prog_size = 0;
-static int pc        = 0;
-static int running   = 0;
-static int for_top = 0;
+static unsigned short prog_size = 0;
+static short pc        = 0;
+static unsigned char running   = 0;
+static char for_top = 0;
 
 static void prog_store(int num, const char *text) 
 {
@@ -99,10 +99,10 @@ static void prog_clear(void)
 }
 
 #define STACK_DEPTH 64
-static int call_stack[STACK_DEPTH];
-static int stack_top = 0;
+static short call_stack[STACK_DEPTH];
+static short stack_top = 0;
 
-static void stack_push(int ret_pc) 
+static void stack_push(short ret_pc) 
 {
     if (stack_top >= STACK_DEPTH) 
     { 
@@ -113,7 +113,7 @@ static void stack_push(int ret_pc)
     call_stack[stack_top++] = ret_pc;
 }
 
-static int stack_pop(void) 
+static short stack_pop(void) 
 {
     if (stack_top <= 0) 
     { 
@@ -129,10 +129,10 @@ static int stack_pop(void)
 #define JUMP_GOSUB  2
 #define JUMP_RETURN 3
 
-static int jump_pending = JUMP_NONE;
-static int jump_target  = 0;
-static int if_skip = 0;
-static int is_continue = 1;
+static unsigned char jump_pending = JUMP_NONE;
+static short jump_target  = 0;
+static unsigned char if_skip = 0;
+static unsigned char is_continue = 1;
 
 %}
 
@@ -173,7 +173,7 @@ statement
 
     | FOR VAR '=' expression TO expression
         {
-            if (!if_skip) 
+            if ((running) && (!if_skip)) 
             {
                 if (for_top >= FOR_STACK_DEPTH) 
                 {
@@ -192,7 +192,7 @@ statement
         }
     | FOR VAR '=' expression TO expression STEP expression
         {
-            if (!if_skip) 
+            if ((running) && (!if_skip))
             {
                 if (for_top >= FOR_STACK_DEPTH) 
                 {
@@ -211,7 +211,7 @@ statement
         }
     | NEXT VAR
        {
-            if (!if_skip) 
+            if ((running) && (!if_skip)) 
             {
                 if (for_top <= 0 || for_stack[for_top-1].var != toupper($2)) 
                 {

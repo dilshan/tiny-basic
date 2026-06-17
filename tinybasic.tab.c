@@ -98,7 +98,7 @@ static inline void var_set(char c, int v){ variables[toupper((unsigned char)c) -
 #define FOR_STACK_DEPTH 16
 
 typedef struct { 
-    int num; 
+    short num; 
     char text[MAX_LINE_LEN]; 
 } Line;
 
@@ -106,16 +106,16 @@ typedef struct {
     char var;
     int  limit;
     int  step;
-    int  ret_pc;
+    unsigned short  ret_pc;
 } ForFrame;
 
 static Line  program[MAX_LINES];
 static ForFrame for_stack[FOR_STACK_DEPTH];
 
-static int prog_size = 0;
-static int pc        = 0;
-static int running   = 0;
-static int for_top = 0;
+static unsigned short prog_size = 0;
+static short pc        = 0;
+static unsigned char running   = 0;
+static char for_top = 0;
 
 static void prog_store(int num, const char *text) 
 {
@@ -169,10 +169,10 @@ static void prog_clear(void)
 }
 
 #define STACK_DEPTH 64
-static int call_stack[STACK_DEPTH];
-static int stack_top = 0;
+static short call_stack[STACK_DEPTH];
+static short stack_top = 0;
 
-static void stack_push(int ret_pc) 
+static void stack_push(short ret_pc) 
 {
     if (stack_top >= STACK_DEPTH) 
     { 
@@ -183,7 +183,7 @@ static void stack_push(int ret_pc)
     call_stack[stack_top++] = ret_pc;
 }
 
-static int stack_pop(void) 
+static short stack_pop(void) 
 {
     if (stack_top <= 0) 
     { 
@@ -199,10 +199,10 @@ static int stack_pop(void)
 #define JUMP_GOSUB  2
 #define JUMP_RETURN 3
 
-static int jump_pending = JUMP_NONE;
-static int jump_target  = 0;
-static int if_skip = 0;
-static int is_continue = 1;
+static unsigned char jump_pending = JUMP_NONE;
+static short jump_target  = 0;
+static unsigned char if_skip = 0;
+static unsigned char is_continue = 1;
 
 
 #line 209 "tinybasic.tab.c"
@@ -672,11 +672,11 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   162,   162,   166,   167,   168,   172,   174,   190,   205,
-     228,   227,   248,   253,   255,   260,   265,   270,   275,   283,
-     285,   289,   290,   294,   305,   312,   324,   341,   342,   343,
-     344,   345,   346,   350,   351,   352,   353,   354,   355,   359,
-     360,   361,   369,   370,   371
+       0,   162,   162,   166,   167,   168,   172,   174,   193,   212,
+     241,   240,   261,   266,   268,   273,   278,   283,   288,   296,
+     298,   302,   303,   307,   318,   325,   337,   354,   355,   356,
+     357,   358,   359,   363,   364,   365,   366,   367,   368,   372,
+     373,   374,   382,   383,   384
 };
 #endif
 
@@ -1297,11 +1297,14 @@ yyreduce:
   case 7: /* statement: FOR VAR '=' expression TO expression  */
 #line 175 "tinybasic.y"
         {
-            if (!if_skip) 
+            if ((running) && (!if_skip)) 
             {
-                if (for_top >= FOR_STACK_DEPTH) {
+                if (for_top >= FOR_STACK_DEPTH) 
+                {
                     PPRINT_ERR("FOR stack overflow\n");
-                } else {
+                } 
+                else 
+                {
                     var_set((yyvsp[-4].cval), (yyvsp[-2].ival));
                     for_stack[for_top].var    = toupper((yyvsp[-4].cval));
                     for_stack[for_top].limit  = (yyvsp[0].ival);
@@ -1311,16 +1314,20 @@ yyreduce:
                 }
             }
         }
-#line 1315 "tinybasic.tab.c"
+#line 1318 "tinybasic.tab.c"
     break;
 
   case 8: /* statement: FOR VAR '=' expression TO expression STEP expression  */
-#line 191 "tinybasic.y"
+#line 194 "tinybasic.y"
         {
-            if (!if_skip) {
-                if (for_top >= FOR_STACK_DEPTH) {
+            if ((running) && (!if_skip))
+            {
+                if (for_top >= FOR_STACK_DEPTH) 
+                {
                     PPRINT_ERR("FOR stack overflow\n");
-                } else {
+                } 
+                else 
+                {
                     var_set((yyvsp[-6].cval), (yyvsp[-4].ival));
                     for_stack[for_top].var    = toupper((yyvsp[-6].cval));
                     for_stack[for_top].limit  = (yyvsp[-2].ival);
@@ -1330,36 +1337,42 @@ yyreduce:
                 }
             }
         }
-#line 1334 "tinybasic.tab.c"
+#line 1341 "tinybasic.tab.c"
     break;
 
   case 9: /* statement: NEXT VAR  */
-#line 206 "tinybasic.y"
+#line 213 "tinybasic.y"
        {
-            if (!if_skip) 
+            if ((running) && (!if_skip)) 
             {
-                if (for_top <= 0 || for_stack[for_top-1].var != toupper((yyvsp[0].cval))) {
+                if (for_top <= 0 || for_stack[for_top-1].var != toupper((yyvsp[0].cval))) 
+                {
                     PPRINT_ERR("NEXT without matching FOR\n");
-                } else {
+                } 
+                else 
+                {
                     ForFrame *f = &for_stack[for_top - 1];
                     int newval = var_get(f->var) + f->step;
                     var_set(f->var, newval);
 
                     int done = (f->step > 0) ? (newval > f->limit) : (newval < f->limit);
-                    if (!done) {
+                    if (!done) 
+                    {
                         jump_pending = JUMP_GOTO;
                         jump_target  = program[f->ret_pc].num; 
-                    } else {
+                    } 
+                    else 
+                    {
                         for_top--;
                     }
                 }
             }
        }
-#line 1359 "tinybasic.tab.c"
+#line 1372 "tinybasic.tab.c"
     break;
 
   case 10: /* $@1: %empty  */
-#line 228 "tinybasic.y"
+#line 241 "tinybasic.y"
         {
             // Only evaluate the condition if we're not already skipping due to an outer IF.
             if (!if_skip)
@@ -1378,74 +1391,74 @@ yyreduce:
                 if_skip = !expression_result;
             }
         }
-#line 1382 "tinybasic.tab.c"
+#line 1395 "tinybasic.tab.c"
     break;
 
   case 12: /* statement: GOTO expression  */
-#line 249 "tinybasic.y"
+#line 262 "tinybasic.y"
         {
             if (!if_skip) { jump_pending = JUMP_GOTO; jump_target = (yyvsp[0].ival); }
         }
-#line 1390 "tinybasic.tab.c"
+#line 1403 "tinybasic.tab.c"
     break;
 
   case 14: /* statement: LET VAR '=' expression  */
-#line 256 "tinybasic.y"
+#line 269 "tinybasic.y"
         {
             if (!if_skip) var_set((yyvsp[-2].cval), (yyvsp[0].ival));
         }
-#line 1398 "tinybasic.tab.c"
+#line 1411 "tinybasic.tab.c"
     break;
 
   case 15: /* statement: GOSUB expression  */
-#line 261 "tinybasic.y"
+#line 274 "tinybasic.y"
         {
             if (!if_skip) { jump_pending = JUMP_GOSUB; jump_target = (yyvsp[0].ival); }
         }
-#line 1406 "tinybasic.tab.c"
+#line 1419 "tinybasic.tab.c"
     break;
 
   case 16: /* statement: RETURN  */
-#line 266 "tinybasic.y"
+#line 279 "tinybasic.y"
         {
             if (!if_skip) { pc = stack_pop(); jump_pending = JUMP_RETURN; }
         }
-#line 1414 "tinybasic.tab.c"
+#line 1427 "tinybasic.tab.c"
     break;
 
   case 17: /* statement: CLEAR  */
-#line 271 "tinybasic.y"
+#line 284 "tinybasic.y"
         {
             if (!if_skip) prog_clear();
         }
-#line 1422 "tinybasic.tab.c"
+#line 1435 "tinybasic.tab.c"
     break;
 
   case 18: /* statement: LIST  */
-#line 276 "tinybasic.y"
+#line 289 "tinybasic.y"
         {
             if (!if_skip) {
                 for (int i = 0; i < prog_size; i++)
                     PPRINTF("%d %s\n", program[i].num, program[i].text);
             }
         }
-#line 1433 "tinybasic.tab.c"
+#line 1446 "tinybasic.tab.c"
     break;
 
   case 19: /* statement: RUN  */
-#line 283 "tinybasic.y"
+#line 296 "tinybasic.y"
             { if (!if_skip) { running = 1; pc = 0; } }
-#line 1439 "tinybasic.tab.c"
+#line 1452 "tinybasic.tab.c"
     break;
 
   case 20: /* statement: END  */
-#line 285 "tinybasic.y"
+#line 298 "tinybasic.y"
             { if (!if_skip) { if(!running) is_continue = 0; else running = 0; } }
-#line 1445 "tinybasic.tab.c"
+#line 1458 "tinybasic.tab.c"
     break;
 
   case 23: /* expr_item: STRING  */
-#line 295 "tinybasic.y"
+#line 308 "tinybasic.y"
         {
             if (!if_skip) {
                 char *s = (yyvsp[0].sval);
@@ -1456,19 +1469,19 @@ yyreduce:
                 free((yyvsp[0].sval));
             }
         }
-#line 1460 "tinybasic.tab.c"
+#line 1473 "tinybasic.tab.c"
     break;
 
   case 24: /* expr_item: expression  */
-#line 306 "tinybasic.y"
+#line 319 "tinybasic.y"
         {
             if (!if_skip) PPRINTF("%d", (yyvsp[0].ival));
         }
-#line 1468 "tinybasic.tab.c"
+#line 1481 "tinybasic.tab.c"
     break;
 
   case 25: /* var_list: VAR  */
-#line 313 "tinybasic.y"
+#line 326 "tinybasic.y"
         {
             if (!if_skip) 
             {
@@ -1480,11 +1493,11 @@ yyreduce:
                 PSCANF("%*c");
             }
         }
-#line 1484 "tinybasic.tab.c"
+#line 1497 "tinybasic.tab.c"
     break;
 
   case 26: /* var_list: var_list ',' VAR  */
-#line 325 "tinybasic.y"
+#line 338 "tinybasic.y"
         {
             if (!if_skip) 
             {
@@ -1498,122 +1511,122 @@ yyreduce:
                 PSCANF("%*c");
             }
         }
-#line 1502 "tinybasic.tab.c"
+#line 1515 "tinybasic.tab.c"
     break;
 
   case 27: /* relop: REL_LT  */
-#line 341 "tinybasic.y"
+#line 354 "tinybasic.y"
                 { (yyval.ival) = 0; }
-#line 1508 "tinybasic.tab.c"
+#line 1521 "tinybasic.tab.c"
     break;
 
   case 28: /* relop: REL_LE  */
-#line 342 "tinybasic.y"
+#line 355 "tinybasic.y"
                 { (yyval.ival) = 1; }
-#line 1514 "tinybasic.tab.c"
+#line 1527 "tinybasic.tab.c"
     break;
 
   case 29: /* relop: REL_NE  */
-#line 343 "tinybasic.y"
+#line 356 "tinybasic.y"
                 { (yyval.ival) = 2; }
-#line 1520 "tinybasic.tab.c"
+#line 1533 "tinybasic.tab.c"
     break;
 
   case 30: /* relop: REL_GT  */
-#line 344 "tinybasic.y"
+#line 357 "tinybasic.y"
                 { (yyval.ival) = 3; }
-#line 1526 "tinybasic.tab.c"
+#line 1539 "tinybasic.tab.c"
     break;
 
   case 31: /* relop: REL_GE  */
-#line 345 "tinybasic.y"
+#line 358 "tinybasic.y"
                 { (yyval.ival) = 4; }
-#line 1532 "tinybasic.tab.c"
+#line 1545 "tinybasic.tab.c"
     break;
 
   case 32: /* relop: '='  */
-#line 346 "tinybasic.y"
+#line 359 "tinybasic.y"
                 { (yyval.ival) = 5; }
-#line 1538 "tinybasic.tab.c"
+#line 1551 "tinybasic.tab.c"
     break;
 
   case 33: /* expression: term  */
-#line 350 "tinybasic.y"
+#line 363 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1544 "tinybasic.tab.c"
+#line 1557 "tinybasic.tab.c"
     break;
 
   case 34: /* expression: '+' term  */
-#line 351 "tinybasic.y"
+#line 364 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1550 "tinybasic.tab.c"
+#line 1563 "tinybasic.tab.c"
     break;
 
   case 35: /* expression: '-' term  */
-#line 352 "tinybasic.y"
+#line 365 "tinybasic.y"
                                  { (yyval.ival) = -(yyvsp[0].ival); }
-#line 1556 "tinybasic.tab.c"
+#line 1569 "tinybasic.tab.c"
     break;
 
   case 36: /* expression: expression '+' term  */
-#line 353 "tinybasic.y"
+#line 366 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) + (yyvsp[0].ival); }
-#line 1562 "tinybasic.tab.c"
+#line 1575 "tinybasic.tab.c"
     break;
 
   case 37: /* expression: expression '-' term  */
-#line 354 "tinybasic.y"
+#line 367 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) - (yyvsp[0].ival); }
-#line 1568 "tinybasic.tab.c"
+#line 1581 "tinybasic.tab.c"
     break;
 
   case 38: /* expression: RAND  */
-#line 355 "tinybasic.y"
+#line 368 "tinybasic.y"
                                  { (yyval.ival) = RANDOM() % 32768; }
-#line 1574 "tinybasic.tab.c"
+#line 1587 "tinybasic.tab.c"
     break;
 
   case 39: /* term: factor  */
-#line 359 "tinybasic.y"
+#line 372 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1580 "tinybasic.tab.c"
+#line 1593 "tinybasic.tab.c"
     break;
 
   case 40: /* term: term '*' factor  */
-#line 360 "tinybasic.y"
+#line 373 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) * (yyvsp[0].ival); }
-#line 1586 "tinybasic.tab.c"
+#line 1599 "tinybasic.tab.c"
     break;
 
   case 41: /* term: term '/' factor  */
-#line 362 "tinybasic.y"
+#line 375 "tinybasic.y"
         {
             if ((yyvsp[0].ival) == 0) { PPRINT_ERR("Division by zero\n"); (yyval.ival) = 0; }
             else          (yyval.ival) = (yyvsp[-2].ival) / (yyvsp[0].ival);
         }
-#line 1595 "tinybasic.tab.c"
+#line 1608 "tinybasic.tab.c"
     break;
 
   case 42: /* factor: VAR  */
-#line 369 "tinybasic.y"
+#line 382 "tinybasic.y"
                                  { (yyval.ival) = var_get((yyvsp[0].cval)); }
-#line 1601 "tinybasic.tab.c"
+#line 1614 "tinybasic.tab.c"
     break;
 
   case 43: /* factor: NUMBER  */
-#line 370 "tinybasic.y"
+#line 383 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1607 "tinybasic.tab.c"
+#line 1620 "tinybasic.tab.c"
     break;
 
   case 44: /* factor: '(' expression ')'  */
-#line 371 "tinybasic.y"
+#line 384 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-1].ival); }
-#line 1613 "tinybasic.tab.c"
+#line 1626 "tinybasic.tab.c"
     break;
 
 
-#line 1617 "tinybasic.tab.c"
+#line 1630 "tinybasic.tab.c"
 
       default: break;
     }
@@ -1806,7 +1819,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 374 "tinybasic.y"
+#line 387 "tinybasic.y"
 
 
 void yyerror(const char *s) 
