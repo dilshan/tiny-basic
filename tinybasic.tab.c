@@ -74,8 +74,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "platform.h"
-
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
@@ -176,7 +174,7 @@ static void stack_push(short ret_pc)
 {
     if (stack_top >= STACK_DEPTH) 
     { 
-        PPRINT_ERR("GOSUB stack overflow\n"); 
+        fprintf(stderr, "GOSUB stack overflow\n"); 
         return; 
     }
 
@@ -187,7 +185,7 @@ static short stack_pop(void)
 {
     if (stack_top <= 0) 
     { 
-        PPRINT_ERR("RETURN without GOSUB\n"); 
+        fprintf(stderr, "RETURN without GOSUB\n"); 
         return 0; 
     }
 
@@ -205,7 +203,7 @@ static unsigned char if_skip = 0;
 static unsigned char is_continue = 1;
 
 
-#line 209 "tinybasic.tab.c"
+#line 207 "tinybasic.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -672,11 +670,11 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   162,   162,   166,   167,   168,   172,   174,   193,   212,
-     241,   240,   261,   266,   268,   273,   278,   283,   288,   296,
-     298,   302,   303,   307,   318,   325,   337,   354,   355,   356,
-     357,   358,   359,   363,   364,   365,   366,   367,   368,   372,
-     373,   374,   382,   383,   384
+       0,   160,   160,   164,   165,   166,   170,   172,   191,   210,
+     239,   238,   259,   264,   266,   271,   276,   281,   286,   294,
+     296,   300,   301,   305,   316,   323,   335,   352,   353,   354,
+     355,   356,   357,   361,   362,   363,   364,   365,   366,   370,
+     371,   372,   380,   381,   382
 };
 #endif
 
@@ -1289,19 +1287,19 @@ yyreduce:
   switch (yyn)
     {
   case 6: /* statement: PRINT expr_list  */
-#line 172 "tinybasic.y"
-                               { if (!if_skip) PPRINTF("\n"); }
-#line 1295 "tinybasic.tab.c"
+#line 170 "tinybasic.y"
+                               { if (!if_skip) printf("\n"); }
+#line 1293 "tinybasic.tab.c"
     break;
 
   case 7: /* statement: FOR VAR '=' expression TO expression  */
-#line 175 "tinybasic.y"
+#line 173 "tinybasic.y"
         {
             if ((running) && (!if_skip)) 
             {
                 if (for_top >= FOR_STACK_DEPTH) 
                 {
-                    PPRINT_ERR("FOR stack overflow\n");
+                    fprintf(stderr, "FOR stack overflow\n");
                 } 
                 else 
                 {
@@ -1314,17 +1312,17 @@ yyreduce:
                 }
             }
         }
-#line 1318 "tinybasic.tab.c"
+#line 1316 "tinybasic.tab.c"
     break;
 
   case 8: /* statement: FOR VAR '=' expression TO expression STEP expression  */
-#line 194 "tinybasic.y"
+#line 192 "tinybasic.y"
         {
             if ((running) && (!if_skip))
             {
                 if (for_top >= FOR_STACK_DEPTH) 
                 {
-                    PPRINT_ERR("FOR stack overflow\n");
+                    fprintf(stderr, "FOR stack overflow\n");
                 } 
                 else 
                 {
@@ -1337,17 +1335,17 @@ yyreduce:
                 }
             }
         }
-#line 1341 "tinybasic.tab.c"
+#line 1339 "tinybasic.tab.c"
     break;
 
   case 9: /* statement: NEXT VAR  */
-#line 213 "tinybasic.y"
+#line 211 "tinybasic.y"
        {
             if ((running) && (!if_skip)) 
             {
                 if (for_top <= 0 || for_stack[for_top-1].var != toupper((yyvsp[0].cval))) 
                 {
-                    PPRINT_ERR("NEXT without matching FOR\n");
+                    fprintf(stderr, "NEXT without matching FOR\n");
                 } 
                 else 
                 {
@@ -1368,11 +1366,11 @@ yyreduce:
                 }
             }
        }
-#line 1372 "tinybasic.tab.c"
+#line 1370 "tinybasic.tab.c"
     break;
 
   case 10: /* $@1: %empty  */
-#line 241 "tinybasic.y"
+#line 239 "tinybasic.y"
         {
             // Only evaluate the condition if we're not already skipping due to an outer IF.
             if (!if_skip)
@@ -1391,242 +1389,242 @@ yyreduce:
                 if_skip = !expression_result;
             }
         }
-#line 1395 "tinybasic.tab.c"
+#line 1393 "tinybasic.tab.c"
     break;
 
   case 12: /* statement: GOTO expression  */
-#line 262 "tinybasic.y"
+#line 260 "tinybasic.y"
         {
             if (!if_skip) { jump_pending = JUMP_GOTO; jump_target = (yyvsp[0].ival); }
         }
-#line 1403 "tinybasic.tab.c"
+#line 1401 "tinybasic.tab.c"
     break;
 
   case 14: /* statement: LET VAR '=' expression  */
-#line 269 "tinybasic.y"
+#line 267 "tinybasic.y"
         {
             if (!if_skip) var_set((yyvsp[-2].cval), (yyvsp[0].ival));
         }
-#line 1411 "tinybasic.tab.c"
+#line 1409 "tinybasic.tab.c"
     break;
 
   case 15: /* statement: GOSUB expression  */
-#line 274 "tinybasic.y"
+#line 272 "tinybasic.y"
         {
             if (!if_skip) { jump_pending = JUMP_GOSUB; jump_target = (yyvsp[0].ival); }
         }
-#line 1419 "tinybasic.tab.c"
+#line 1417 "tinybasic.tab.c"
     break;
 
   case 16: /* statement: RETURN  */
-#line 279 "tinybasic.y"
+#line 277 "tinybasic.y"
         {
             if (!if_skip) { pc = stack_pop(); jump_pending = JUMP_RETURN; }
         }
-#line 1427 "tinybasic.tab.c"
+#line 1425 "tinybasic.tab.c"
     break;
 
   case 17: /* statement: CLEAR  */
-#line 284 "tinybasic.y"
+#line 282 "tinybasic.y"
         {
             if (!if_skip) prog_clear();
         }
-#line 1435 "tinybasic.tab.c"
+#line 1433 "tinybasic.tab.c"
     break;
 
   case 18: /* statement: LIST  */
-#line 289 "tinybasic.y"
+#line 287 "tinybasic.y"
         {
             if (!if_skip) {
                 for (int i = 0; i < prog_size; i++)
-                    PPRINTF("%d %s\n", program[i].num, program[i].text);
+                    printf("%d %s\n", program[i].num, program[i].text);
             }
         }
-#line 1446 "tinybasic.tab.c"
+#line 1444 "tinybasic.tab.c"
     break;
 
   case 19: /* statement: RUN  */
-#line 296 "tinybasic.y"
+#line 294 "tinybasic.y"
             { if (!if_skip) { if(!running) { running = 1; pc = 0; } } }
-#line 1452 "tinybasic.tab.c"
+#line 1450 "tinybasic.tab.c"
     break;
 
   case 20: /* statement: END  */
-#line 298 "tinybasic.y"
+#line 296 "tinybasic.y"
             { if (!if_skip) { if(!running) is_continue = 0; else running = 0; } }
-#line 1458 "tinybasic.tab.c"
+#line 1456 "tinybasic.tab.c"
     break;
 
   case 23: /* expr_item: STRING  */
-#line 308 "tinybasic.y"
+#line 306 "tinybasic.y"
         {
             if (!if_skip) {
                 char *s = (yyvsp[0].sval);
                 int len = strlen(s);
                 
                 // Strip surrounding quotes.
-                if (len >= 2) { s[len-1] = '\0'; PPRINTF("%s", s+1); }
+                if (len >= 2) { s[len-1] = '\0'; printf("%s", s+1); }
                 free((yyvsp[0].sval));
             }
         }
-#line 1473 "tinybasic.tab.c"
+#line 1471 "tinybasic.tab.c"
     break;
 
   case 24: /* expr_item: expression  */
-#line 319 "tinybasic.y"
+#line 317 "tinybasic.y"
         {
-            if (!if_skip) PPRINTF("%d", (yyvsp[0].ival));
+            if (!if_skip) printf("%d", (yyvsp[0].ival));
         }
-#line 1481 "tinybasic.tab.c"
+#line 1479 "tinybasic.tab.c"
     break;
 
   case 25: /* var_list: VAR  */
-#line 326 "tinybasic.y"
+#line 324 "tinybasic.y"
         {
             if (!if_skip) 
             {
-                int v; PPRINTF("? "); fflush(stdout);
-                if (PSCANF("%d", &v) == 1) 
+                int v; printf("? "); fflush(stdout);
+                if (scanf("%d", &v) == 1) 
                     var_set((yyvsp[0].cval), v);
                 
                 // Consume the rest of the line to avoid affecting the next input.
-                PSCANF("%*c");
+                scanf("%*c");
             }
         }
-#line 1497 "tinybasic.tab.c"
+#line 1495 "tinybasic.tab.c"
     break;
 
   case 26: /* var_list: var_list ',' VAR  */
-#line 338 "tinybasic.y"
+#line 336 "tinybasic.y"
         {
             if (!if_skip) 
             {
-                int v; PPRINTF("? "); 
+                int v; printf("? "); 
                 fflush(stdout);
 
-                if (PSCANF("%d", &v) == 1) 
+                if (scanf("%d", &v) == 1) 
                     var_set((yyvsp[0].cval), v);
                 
                 // See above: consume the rest of the line.
-                PSCANF("%*c");
+                scanf("%*c");
             }
         }
-#line 1515 "tinybasic.tab.c"
+#line 1513 "tinybasic.tab.c"
     break;
 
   case 27: /* relop: REL_LT  */
-#line 354 "tinybasic.y"
+#line 352 "tinybasic.y"
                 { (yyval.ival) = 0; }
-#line 1521 "tinybasic.tab.c"
+#line 1519 "tinybasic.tab.c"
     break;
 
   case 28: /* relop: REL_LE  */
-#line 355 "tinybasic.y"
+#line 353 "tinybasic.y"
                 { (yyval.ival) = 1; }
-#line 1527 "tinybasic.tab.c"
+#line 1525 "tinybasic.tab.c"
     break;
 
   case 29: /* relop: REL_NE  */
-#line 356 "tinybasic.y"
+#line 354 "tinybasic.y"
                 { (yyval.ival) = 2; }
-#line 1533 "tinybasic.tab.c"
+#line 1531 "tinybasic.tab.c"
     break;
 
   case 30: /* relop: REL_GT  */
-#line 357 "tinybasic.y"
+#line 355 "tinybasic.y"
                 { (yyval.ival) = 3; }
-#line 1539 "tinybasic.tab.c"
+#line 1537 "tinybasic.tab.c"
     break;
 
   case 31: /* relop: REL_GE  */
-#line 358 "tinybasic.y"
+#line 356 "tinybasic.y"
                 { (yyval.ival) = 4; }
-#line 1545 "tinybasic.tab.c"
+#line 1543 "tinybasic.tab.c"
     break;
 
   case 32: /* relop: '='  */
-#line 359 "tinybasic.y"
+#line 357 "tinybasic.y"
                 { (yyval.ival) = 5; }
-#line 1551 "tinybasic.tab.c"
+#line 1549 "tinybasic.tab.c"
     break;
 
   case 33: /* expression: term  */
-#line 363 "tinybasic.y"
+#line 361 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1557 "tinybasic.tab.c"
+#line 1555 "tinybasic.tab.c"
     break;
 
   case 34: /* expression: '+' term  */
-#line 364 "tinybasic.y"
+#line 362 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1563 "tinybasic.tab.c"
+#line 1561 "tinybasic.tab.c"
     break;
 
   case 35: /* expression: '-' term  */
-#line 365 "tinybasic.y"
+#line 363 "tinybasic.y"
                                  { (yyval.ival) = -(yyvsp[0].ival); }
-#line 1569 "tinybasic.tab.c"
+#line 1567 "tinybasic.tab.c"
     break;
 
   case 36: /* expression: expression '+' term  */
-#line 366 "tinybasic.y"
+#line 364 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) + (yyvsp[0].ival); }
-#line 1575 "tinybasic.tab.c"
+#line 1573 "tinybasic.tab.c"
     break;
 
   case 37: /* expression: expression '-' term  */
-#line 367 "tinybasic.y"
+#line 365 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) - (yyvsp[0].ival); }
-#line 1581 "tinybasic.tab.c"
+#line 1579 "tinybasic.tab.c"
     break;
 
   case 38: /* expression: RAND  */
-#line 368 "tinybasic.y"
-                                 { (yyval.ival) = RANDOM() % 32768; }
-#line 1587 "tinybasic.tab.c"
+#line 366 "tinybasic.y"
+                                 { (yyval.ival) = rand() % 32768; }
+#line 1585 "tinybasic.tab.c"
     break;
 
   case 39: /* term: factor  */
-#line 372 "tinybasic.y"
+#line 370 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1593 "tinybasic.tab.c"
+#line 1591 "tinybasic.tab.c"
     break;
 
   case 40: /* term: term '*' factor  */
-#line 373 "tinybasic.y"
+#line 371 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-2].ival) * (yyvsp[0].ival); }
-#line 1599 "tinybasic.tab.c"
+#line 1597 "tinybasic.tab.c"
     break;
 
   case 41: /* term: term '/' factor  */
-#line 375 "tinybasic.y"
+#line 373 "tinybasic.y"
         {
-            if ((yyvsp[0].ival) == 0) { PPRINT_ERR("Division by zero\n"); (yyval.ival) = 0; }
+            if ((yyvsp[0].ival) == 0) { fprintf(stderr, "Division by zero\n"); (yyval.ival) = 0; }
             else          (yyval.ival) = (yyvsp[-2].ival) / (yyvsp[0].ival);
         }
-#line 1608 "tinybasic.tab.c"
+#line 1606 "tinybasic.tab.c"
     break;
 
   case 42: /* factor: VAR  */
-#line 382 "tinybasic.y"
+#line 380 "tinybasic.y"
                                  { (yyval.ival) = var_get((yyvsp[0].cval)); }
-#line 1614 "tinybasic.tab.c"
+#line 1612 "tinybasic.tab.c"
     break;
 
   case 43: /* factor: NUMBER  */
-#line 383 "tinybasic.y"
+#line 381 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[0].ival); }
-#line 1620 "tinybasic.tab.c"
+#line 1618 "tinybasic.tab.c"
     break;
 
   case 44: /* factor: '(' expression ')'  */
-#line 384 "tinybasic.y"
+#line 382 "tinybasic.y"
                                  { (yyval.ival) = (yyvsp[-1].ival); }
-#line 1626 "tinybasic.tab.c"
+#line 1624 "tinybasic.tab.c"
     break;
 
 
-#line 1630 "tinybasic.tab.c"
+#line 1628 "tinybasic.tab.c"
 
       default: break;
     }
@@ -1819,12 +1817,12 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 387 "tinybasic.y"
+#line 385 "tinybasic.y"
 
 
 void yyerror(const char *s) 
 {
-    PPRINT_ERR("Error: %s\n", s);
+    fprintf(stderr, "Error: %s\n", s);
 }
 
 static void do_run(void) 
@@ -1854,7 +1852,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PPRINT_ERR("Undefined line %d\n", jump_target); 
+                    fprintf(stderr, "Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -1867,7 +1865,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PPRINT_ERR("Undefined line %d\n", jump_target); 
+                    fprintf(stderr, "Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -1893,11 +1891,11 @@ int main(void)
 {
     char line[MAX_LINE_LEN];
     memset(variables, 0, sizeof(variables));
-    PPRINTF("Tiny BASIC  (type END or Ctrl-D to quit)\n");
+    printf("Tiny BASIC  (type END or Ctrl-D to quit)\n");
 
     while (is_continue) 
     {
-        PPRINTF("> "); fflush(stdout);
+        printf("> "); fflush(stdout);
 
         if (!fgets(line, sizeof(line), stdin)) 
             break;
@@ -1949,6 +1947,6 @@ int main(void)
         }
     }
 
-    PPRINTF("\n");
+    printf("\n");
     return 0;
 }

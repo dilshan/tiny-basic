@@ -545,9 +545,8 @@ char *yytext;
 #include <stdlib.h>
 #include <string.h>
 #include "tinybasic.tab.h"
-#include "platform.h"
+#line 549 "lex.yy.c"
 #line 550 "lex.yy.c"
-#line 551 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -764,10 +763,10 @@ YY_DECL
 		}
 
 	{
-#line 14 "tinybasic.l"
+#line 13 "tinybasic.l"
 
 
-#line 771 "lex.yy.c"
+#line 770 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -836,192 +835,192 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 16 "tinybasic.l"
+#line 15 "tinybasic.l"
 { return PRINT;  }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 17 "tinybasic.l"
+#line 16 "tinybasic.l"
 { return IF;     }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "tinybasic.l"
+#line 17 "tinybasic.l"
 { return THEN;   }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 19 "tinybasic.l"
+#line 18 "tinybasic.l"
 { return GOTO;   }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 20 "tinybasic.l"
+#line 19 "tinybasic.l"
 { return INPUT;  }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 21 "tinybasic.l"
+#line 20 "tinybasic.l"
 { return LET;    }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 22 "tinybasic.l"
+#line 21 "tinybasic.l"
 { return GOSUB;  }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 23 "tinybasic.l"
+#line 22 "tinybasic.l"
 { return RETURN; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 24 "tinybasic.l"
+#line 23 "tinybasic.l"
 { return CLEAR;  }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 25 "tinybasic.l"
+#line 24 "tinybasic.l"
 { return LIST;   }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 26 "tinybasic.l"
+#line 25 "tinybasic.l"
 { return RUN;    }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 27 "tinybasic.l"
+#line 26 "tinybasic.l"
 { return END;    }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 28 "tinybasic.l"
+#line 27 "tinybasic.l"
 { return RAND;   }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 29 "tinybasic.l"
+#line 28 "tinybasic.l"
 { return FOR;    }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 30 "tinybasic.l"
+#line 29 "tinybasic.l"
 { return TO;     }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 31 "tinybasic.l"
+#line 30 "tinybasic.l"
 { return STEP;   }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 32 "tinybasic.l"
+#line 31 "tinybasic.l"
 { return NEXT;   }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 34 "tinybasic.l"
+#line 33 "tinybasic.l"
 { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 35 "tinybasic.l"
+#line 34 "tinybasic.l"
 { yylval.ival = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 20:
 /* rule 20 can match eol */
 YY_RULE_SETUP
-#line 36 "tinybasic.l"
+#line 35 "tinybasic.l"
 { yylval.sval = strdup(yytext); return STRING; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 38 "tinybasic.l"
+#line 37 "tinybasic.l"
 { return REL_LE;       }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 39 "tinybasic.l"
+#line 38 "tinybasic.l"
 { return REL_NE;    }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 40 "tinybasic.l"
+#line 39 "tinybasic.l"
 { return REL_GE;       }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 42 "tinybasic.l"
+#line 41 "tinybasic.l"
 { return REL_LT;   }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 43 "tinybasic.l"
+#line 42 "tinybasic.l"
 { return REL_GT;   }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 44 "tinybasic.l"
+#line 43 "tinybasic.l"
 { return '=';      }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 46 "tinybasic.l"
+#line 45 "tinybasic.l"
 { return '+'; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 47 "tinybasic.l"
+#line 46 "tinybasic.l"
 { return '-'; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 48 "tinybasic.l"
+#line 47 "tinybasic.l"
 { return '*'; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 49 "tinybasic.l"
+#line 48 "tinybasic.l"
 { return '/'; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 50 "tinybasic.l"
+#line 49 "tinybasic.l"
 { return '('; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 51 "tinybasic.l"
+#line 50 "tinybasic.l"
 { return ')'; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 52 "tinybasic.l"
+#line 51 "tinybasic.l"
 { return ','; }
 	YY_BREAK
 case 34:
 /* rule 34 can match eol */
 YY_RULE_SETUP
-#line 54 "tinybasic.l"
+#line 53 "tinybasic.l"
 { return CR; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 55 "tinybasic.l"
+#line 54 "tinybasic.l"
 { /* ignore. */ }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 57 "tinybasic.l"
-{ PPRINT_ERR("Unknown character '%s' at line %d\n", yytext, yylineno); }
+#line 56 "tinybasic.l"
+{ fprintf(stderr, "Unknown character '%s' at line %d\n", yytext, yylineno); }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 58 "tinybasic.l"
+#line 57 "tinybasic.l"
 ECHO;
 	YY_BREAK
-#line 1025 "lex.yy.c"
+#line 1024 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2038,5 +2037,5 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 58 "tinybasic.l"
+#line 57 "tinybasic.l"
 

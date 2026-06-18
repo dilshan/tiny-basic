@@ -90,7 +90,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 139 "tinybasic.y"
+#line 137 "tinybasic.y"
 
     int   ival;     /* For numeric literals. */
     char  cval;     /* For single-letter variables. */

@@ -4,8 +4,6 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "platform.h"
-
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
@@ -106,7 +104,7 @@ static void stack_push(short ret_pc)
 {
     if (stack_top >= STACK_DEPTH) 
     { 
-        PPRINT_ERR("GOSUB stack overflow\n"); 
+        fprintf(stderr, "GOSUB stack overflow\n"); 
         return; 
     }
 
@@ -117,7 +115,7 @@ static short stack_pop(void)
 {
     if (stack_top <= 0) 
     { 
-        PPRINT_ERR("RETURN without GOSUB\n"); 
+        fprintf(stderr, "RETURN without GOSUB\n"); 
         return 0; 
     }
 
@@ -169,7 +167,7 @@ line
     ;
 
 statement
-    : PRINT expr_list          { if (!if_skip) PPRINTF("\n"); }
+    : PRINT expr_list          { if (!if_skip) printf("\n"); }
 
     | FOR VAR '=' expression TO expression
         {
@@ -177,7 +175,7 @@ statement
             {
                 if (for_top >= FOR_STACK_DEPTH) 
                 {
-                    PPRINT_ERR("FOR stack overflow\n");
+                    fprintf(stderr, "FOR stack overflow\n");
                 } 
                 else 
                 {
@@ -196,7 +194,7 @@ statement
             {
                 if (for_top >= FOR_STACK_DEPTH) 
                 {
-                    PPRINT_ERR("FOR stack overflow\n");
+                    fprintf(stderr, "FOR stack overflow\n");
                 } 
                 else 
                 {
@@ -215,7 +213,7 @@ statement
             {
                 if (for_top <= 0 || for_stack[for_top-1].var != toupper($2)) 
                 {
-                    PPRINT_ERR("NEXT without matching FOR\n");
+                    fprintf(stderr, "NEXT without matching FOR\n");
                 } 
                 else 
                 {
@@ -289,7 +287,7 @@ statement
         {
             if (!if_skip) {
                 for (int i = 0; i < prog_size; i++)
-                    PPRINTF("%d %s\n", program[i].num, program[i].text);
+                    printf("%d %s\n", program[i].num, program[i].text);
             }
         }
 
@@ -311,13 +309,13 @@ expr_item
                 int len = strlen(s);
                 
                 // Strip surrounding quotes.
-                if (len >= 2) { s[len-1] = '\0'; PPRINTF("%s", s+1); }
+                if (len >= 2) { s[len-1] = '\0'; printf("%s", s+1); }
                 free($1);
             }
         }
     | expression
         {
-            if (!if_skip) PPRINTF("%d", $1);
+            if (!if_skip) printf("%d", $1);
         }
     ;
 
@@ -326,26 +324,26 @@ var_list
         {
             if (!if_skip) 
             {
-                int v; PPRINTF("? "); fflush(stdout);
-                if (PSCANF("%d", &v) == 1) 
+                int v; printf("? "); fflush(stdout);
+                if (scanf("%d", &v) == 1) 
                     var_set($1, v);
                 
                 // Consume the rest of the line to avoid affecting the next input.
-                PSCANF("%*c");
+                scanf("%*c");
             }
         }
     | var_list ',' VAR
         {
             if (!if_skip) 
             {
-                int v; PPRINTF("? "); 
+                int v; printf("? "); 
                 fflush(stdout);
 
-                if (PSCANF("%d", &v) == 1) 
+                if (scanf("%d", &v) == 1) 
                     var_set($3, v);
                 
                 // See above: consume the rest of the line.
-                PSCANF("%*c");
+                scanf("%*c");
             }
         }
     ;
@@ -365,7 +363,7 @@ expression
     | '-' term   %prec UMINUS    { $$ = -$2; }
     | expression '+' term        { $$ = $1 + $3; }
     | expression '-' term        { $$ = $1 - $3; }
-    | RAND                       { $$ = RANDOM() % 32768; }
+    | RAND                       { $$ = rand() % 32768; }
     ;
 
 term
@@ -373,7 +371,7 @@ term
     | term '*' factor            { $$ = $1 * $3; }
     | term '/' factor
         {
-            if ($3 == 0) { PPRINT_ERR("Division by zero\n"); $$ = 0; }
+            if ($3 == 0) { fprintf(stderr, "Division by zero\n"); $$ = 0; }
             else          $$ = $1 / $3;
         }
     ;
@@ -388,7 +386,7 @@ factor
 
 void yyerror(const char *s) 
 {
-    PPRINT_ERR("Error: %s\n", s);
+    fprintf(stderr, "Error: %s\n", s);
 }
 
 static void do_run(void) 
@@ -418,7 +416,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PPRINT_ERR("Undefined line %d\n", jump_target); 
+                    fprintf(stderr, "Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -431,7 +429,7 @@ static void do_run(void)
                 int idx = prog_find(jump_target);
                 if (idx < 0) 
                 { 
-                    PPRINT_ERR("Undefined line %d\n", jump_target); 
+                    fprintf(stderr, "Undefined line %d\n", jump_target); 
                     goto done; 
                 }
 
@@ -457,11 +455,11 @@ int main(void)
 {
     char line[MAX_LINE_LEN];
     memset(variables, 0, sizeof(variables));
-    PPRINTF("Tiny BASIC  (type END or Ctrl-D to quit)\n");
+    printf("Tiny BASIC  (type END or Ctrl-D to quit)\n");
 
     while (is_continue) 
     {
-        PPRINTF("> "); fflush(stdout);
+        printf("> "); fflush(stdout);
 
         if (!fgets(line, sizeof(line), stdin)) 
             break;
@@ -513,6 +511,6 @@ int main(void)
         }
     }
 
-    PPRINTF("\n");
+    printf("\n");
     return 0;
 }
