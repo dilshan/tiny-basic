@@ -56,4 +56,21 @@ def run_parser_generators(env):
     print("[Bison/Flex] Target files successfully generated\n")
 
 
-run_parser_generators(env)
+if env.IsCleanTarget():
+    print("\n[Clean] Removing generated parser and lexer files...")
+
+    proj_dir = env.get("PROJECT_DIR")
+    src_dir = os.path.join(proj_dir, "src")
+    include_dir = os.path.join(proj_dir, "include")
+
+    for f in [
+        os.path.join(src_dir, "tinybasic.tab.c"),
+        os.path.join(src_dir, "lex.yy.c"),
+        os.path.join(include_dir, "tinybasic.tab.h"),
+    ]:
+        if os.path.exists(f):
+            os.remove(f)
+
+    print("[Clean] Generated parser and lexer files removed\n")
+else:
+    run_parser_generators(env)
