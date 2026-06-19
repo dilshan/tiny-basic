@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "platform.h"
+
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
 typedef struct yy_buffer_state* YY_BUFFER_STATE;
@@ -12,7 +14,7 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
 #define MAX_LINES 1000
 #define MAX_LINE_LEN 256
 
-#define STACK_DEPTH 64
+#define STACK_DEPTH 32
 #define FOR_STACK_DEPTH 16
 
 #define JUMP_NONE 0
@@ -111,7 +113,7 @@ static void prog_clear(void) {
 
 static void stack_push(short ret_pc) {
   if (stack_top >= STACK_DEPTH) {
-    fprintf(stderr, "GOSUB stack overflow\n");
+    err_print("GOSUB stack overflow\n");
     return;
   }
 
@@ -120,7 +122,7 @@ static void stack_push(short ret_pc) {
 
 static short stack_pop(void) {
   if (stack_top <= 0) {
-    fprintf(stderr, "RETURN without GOSUB\n");
+    err_print("RETURN without GOSUB\n");
     return 0;
   }
 
@@ -162,13 +164,13 @@ line
     ;
 
 statement
-    : PRINT expr_list          { if (!if_skip) printf("\n"); }
+    : PRINT expr_list          { if (!if_skip) str_print("\n"); }
 
     | FOR VAR '=' expression TO expression
         {
             if ((running) && (!if_skip)) {
                 if (for_top >= FOR_STACK_DEPTH) {
-                    fprintf(stderr, "FOR stack overflow\n");
+                    err_print("FOR stack overflow\n");
                 } else {
                     var_set($2, $4);
                     for_stack[for_top].var = toupper($2);
@@ -183,7 +185,7 @@ statement
         {
             if ((running) && (!if_skip)) {
                 if (for_top >= FOR_STACK_DEPTH) {
-                    fprintf(stderr, "FOR stack overflow\n");
+                    err_print("FOR stack overflow\n");
                 } else {
                     var_set($2, $4);
                     for_stack[for_top].var = toupper($2);
@@ -198,7 +200,7 @@ statement
        {
             if ((running) && (!if_skip)) {
                 if (for_top <= 0 || for_stack[for_top - 1].var != toupper($2)) {
-                    fprintf(stderr, "NEXT without matching FOR\n");
+                    err_print("NEXT without matching FOR\n");
                 } else {
                     ForFrame* f = &for_stack[for_top - 1];
                     int newval = var_get(f->var) + f->step;
@@ -279,7 +281,7 @@ statement
         {
             if (!if_skip) {
                 for (int i = 0; i < prog_size; i++)
-                    printf("%d %s\n", program[i].num, program[i].text);
+                    str_print("%d %s\n", program[i].num, program[i].text);
             }
         }
 
@@ -303,14 +305,14 @@ expr_item
                 // Strip surrounding quotes.
                 if (len >= 2) {
                     s[len - 1] = '\0';
-                    printf("%s", s + 1);
+                    str_print("%s", s + 1);
                 }
                 free($1);
             }
         }
     | expression
         {
-            if (!if_skip) printf("%d", $1);
+            if (!if_skip) str_print("%d", $1);
         }
     ;
 
@@ -319,25 +321,18 @@ var_list
         {
             if (!if_skip) {
                 int v;
-                printf("? ");
-                fflush(stdout);
-                if (scanf("%d", &v) == 1) var_set($1, v);
-
-                // Consume the rest of the line to avoid affecting the next input.
-                scanf("%*c");
+                str_print("? ");
+                
+                if (int_input()) var_set($1, v);
             }
         }
     | var_list ',' VAR
         {
            if (!if_skip) {
                 int v;
-                printf("? ");
-                fflush(stdout);
-
-                if (scanf("%d", &v) == 1) var_set($3, v);
-
-                // See above: consume the rest of the line.
-                scanf("%*c");
+                str_print("? ");
+                
+                if (int_input()) var_set($3, v);
             }
         }
     ;
@@ -366,7 +361,7 @@ term
     | term '/' factor
         {
             if ($3 == 0) { 
-                fprintf(stderr, "Division by zero\n"); 
+                err_print("Division by zero\n"); 
                 $$ = 0; 
             }
             else          
@@ -382,7 +377,7 @@ factor
 
 %%
 
-void yyerror(const char* s) { fprintf(stderr, "Error: %s\n", s); }
+void yyerror(const char* s) { err_print("Error: %s\n", s); }
 
 static void do_run(void) {
   jump_pending = JUMP_NONE;
@@ -406,7 +401,7 @@ static void do_run(void) {
       case JUMP_GOTO: {
         int idx = prog_find(jump_target);
         if (idx < 0) {
-          fprintf(stderr, "Undefined line %d\n", jump_target);
+          err_print("Undefined line %d\n", jump_target);
           goto done;
         }
 
@@ -417,7 +412,7 @@ static void do_run(void) {
       case JUMP_GOSUB: {
         int idx = prog_find(jump_target);
         if (idx < 0) {
-          fprintf(stderr, "Undefined line %d\n", jump_target);
+          err_print("Undefined line %d\n", jump_target);
           goto done;
         }
 
@@ -440,12 +435,16 @@ done:
 }
 
 int main(void) {
+
+  str_print = printf;
+  err_print = printf;  
+
   char line[MAX_LINE_LEN];
   memset(variables, 0, sizeof(variables));
-  printf("Tiny BASIC  (type END or Ctrl-D to quit)\n");
+  str_print("Tiny BASIC  (type END or Ctrl-D to quit)\n");
 
   while (is_continue) {
-    printf("> ");
+    str_print("> ");
     fflush(stdout);
 
     if (!fgets(line, sizeof(line), stdin)) break;
@@ -488,6 +487,6 @@ int main(void) {
     }
   }
 
-  printf("\n");
+  str_print("\n");
   return 0;
 }

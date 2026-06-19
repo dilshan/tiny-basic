@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "tinybasic.tab.h"
+
+#include "platform.h"
 %}
 
 %option yylineno noyywrap
@@ -53,5 +55,5 @@ digit [0-9]
 \n           { return CR; }
 [ \t\r]+     { /* ignore. */ }
 
-.            { fprintf(stderr, "Unknown character '%s' at line %d\n", yytext, yylineno); }
+.            { err_print("Unknown character '%s' at line %d\n", yytext, yylineno); }
 %%
