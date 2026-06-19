@@ -11,9 +11,6 @@
 typedef struct yy_buffer_state* YY_BUFFER_STATE;
 #endif
 
-#define MAX_LINES 1000
-#define MAX_LINE_LEN 256
-
 #define STACK_DEPTH 32
 #define FOR_STACK_DEPTH 16
 
@@ -53,7 +50,7 @@ static unsigned char is_continue = 1;
 static unsigned short prog_size = 0;
 static short pc = 0;
 static unsigned char running = 0;
-static char for_top = 0;
+static size_t for_top = 0;
 
 static short call_stack[STACK_DEPTH];
 static short stack_top = 0;
@@ -323,7 +320,8 @@ var_list
                 int v;
                 str_print("? ");
                 
-                if (int_input()) var_set($1, v);
+                v = int_input();
+                var_set($1, v);
             }
         }
     | var_list ',' VAR
@@ -332,7 +330,8 @@ var_list
                 int v;
                 str_print("? ");
                 
-                if (int_input()) var_set($3, v);
+                v = int_input();
+                var_set($3, v);
             }
         }
     ;
@@ -434,59 +433,45 @@ done:
   running = 0;
 }
 
-int main(void) {
-
-  str_print = printf;
-  err_print = printf;  
-
-  char line[MAX_LINE_LEN];
+void init_parser(void) {
   memset(variables, 0, sizeof(variables));
-  str_print("Tiny BASIC  (type END or Ctrl-D to quit)\n");
+  str_print("Tiny BASIC \n");
+}
 
-  while (is_continue) {
-    str_print("> ");
-    fflush(stdout);
-
-    if (!fgets(line, sizeof(line), stdin)) break;
-
-    // strip trailing newline.
-    int len = strlen(line);
-    if (len > 0 && line[len - 1] == '\n') {
-      line[--len] = '\0';
-    }
-
-    // skip blank input.
-    char* p = line;
-    while (*p == ' ' || *p == '\t') p++;
-
-    if (*p == '\0') continue;
-
-    if (isdigit((unsigned char)*p)) {
-      // Numbered line: store it, don't execute.
-      int num = 0;
-      while (isdigit((unsigned char)*p)) num = num * 10 + (*p++ - '0');
-
-      while (*p == ' ' || *p == '\t') p++;
-
-      prog_store(num, p);
-    } else {
-      // Immediate mode: parse and execute.
-      char with_nl[MAX_LINE_LEN + 2];
-
-      snprintf(with_nl, sizeof(with_nl), "%s\n", line);
-
-      running = 0;
-      jump_pending = JUMP_NONE;
-      if_skip = 0;
-
-      YY_BUFFER_STATE buf = yy_scan_string(with_nl);
-      yyparse();
-      yy_delete_buffer(buf);
-
-      if (running) do_run();
-    }
+void do_parse(char *line) {
+  int len = strlen(line);
+  if (len > 0 && line[len - 1] == '\n') {
+    line[--len] = '\0';
   }
 
-  str_print("\n");
-  return 0;
+  // skip blank input.
+  char* p = line;
+  while (*p == ' ' || *p == '\t') p++;
+
+  if (*p == '\0') return;
+
+  if (isdigit((unsigned char)*p)) {
+    // Numbered line: store it, don't execute.
+    int num = 0;
+    while (isdigit((unsigned char)*p)) num = num * 10 + (*p++ - '0');
+
+    while (*p == ' ' || *p == '\t') p++;
+
+    prog_store(num, p);
+  } else {
+    // Immediate mode: parse and execute.
+    char with_nl[MAX_LINE_LEN + 2];
+
+    snprintf(with_nl, sizeof(with_nl), "%s\n", line);
+
+    running = 0;
+    jump_pending = JUMP_NONE;
+    if_skip = 0;
+
+    YY_BUFFER_STATE buf = yy_scan_string(with_nl);
+    yyparse();
+    yy_delete_buffer(buf);
+
+    if (running) do_run();
+  }
 }
