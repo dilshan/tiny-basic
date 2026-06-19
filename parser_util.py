@@ -56,7 +56,7 @@ def run_parser_generators(env):
     print("[Bison/Flex] Target files successfully generated\n")
 
 
-if env.IsCleanTarget():
+def clean_generated_files(env):
     print("\n[Clean] Removing generated parser and lexer files...")
 
     proj_dir = env.get("PROJECT_DIR")
@@ -72,5 +72,9 @@ if env.IsCleanTarget():
             os.remove(f)
 
     print("[Clean] Generated parser and lexer files removed\n")
+
+
+if env.IsCleanTarget():
+    clean_generated_files(env)
 else:
     run_parser_generators(env)
