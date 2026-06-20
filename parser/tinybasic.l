@@ -31,6 +31,7 @@ digit [0-9]
 (?i:to)      { return TO;     }
 (?i:step)    { return STEP;   }
 (?i:next)    { return NEXT;   }
+(?i:delay)   { return DELAY;  }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }

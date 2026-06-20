@@ -3,7 +3,7 @@
 #include "platform.h"
 
 char line[MAX_LINE_LEN];
-int lineIdx = 0;
+short lineIdx = 0;
 
 int serialPrint(const char *format, ...)
 {
@@ -46,7 +46,7 @@ int serialInput()
         continue;
       }
 
-      if (idx < sizeof(numBuffer) - 1)
+      if ((idx < sizeof(numBuffer) - 1) && (isdigit(c) || (c == '-' && idx == 0)))
       {
         numBuffer[idx++] = c;
         Serial.print(c);
@@ -55,11 +55,19 @@ int serialInput()
   }
 }
 
+void delayMs(int ms)
+{
+  delay(ms);
+}
+
 void setup()
 {
   str_print = serialPrint;
   err_print = serialPrint;
+  platform_delay_ms = delayMs;
   int_input = serialInput;
+
+  lineIdx = 0;
 
   Serial.begin(9600);
   delay(1000);
@@ -73,6 +81,7 @@ void loop()
   while (Serial.available())
   {
     char c = Serial.read();
+
     if (c == '\n')
     {
       continue;
@@ -82,7 +91,10 @@ void loop()
       line[lineIdx] = '\0';
       Serial.println();
 
-      do_parse(line);
+      if(lineIdx > 0)
+      {
+        do_parse(line);
+      }
 
       lineIdx = 0;
       Serial.print("> ");
@@ -92,7 +104,7 @@ void loop()
       lineIdx--;
       Serial.print("\b \b");
     }
-    else if (lineIdx < MAX_LINE_LEN - 1)
+    else if ((lineIdx < MAX_LINE_LEN - 1) && (c > 0x1F && c < 0x7F))
     {
       line[lineIdx++] = c;
       Serial.print(c);

@@ -139,7 +139,7 @@ static short stack_pop(void) {
 %token <sval> STRING
 
 %token PRINT IF THEN GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
-%token RAND FOR TO STEP NEXT
+%token RAND FOR TO STEP NEXT DELAY
 %token REL_LT REL_LE REL_NE REL_GT REL_GE
 
 %type <ival> expression term factor relop
@@ -163,6 +163,16 @@ line
 statement
     : PRINT expr_list          { if (!if_skip) str_print("\n"); }
 
+    | DELAY expression
+        {
+            if (!if_skip) {
+                int ms = $2;
+                if (ms < 0) ms = 0;
+                
+                platform_delay_ms(ms);
+            }
+        }
+
     | FOR VAR '=' expression TO expression
         {
             if ((running) && (!if_skip)) {
@@ -178,6 +188,7 @@ statement
                 }
             }
         }
+
     | FOR VAR '=' expression TO expression STEP expression
         {
             if ((running) && (!if_skip)) {
@@ -193,6 +204,7 @@ statement
                 }
             }
         }
+
     | NEXT VAR
        {
             if ((running) && (!if_skip)) {

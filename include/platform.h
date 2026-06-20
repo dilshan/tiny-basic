@@ -12,6 +12,8 @@ extern "C" {
   extern int (*err_print)(const char*, ...);
   extern int (*int_input)(void);
 
+  extern void (*platform_delay_ms)(int ms);
+
   void init_parser(void);
   void do_parse(char *line);
 
