@@ -1,0 +1,10 @@
+#ifndef __PLATFORM_IO_HEADER__
+#define __PLATFORM_IO_HEADER__
+
+int getAnalogPortValue(int pin);
+
+void setPinMode(int pin, int mode);
+void setPinValue(int pin, int value);
+int getPinValue(int pin);
+
+#endif /* __PLATFORM_IO_HEADER__ */
