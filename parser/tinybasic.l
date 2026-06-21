@@ -7,7 +7,7 @@
 #include "platform.h"
 %}
 
-%option yylineno noyywrap
+%option yylineno noyywrap noinput nounput
 
 alpha [a-zA-Z]
 digit [0-9]
@@ -32,6 +32,14 @@ digit [0-9]
 (?i:step)    { return STEP;   }
 (?i:next)    { return NEXT;   }
 (?i:delay)   { return DELAY;  }
+(?i:analog)  { return ANALOG; }
+(?i:pin)     { return PIN;    }
+(?i:get)     { return GET;    }
+(?i:set)     { return SET;    }
+(?i:high)    { return HIGH;   }
+(?i:low)     { return LOW;    }
+(?i:in)      { return IN;     }
+(?i:out)     { return OUT;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
@@ -52,6 +60,8 @@ digit [0-9]
 "("          { return '('; }
 ")"          { return ')'; }
 ","          { return ','; }
+
+"!"          { return INVERT; }
 
 \n           { return CR; }
 [ \t\r]+     { /* ignore. */ }

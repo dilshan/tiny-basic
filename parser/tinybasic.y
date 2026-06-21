@@ -139,14 +139,14 @@ static short stack_pop(void) {
 %token <sval> STRING
 
 %token PRINT IF THEN GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
-%token RAND FOR TO STEP NEXT DELAY
+%token RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET
 %token REL_LT REL_LE REL_NE REL_GT REL_GE
 
-%type <ival> expression term factor relop
+%type <ival> expression term factor relop mode
 
 %left '+' '-'
 %left '*' '/'
-%right UMINUS UPLUS
+%right UMINUS UPLUS INVERT
 
 %%
 
@@ -170,6 +170,20 @@ statement
                 if (ms < 0) ms = 0;
                 
                 platform_delay_ms(ms);
+            }
+        }
+
+    | PIN expression ',' mode
+        {
+            if (!if_skip) {
+                platform_pin_mode($2, $4);
+            }
+        }
+
+    | SET expression ',' expression
+        {
+            if (!if_skip) {
+                platform_digital_write($2, $4);
             }
         }
 
@@ -363,7 +377,11 @@ expression
     | '-' term   %prec UMINUS    { $$ = -$2; }
     | expression '+' term        { $$ = $1 + $3; }
     | expression '-' term        { $$ = $1 - $3; }
-    | RAND                       { $$ = rand() % 32768; }
+    ;
+
+mode
+    : IN                         { $$ = PIN_MODE_INPUT;  }
+    | OUT                        { $$ = PIN_MODE_OUTPUT; }
     ;
 
 term
@@ -384,6 +402,12 @@ factor
     : VAR                        { $$ = var_get($1); }
     | NUMBER                     { $$ = $1; }
     | '(' expression ')'         { $$ = $2; }
+    | ANALOG factor              { $$ = platform_analog_read($2); }
+    | GET factor                 { $$ = platform_digital_read($2); }
+    | INVERT factor              { $$ = !($2); }
+    | HIGH                       { $$ = 1; }
+    | LOW                        { $$ = 0; }
+    | RAND                       { $$ = rand() % 32768; }
     ;
 
 %%
