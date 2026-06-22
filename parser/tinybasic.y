@@ -212,6 +212,16 @@ static short find_end_node(short parent_node_num, LineType node_type) {
     return -1;
 }
 
+static short find_root_node(short end_node_num, LineType node_type) {
+    for (int i = 0; i < cjump_map_size; i++) {
+        if (cjump_map[i].type == node_type && cjump_map[i].end_node_num == end_node_num) {
+            return cjump_map[i].root_node_num;
+        }
+    }
+
+    return -1;
+}
+
 static void stack_push(short ret_pc) {
   if (stack_top >= STACK_DEPTH) {
     err_print("GOSUB stack overflow\n");
@@ -407,8 +417,28 @@ statement
 
     | WHILE expression relop expression
         {
-            if (!if_skip) {
-                
+            if ((running) && (!if_skip)) {
+                if (!eval_condition($2, $3, $4)) {
+
+                    jump_target = find_end_node(program[pc].num, LINE_WHILE);
+
+                    if (jump_target < 0)
+                        err_print("Missing WEND\n");
+                    else
+                        jump_pending = JUMP_CONDITION_SKIP;
+                }
+            }
+        }
+
+    | WEND
+        {
+           if ((running) && (!if_skip)) {
+                jump_target = find_root_node(program[pc].num, LINE_WHILE);
+
+                if (jump_target < 0)
+                    err_print("WEND without WHILE\n");
+                else
+                    jump_pending = JUMP_GOTO;
             }
         }
 
