@@ -40,6 +40,8 @@ digit [0-9]
 (?i:low)     { return LOW;    }
 (?i:in)      { return IN;     }
 (?i:out)     { return OUT;    }
+(?i:while)   { return WHILE;  }
+(?i:wend)    { return WEND;   }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
