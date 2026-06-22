@@ -14,11 +14,13 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
 #define STACK_DEPTH 32
 #define LOOP_STACK_DEPTH 16
 
-#define JUMP_NONE 0
-#define JUMP_GOTO 1
-#define JUMP_GOSUB 2
-#define JUMP_RETURN 3
-#define JUMP_CONDITION 4
+typedef enum {
+    JUMP_NONE,
+    JUMP_GOTO,
+    JUMP_GOSUB,
+    JUMP_RETURN,
+    JUMP_CONDITION_SKIP
+} JumpType;
 
 typedef enum {
     LOOP_FOR,
@@ -65,7 +67,7 @@ static Line program[MAX_LINES];
 static LoopFrame loop_stack[LOOP_STACK_DEPTH];
 static ConditionalJumpMap cjump_map[128];
 
-static unsigned char jump_pending = JUMP_NONE;
+static JumpType jump_pending = JUMP_NONE;
 static short jump_target = 0;
 static unsigned char if_skip = 0;
 static unsigned char is_continue = 1;
@@ -88,20 +90,27 @@ static inline void var_set(char c, int v) {
   variables[toupper((unsigned char)c) - 'A'] = v;
 }
 
+static int is_keyword_end(char c) {
+    return c == '\0' || isspace((unsigned char)c);
+}
+
 static LineType get_prog_line_type(const char* line) {
     while (isspace((unsigned char)*line))
         line++;
 
-    if (strncasecmp(line, "FOR", 3) == 0)
+    if (strncasecmp(line, "FOR", 3) == 0 && is_keyword_end(line[3]))
         return LINE_FOR;
-    else if (strncasecmp(line, "NEXT", 4) == 0)
+
+    if (strncasecmp(line, "NEXT", 4) == 0 && is_keyword_end(line[4]))
         return LINE_NEXT;
-    else if (strncasecmp(line, "WHILE", 5) == 0)
+
+    if (strncasecmp(line, "WHILE", 5) == 0 && is_keyword_end(line[5]))
         return LINE_WHILE;
-    else if (strncasecmp(line, "WEND", 4) == 0) 
+
+    if (strncasecmp(line, "WEND", 4) == 0 && is_keyword_end(line[4]))
         return LINE_WEND;
-    else
-        return LINE_OTHER;
+
+    return LINE_OTHER;
 }
 
 static void prog_store(int num, const char* text) {
@@ -162,6 +171,10 @@ static void build_conditional_jump_map(void) {
         if(program[i].type != LINE_OTHER) {
 
             if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE)) {
+                if (cjump_map_size >= (sizeof(cjump_map) / sizeof(cjump_map[0]))) {
+                    err_print("Too many loop blocks\n");
+                return;
+}
                 cjump_map[cjump_map_size].type = program[i].type;
                 cjump_map[cjump_map_size].root_node_num = program[i].num;
                 cjump_map[cjump_map_size].end_node_num = -1;
@@ -179,6 +192,12 @@ static void build_conditional_jump_map(void) {
                     }
                 }
             }
+        }
+    }
+
+    for (int i = 0; i < cjump_map_size; i++) {
+        if (cjump_map[i].end_node_num == -1) {
+            err_print("Missing loop terminator for line %d\n", cjump_map[i].root_node_num);
         }
     }
 }
@@ -292,17 +311,28 @@ statement
                 if (loop_top >= LOOP_STACK_DEPTH) {
                     err_print("LOOP stack overflow\n");
                 } else {
-                    if ($4 > $6) {
+                    int start = $4;
+                    int limit = $6;
+                    int step  = 1;
+
+                    var_set($2, start);
+
+                    if ((step > 0) ? (start > limit) : (start < limit)) {
                         jump_target = find_end_node(program[pc].num, program[pc].type);
-                        jump_pending = JUMP_CONDITION;
+                        if (jump_target < 0) {
+                            err_print("Missing matching NEXT\n");
+                        }
+                        else {
+                            jump_pending = JUMP_CONDITION_SKIP;
+                        }
                     }
-                    else {                    
-                        var_set($2, $4);
+                    else {
                         loop_stack[loop_top].type = LOOP_FOR;
                         loop_stack[loop_top].var = toupper($2);
-                        loop_stack[loop_top].limit = $6;
-                        loop_stack[loop_top].step = 1;
+                        loop_stack[loop_top].limit = limit;
+                        loop_stack[loop_top].step = step;
                         loop_stack[loop_top].ret_pc = pc + 1;
+
                         loop_top++;
                     }
                 }
@@ -315,18 +345,34 @@ statement
                 if (loop_top >= LOOP_STACK_DEPTH) {
                     err_print("LOOP stack overflow\n");
                 } else {
-                    if(($8 > 0) ? ($4 > $6) : ($4 < $6)) {
-                        jump_target = find_end_node(program[pc].num, program[pc].type);
-                        jump_pending = JUMP_CONDITION;
+                    int start = $4;
+                    int limit = $6;
+                    int step  = $8;
+
+                    if (step == 0) {
+                        err_print("STEP cannot be zero\n");
                     }
                     else {
-                        var_set($2, $4);
-                        loop_stack[loop_top].type = LOOP_FOR;
-                        loop_stack[loop_top].var = toupper($2);
-                        loop_stack[loop_top].limit = $6;
-                        loop_stack[loop_top].step = $8;
-                        loop_stack[loop_top].ret_pc = pc + 1;
-                        loop_top++;
+                        var_set($2, start);
+
+                        if ((step > 0) ? (start > limit) : (start < limit)) {
+                            jump_target = find_end_node(program[pc].num, program[pc].type);
+                            if (jump_target < 0) {
+                                err_print("Missing matching NEXT\n");
+                            }
+                            else {
+                                jump_pending = JUMP_CONDITION_SKIP;
+                            }
+                        }
+                        else {
+                            loop_stack[loop_top].type = LOOP_FOR;
+                            loop_stack[loop_top].var = toupper($2);
+                            loop_stack[loop_top].limit = limit;
+                            loop_stack[loop_top].step = step;
+                            loop_stack[loop_top].ret_pc = pc + 1;
+
+                            loop_top++;
+                        }
                     }
                 }
             }
@@ -335,8 +381,14 @@ statement
     | NEXT VAR
        {
             if ((running) && (!if_skip)) {
-                if (loop_top <= 0 || loop_stack[loop_top - 1].type != LOOP_FOR || loop_stack[loop_top - 1].var != toupper($2)) {
+                if (loop_top == 0) {
                     err_print("NEXT without matching FOR\n");
+                }
+                else if (loop_stack[loop_top - 1].type != LOOP_FOR) {
+                    err_print("NEXT without matching FOR\n");
+                }
+                else if (loop_stack[loop_top - 1].var != toupper($2)) {
+                    err_print("Mismatched NEXT variable\n");
                 } else {
                     LoopFrame* f = &loop_stack[loop_top - 1];
                     int newval = var_get(f->var) + f->step;
@@ -512,7 +564,9 @@ void yyerror(const char* s) { err_print("Error: %s\n", s); }
 
 static void do_run(void) {
   jump_pending = JUMP_NONE;
+  
   stack_top = 0;
+  loop_top = 0;
   cjump_map_size = 0;
   pc = 0;
 
@@ -555,7 +609,7 @@ static void do_run(void) {
         break;
       }
 
-      case JUMP_CONDITION: {
+      case JUMP_CONDITION_SKIP: {
         int idx = prog_find(jump_target);
         if (idx < 0) {
           err_print("Missing conditional boundary\n");
