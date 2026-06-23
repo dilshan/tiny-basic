@@ -17,6 +17,8 @@ digit [0-9]
 (?i:print)   { return PRINT;  }
 (?i:if)      { return IF;     }
 (?i:then)    { return THEN;   }
+(?i:else)    { return ELSE;   }
+(?i:endif)   { return ENDIF;  }
 (?i:goto)    { return GOTO;   }
 (?i:input)   { return INPUT;  }
 (?i:let)     { return LET;    }

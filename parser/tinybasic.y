@@ -32,13 +32,17 @@ typedef enum {
     LINE_FOR,
     LINE_NEXT,
     LINE_WHILE,
-    LINE_WEND
+    LINE_WEND,
+    LINE_IF,
+    LINE_ELSE,
+    LINE_ENDIF
 } LineType;
 
 typedef struct {
     LineType type;
     short root_node_num;
     short end_node_num;
+    short else_node_num;
 } ConditionalJumpMap;
 
 typedef struct {
@@ -110,6 +114,15 @@ static LineType get_prog_line_type(const char* line) {
     if (strncasecmp(line, "WEND", 4) == 0 && is_keyword_end(line[4]))
         return LINE_WEND;
 
+    if (strncasecmp(line, "IF", 2) == 0 && is_keyword_end(line[2]))
+        return LINE_IF;
+
+    if (strncasecmp(line, "ELSE", 4) == 0 && is_keyword_end(line[4]))
+        return LINE_ELSE;
+
+    if (strncasecmp(line, "ENDIF", 5) == 0 && is_keyword_end(line[5]))
+        return LINE_ENDIF;
+
     return LINE_OTHER;
 }
 
@@ -170,20 +183,36 @@ static void build_conditional_jump_map(void) {
     for (int i = 0; i < prog_size; i++) {
         if(program[i].type != LINE_OTHER) {
 
-            if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE)) {
+            if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE) || (program[i].type == LINE_IF) || (program[i].type == LINE_ELSE)) {
                 if (cjump_map_size >= (sizeof(cjump_map) / sizeof(cjump_map[0]))) {
                     err_print("Too many loop blocks\n");
-                return;
-}
+                    return;
+                }
+
+                if(program[i].type == LINE_ELSE) {
+                    if(cjump_map_size > 0) {
+                        ConditionalJumpMap* m = &cjump_map[cjump_map_size - 1];
+                        if(m->type == LINE_IF) {
+                            m->else_node_num = program[i].num;
+                            continue;
+                        }
+                    }
+
+                    err_print("Found ELSE without IF statement");
+                    continue;
+                }
+
                 cjump_map[cjump_map_size].type = program[i].type;
                 cjump_map[cjump_map_size].root_node_num = program[i].num;
                 cjump_map[cjump_map_size].end_node_num = -1;
+                cjump_map[cjump_map_size].else_node_num = -1;
                 cjump_map_size++;
             }
             else
             {
                 if(program[i].type == LINE_NEXT) expected_root_node = LINE_FOR;
                 else if(program[i].type == LINE_WEND) expected_root_node = LINE_WHILE; 
+                else if(program[i].type == LINE_ENDIF) expected_root_node = LINE_IF; 
 
                 for(int j = (cjump_map_size - 1); j >= 0; j--) {
                     if((cjump_map[j].type == expected_root_node) && (cjump_map[j].end_node_num == -1)) {
@@ -197,7 +226,7 @@ static void build_conditional_jump_map(void) {
 
     for (int i = 0; i < cjump_map_size; i++) {
         if (cjump_map[i].end_node_num == -1) {
-            err_print("Missing loop terminator for line %d\n", cjump_map[i].root_node_num);
+            err_print("Missing termination block for line %d\n", cjump_map[i].root_node_num);
         }
     }
 }
@@ -216,6 +245,26 @@ static short find_root_node(short end_node_num, LineType node_type) {
     for (int i = 0; i < cjump_map_size; i++) {
         if (cjump_map[i].type == node_type && cjump_map[i].end_node_num == end_node_num) {
             return cjump_map[i].root_node_num;
+        }
+    }
+
+    return -1;
+}
+
+static short find_else_node(short parent_node_num) {
+    for(int i = 0; i < cjump_map_size; i++) {
+        if((cjump_map[i].type == LINE_IF) && (cjump_map[i].root_node_num == parent_node_num)) {
+            return cjump_map[i].else_node_num;
+        }
+    }
+
+    return -1;
+}
+
+static short find_end_node_from_else(short else_node) {
+    for(int i = 0; i < cjump_map_size; i++) {
+        if((cjump_map[i].type == LINE_IF) && (cjump_map[i].else_node_num == else_node)) {
+            return cjump_map[i].end_node_num;
         }
     }
 
@@ -266,7 +315,7 @@ static int eval_condition(int lhs, int op, int rhs) {
 %token <cval> VAR
 %token <sval> STRING
 
-%token PRINT IF THEN GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
+%token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND
 
@@ -442,14 +491,57 @@ statement
             }
         }
 
-    | IF expression relop expression
+    | IF expression relop expression THEN
         {
             // Only evaluate the condition if we're not already skipping due to an outer IF.
             if (!if_skip) {
                 if_skip = !eval_condition($2, $3, $4);
             }
         }
-      THEN statement
+      statement
+
+    | IF expression relop expression THEN
+        {
+            if ((running) && (!if_skip)) {
+                if(!eval_condition($2, $3, $4))
+                {
+                    short else_node = find_else_node(program[pc].num);
+
+                    if(else_node >= 0) {
+                        jump_target = else_node;
+                    }
+                    else {
+                        jump_target = find_end_node(program[pc].num, LINE_IF);
+                    }
+
+                    if(jump_target < 0) {
+                        err_print("Missing ENDIF\n");
+                    }
+                    else {
+                        jump_pending = JUMP_CONDITION_SKIP;
+                    }
+                }
+            }
+        }
+
+    | ELSE
+        {
+            if((running) && (!if_skip))
+            {
+                jump_target = find_end_node_from_else(program[pc].num);
+
+                if(jump_target < 0) {
+                    err_print("Missing ENDIF\n");
+                }
+                else {
+                    jump_pending = JUMP_CONDITION_SKIP;
+                }
+            }
+        }
+    
+    | ENDIF
+        {
+        }
 
     | GOTO expression
         {
