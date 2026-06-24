@@ -142,6 +142,7 @@ static int is_keyword_end(char c) {
     if (strncasecmp(line, "ENDIF", 5) == 0 && is_keyword_end(line[5]))
         return LINE_ENDIF;
 
+    // Identify single line IF and multi-line IF statements.
     if (strncasecmp(line, "IF", 2) == 0 && is_keyword_end(line[2])){
         const char *then_pos = strcasestr(line, "THEN");
         if (then_pos != NULL && is_keyword_end(then_pos[4])) {
