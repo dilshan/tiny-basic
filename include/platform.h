@@ -30,6 +30,8 @@ extern "C" {
   void init_parser(void);
   void do_parse(char *line);
 
+  char *strcasestr(const char *haystack, const char *needle);
+
 #ifdef __cplusplus
 }
 #endif

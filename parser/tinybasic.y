@@ -33,6 +33,7 @@ typedef enum {
     LINE_NEXT,
     LINE_WHILE,
     LINE_WEND,
+    LINE_SINGLE_IF,
     LINE_IF,
     LINE_ELSE,
     LINE_ENDIF
@@ -98,7 +99,7 @@ static int is_keyword_end(char c) {
     return c == '\0' || isspace((unsigned char)c);
 }
 
-static LineType get_prog_line_type(const char* line) {
+ static LineType get_prog_line_type(const char* line) {
     while (isspace((unsigned char)*line))
         line++;
 
@@ -114,14 +115,25 @@ static LineType get_prog_line_type(const char* line) {
     if (strncasecmp(line, "WEND", 4) == 0 && is_keyword_end(line[4]))
         return LINE_WEND;
 
-    if (strncasecmp(line, "IF", 2) == 0 && is_keyword_end(line[2]))
-        return LINE_IF;
-
     if (strncasecmp(line, "ELSE", 4) == 0 && is_keyword_end(line[4]))
         return LINE_ELSE;
 
     if (strncasecmp(line, "ENDIF", 5) == 0 && is_keyword_end(line[5]))
         return LINE_ENDIF;
+
+    if (strncasecmp(line, "IF", 2) == 0 && is_keyword_end(line[2])){
+        const char *then_pos = strcasestr(line, "THEN");
+        if (then_pos != NULL && is_keyword_end(then_pos[4])) {
+            then_pos += 4;
+
+            while(isspace((unsigned char)*then_pos))
+                then_pos++;
+                
+            return (*then_pos == '\0') ? LINE_IF : LINE_SINGLE_IF;
+        } else {
+            return LINE_OTHER;
+        }
+    }
 
     return LINE_OTHER;
 }
@@ -176,6 +188,16 @@ static void prog_clear(void) {
   memset(variables, 0, sizeof(variables));
 }
 
+ static int is_line_already_exists(short num) {
+    for(int i = 0; i < cjump_map_size; i++) {
+        if((cjump_map[i].root_node_num == num) || (cjump_map[i].end_node_num == num) || (cjump_map[i].else_node_num == num)) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 static void build_conditional_jump_map(void) {
     LineType expected_root_node = LINE_OTHER;
     cjump_map_size = 0;
@@ -183,23 +205,10 @@ static void build_conditional_jump_map(void) {
     for (int i = 0; i < prog_size; i++) {
         if(program[i].type != LINE_OTHER) {
 
-            if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE) || (program[i].type == LINE_IF) || (program[i].type == LINE_ELSE)) {
+            if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE) || (program[i].type == LINE_IF)) {
                 if (cjump_map_size >= (sizeof(cjump_map) / sizeof(cjump_map[0]))) {
                     err_print("Too many loop blocks\n");
                     return;
-                }
-
-                if(program[i].type == LINE_ELSE) {
-                    if(cjump_map_size > 0) {
-                        ConditionalJumpMap* m = &cjump_map[cjump_map_size - 1];
-                        if(m->type == LINE_IF) {
-                            m->else_node_num = program[i].num;
-                            continue;
-                        }
-                    }
-
-                    err_print("Found ELSE without IF statement");
-                    continue;
                 }
 
                 cjump_map[cjump_map_size].type = program[i].type;
@@ -211,14 +220,34 @@ static void build_conditional_jump_map(void) {
             else
             {
                 if(program[i].type == LINE_NEXT) expected_root_node = LINE_FOR;
-                else if(program[i].type == LINE_WEND) expected_root_node = LINE_WHILE; 
-                else if(program[i].type == LINE_ENDIF) expected_root_node = LINE_IF; 
+                else if(program[i].type == LINE_WEND) expected_root_node = LINE_WHILE;  
 
                 for(int j = (cjump_map_size - 1); j >= 0; j--) {
                     if((cjump_map[j].type == expected_root_node) && (cjump_map[j].end_node_num == -1)) {
                         cjump_map[j].end_node_num = program[i].num;
                         break;
                     }
+                }
+            }
+        }
+    }
+
+    for(int i = (cjump_map_size - 1); i >= 0; i--) {
+        if((cjump_map[i].type == LINE_IF) && (cjump_map[i].end_node_num == -1)) {
+            for(int j = (prog_find(cjump_map[i].root_node_num) + 1); j < prog_size; j++) {
+
+                if(is_line_already_exists(program[j].num)) {
+                    continue;
+                }
+
+                if(program[j].type == LINE_ELSE) {
+                    cjump_map[i].else_node_num = program[j].num;
+                    continue;
+                }
+
+                if(program[j].type == LINE_ENDIF) {
+                    cjump_map[i].end_node_num = program[j].num;
+                    break;
                 }
             }
         }
@@ -541,6 +570,13 @@ statement
     
     | ENDIF
         {
+            if((running) && (!if_skip)) {
+                if(find_root_node(program[pc].num, LINE_IF) == -1) {
+                    if(program[pc].type != LINE_SINGLE_IF) {
+                        err_print("ENDIF without IF\n");
+                    }
+                }
+            }
         }
 
     | GOTO expression
