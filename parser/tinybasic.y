@@ -190,11 +190,21 @@ static int prog_find(int num) {
   return -1;
 }
 
-static void prog_clear(void) {
-  prog_size = 0;
-  pc = 0;
-  cjump_map_size = 0;
-  memset(variables, 0, sizeof(variables));
+static void flush_memory(void) {
+    pc = 0;
+
+    is_continue = 1;
+
+    if_skip = 0;
+
+    jump_pending = JUMP_NONE;  
+    jump_target = 0;  
+    cjump_map_size = 0;
+
+    loop_top = 0;
+    stack_top = 0;
+
+    memset(variables, 0, sizeof(variables));
 }
 
  static int is_line_already_exists(short num) {
@@ -354,7 +364,7 @@ static int eval_condition(int lhs, int op, int rhs) {
 %token <sval> STRING
 
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
-%token RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
+%token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND
 
 %type <ival> expression term factor relop mode
@@ -610,9 +620,14 @@ statement
             if (!if_skip) { pc = stack_pop(); jump_pending = JUMP_RETURN; }
         }
 
+    | NEW
+        {
+            if (!if_skip) { prog_size = 0; flush_memory(); }
+        }
+
     | CLEAR
         {
-            if (!if_skip) prog_clear();
+            if (!if_skip) flush_memory(); 
         }
 
     | LIST
@@ -735,6 +750,7 @@ static void do_run(void) {
   
   stack_top = 0;
   loop_top = 0;
+  
   cjump_map_size = 0;
   pc = 0;
 

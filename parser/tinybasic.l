@@ -25,6 +25,7 @@ digit [0-9]
 (?i:gosub)   { return GOSUB;  }
 (?i:return)  { return RETURN; }
 (?i:clear)   { return CLEAR;  }
+(?i:new)     { return NEW;    }
 (?i:list)    { return LIST;   }
 (?i:run)     { return RUN;    }
 (?i:end)     { return END;    }
