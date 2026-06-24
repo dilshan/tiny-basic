@@ -15,6 +15,15 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
 #define LOOP_STACK_DEPTH 16
 
 typedef enum {
+    OP_LT,
+    OP_LE,
+    OP_NE,
+    OP_GT,
+    OP_GE,
+    OP_EQ
+} ConditionType;
+
+typedef enum {
     JUMP_NONE,
     JUMP_GOTO,
     JUMP_GOSUB,
@@ -320,12 +329,12 @@ static short stack_pop(void) {
 
 static int eval_condition(int lhs, int op, int rhs) {
     switch (op) {
-        case 0: return lhs < rhs;
-        case 1: return lhs <= rhs;
-        case 2: return lhs != rhs;
-        case 3: return lhs > rhs;
-        case 4: return lhs >= rhs;
-        case 5: return lhs == rhs;
+        case OP_LT: return lhs < rhs;
+        case OP_LE: return lhs <= rhs;
+        case OP_NE: return lhs != rhs;
+        case OP_GT: return lhs > rhs;
+        case OP_GE: return lhs >= rhs;
+        case OP_EQ: return lhs == rhs;
     }
 
     return 0;
@@ -345,7 +354,7 @@ static int eval_condition(int lhs, int op, int rhs) {
 %token <sval> STRING
 
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
-%token RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET
+%token RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND
 
 %type <ival> expression term factor relop mode
@@ -367,29 +376,29 @@ line
     ;
 
 statement
-    : PRINT expr_list          { if (!if_skip) str_print("\n"); }
+    : PRINT '(' expr_list ')'          { if (!if_skip) str_print("\n"); }
 
-    | DELAY expression
+    | DELAY '(' expression ')'
         {
             if (!if_skip) {
-                int ms = $2;
+                int ms = $3;
                 if (ms < 0) ms = 0;
                 
                 platform_delay_ms(ms);
             }
         }
 
-    | PIN expression ',' mode
+    | PIN '(' expression ',' mode ')'
         {
             if (!if_skip) {
-                platform_pin_mode($2, $4);
+                platform_pin_mode($3, $5);
             }
         }
 
-    | SET expression ',' expression
+    | SET '(' expression ',' expression ')'
         {
             if (!if_skip) {
-                platform_digital_write($2, $4);
+                platform_digital_write($3, $5);
             }
         }
 
@@ -584,7 +593,7 @@ statement
             if (!if_skip) { jump_pending = JUMP_GOTO; jump_target = $2; }
         }
 
-    | INPUT var_list
+    | INPUT '(' var_list ')'
 
     | LET VAR '=' expression
         {
@@ -669,12 +678,12 @@ var_list
     ;
 
 relop
-    : REL_LT    { $$ = 0; }
-    | REL_LE    { $$ = 1; }
-    | REL_NE    { $$ = 2; }
-    | REL_GT    { $$ = 3; }
-    | REL_GE    { $$ = 4; }
-    | '='       { $$ = 5; }
+    : REL_LT    { $$ = OP_LT; }
+    | REL_LE    { $$ = OP_LE; }
+    | REL_NE    { $$ = OP_NE; }
+    | REL_GT    { $$ = OP_GT; }
+    | REL_GE    { $$ = OP_GE; }
+    | '='       { $$ = OP_EQ; }
     ;
 
 expression
@@ -708,12 +717,13 @@ factor
     : VAR                        { $$ = var_get($1); }
     | NUMBER                     { $$ = $1; }
     | '(' expression ')'         { $$ = $2; }
-    | ANALOG factor              { $$ = platform_analog_read($2); }
-    | GET factor                 { $$ = platform_digital_read($2); }
-    | INVERT factor              { $$ = !($2); }
+    | ANALOG '(' factor ')'      { $$ = platform_analog_read($3); }
+    | GET '(' factor ')'         { $$ = platform_digital_read($3); }
+    | INVERT '(' factor ')'      { $$ = !($3); }
     | HIGH                       { $$ = 1; }
     | LOW                        { $$ = 0; }
-    | RAND                       { $$ = rand() % 32768; }
+    | RAND '(' ')'               { $$ = rand() % 32768; }
+    | ABS '(' expression ')'     { $$ = abs($3); }
     ;
 
 %%
