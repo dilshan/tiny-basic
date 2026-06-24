@@ -3,9 +3,12 @@
 #include "platform.h"
 #include "platform_io.h"
 
+// Buffer for the current command line entered over Serial.
 char line[MAX_LINE_LEN];
+// Current index into the command line buffer.
 short lineIdx = 0;
 
+// Print formatted text to the Serial interface.
 int serialPrint(const char *format, ...)
 {
   char buffer[MAX_LINE_LEN];
@@ -19,6 +22,7 @@ int serialPrint(const char *format, ...)
   return len;
 }
 
+// Read an integer from Serial input, echoing characters back to the user.
 int serialInput()
 {
   char numBuffer[16];
@@ -31,7 +35,7 @@ int serialInput()
       char c = Serial.read();
 
       if (c == '\n')
-        continue;
+        continue; // Ignore newline characters; only CR terminates input.
 
       if (c == '\r')
       {
@@ -42,11 +46,13 @@ int serialInput()
 
       if ((c == '\b' || c == 127) && idx > 0)
       {
+        // Handle a backspace/delete by removing last digit.
         idx--;
         Serial.print("\b \b");
         continue;
       }
 
+      // Accept only digits and an optional leading minus sign.
       if ((idx < sizeof(numBuffer) - 1) && (isdigit(c) || (c == '-' && idx == 0)))
       {
         numBuffer[idx++] = c;
@@ -63,18 +69,18 @@ void delayMs(int ms)
 
 void setup()
 {
+  // Connect the parser's print callbacks to the Serial interface.
   str_print = serialPrint;
   err_print = serialPrint;
 
+  // Connect the platform abstraction callbacks.
   platform_delay_ms = delayMs;
-  
   platform_analog_read = getAnalogPortValue;
-  
   platform_pin_mode = setPinMode;
   platform_digital_write = setPinValue;
   platform_digital_read = getPinValue;
   int_input = serialInput;
-  
+
   lineIdx = 0;
 
   Serial.begin(9600);
@@ -86,21 +92,23 @@ void setup()
 
 void loop()
 {
+  // Read available characters from the Serial interface and build a command line.
   while (Serial.available())
   {
     char c = Serial.read();
 
     if (c == '\n')
     {
-      continue;
+      continue; // Ignore newline characters.
     }
 
     if (c == '\r')
     {
+      // End of command line; terminate the string and parse it.
       line[lineIdx] = '\0';
       Serial.println();
 
-      if(lineIdx > 0)
+      if (lineIdx > 0)
       {
         do_parse(line);
       }
@@ -110,11 +118,13 @@ void loop()
     }
     else if ((c == '\b' || c == 127) && lineIdx > 0)
     {
+      // Handle backspace/delete during command entry.
       lineIdx--;
       Serial.print("\b \b");
     }
     else if ((lineIdx < MAX_LINE_LEN - 1) && (c > 0x1F && c < 0x7F))
     {
+      // Accept printable ASCII characters into the line buffer.
       line[lineIdx++] = c;
       Serial.print(c);
     }

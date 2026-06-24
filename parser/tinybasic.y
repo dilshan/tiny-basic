@@ -11,9 +11,11 @@
 typedef struct yy_buffer_state* YY_BUFFER_STATE;
 #endif
 
+// Parser runtime limits.
 #define STACK_DEPTH 32
 #define LOOP_STACK_DEPTH 16
 
+// Conditional comparison operators.
 typedef enum {
     OP_LT,
     OP_LE,
@@ -23,6 +25,7 @@ typedef enum {
     OP_EQ
 } ConditionType;
 
+// Control flow actions that can be requested during parsing.
 typedef enum {
     JUMP_NONE,
     JUMP_GOTO,
@@ -31,11 +34,13 @@ typedef enum {
     JUMP_CONDITION_SKIP
 } JumpType;
 
+// Supported loop constructs.
 typedef enum {
     LOOP_FOR,
     LOOP_WHILE
 } LoopType;
 
+// Line categories used to build jump targets for structured flow.
 typedef enum {
     LINE_OTHER = 0,
     LINE_FOR,
@@ -48,6 +53,7 @@ typedef enum {
     LINE_ENDIF
 } LineType;
 
+// Mapping from control structure root lines to matching terminators.
 typedef struct {
     LineType type;
     short root_node_num;
@@ -55,12 +61,14 @@ typedef struct {
     short else_node_num;
 } ConditionalJumpMap;
 
+// Represents a stored program line in numbered program mode.
 typedef struct {
   short num;
   LineType type;
   char text[MAX_LINE_LEN];
 } Line;
 
+// Frame used for FOR/NEXT loop state.
 typedef struct {
   LoopType type;
   char var;
@@ -75,6 +83,7 @@ extern void yy_delete_buffer(YY_BUFFER_STATE);
 extern int yylex(void);
 extern int yylineno;
 
+// Variables A..Z stored as uppercase indices.
 static int variables[26];
 
 static Line program[MAX_LINES];
@@ -108,6 +117,9 @@ static int is_keyword_end(char c) {
     return c == '\0' || isspace((unsigned char)c);
 }
 
+// Detect the kind of a program line by examining its leading keyword.
+// This classification is used to build jump targets for FOR/NEXT, WHILE/WEND,
+// IF/ELSE/ENDIF, etc.
  static LineType get_prog_line_type(const char* line) {
     while (isspace((unsigned char)*line))
         line++;
@@ -147,6 +159,7 @@ static int is_keyword_end(char c) {
     return LINE_OTHER;
 }
 
+// Store a numbered program line in the program buffer, keeping lines sorted.
 static void prog_store(int num, const char* text) {
   int i;
 
@@ -190,15 +203,15 @@ static int prog_find(int num) {
   return -1;
 }
 
+// Reset runtime state for a fresh program or after CLEAR.
 static void flush_memory(void) {
     pc = 0;
 
     is_continue = 1;
-
     if_skip = 0;
 
-    jump_pending = JUMP_NONE;  
-    jump_target = 0;  
+    jump_pending = JUMP_NONE;
+    jump_target = 0;
     cjump_map_size = 0;
 
     loop_top = 0;
@@ -207,6 +220,8 @@ static void flush_memory(void) {
     memset(variables, 0, sizeof(variables));
 }
 
+// Helper to avoid matching nested IF/ELSE/ENDIF entries when scanning for the
+// matching line in the conditional jump map.
  static int is_line_already_exists(short num) {
     for(int i = 0; i < cjump_map_size; i++) {
         if((cjump_map[i].root_node_num == num) || (cjump_map[i].end_node_num == num) || (cjump_map[i].else_node_num == num)) {
@@ -251,6 +266,7 @@ static void build_conditional_jump_map(void) {
         }
     }
 
+    // Map components of the IF conditions.
     for(int i = (cjump_map_size - 1); i >= 0; i--) {
         if((cjump_map[i].type == LINE_IF) && (cjump_map[i].end_node_num == -1)) {
             for(int j = (prog_find(cjump_map[i].root_node_num) + 1); j < prog_size; j++) {
@@ -272,6 +288,7 @@ static void build_conditional_jump_map(void) {
         }
     }
 
+    // Looking for any missing nodes.
     for (int i = 0; i < cjump_map_size; i++) {
         if (cjump_map[i].end_node_num == -1) {
             err_print("Missing termination block for line %d\n", cjump_map[i].root_node_num);
@@ -337,6 +354,7 @@ static short stack_pop(void) {
   return call_stack[--stack_top];
 }
 
+// Evaluate a relational operator for IF and WHILE conditions.
 static int eval_condition(int lhs, int op, int rhs) {
     switch (op) {
         case OP_LT: return lhs < rhs;
@@ -356,9 +374,10 @@ static int eval_condition(int lhs, int op, int rhs) {
 %union {
     int   ival;     /* For numeric literals. */
     char  cval;     /* For single-letter variables. */
-    char* sval;     
+    char* sval;     /* For quoted strings. */
 }
 
+// Terminals for BASIC keywords and operators.
 %token <ival> NUMBER
 %token <cval> VAR
 %token <sval> STRING
@@ -369,16 +388,19 @@ static int eval_condition(int lhs, int op, int rhs) {
 
 %type <ival> expression term factor relop mode
 
+// Operator precedence and associativity for arithmetic expressions.
 %left '+' '-'
 %left '*' '/'
 %right UMINUS UPLUS INVERT
 
 %%
 
+// Top-level grammar entry point.
 program
     : line
     ;
 
+// A line may be a numbered program line or an immediate command.
 line
     : NUMBER statement CR
     | statement CR
