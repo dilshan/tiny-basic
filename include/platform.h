@@ -1,10 +1,6 @@
 #ifndef __PLATFORM_DEF_HEADER__
 #define __PLATFORM_DEF_HEADER__
 
-// Enable internal use of pull-up resistors when available.
-// If enabled, the SET operation always activate the internal pull-ups of the MCU digital inputs.
-#define SET_PULL_UP
-
 // Maximum number of stored command lines and characters per line.
 #define MAX_LINES 256
 #define MAX_LINE_LEN 256
@@ -16,6 +12,10 @@
 // Maximum supported analog and digital pins for the target board.
 #define MAX_ANALOG_PIN_COUNT 16
 #define MAX_DIGITAL_PIN_COUNT 54
+
+// Enable internal use of pull-up resistors when available.
+// If enabled, the SET operation always activate the internal pull-ups of the MCU digital inputs.
+#define SET_PULL_UP
 
 #ifdef __cplusplus
 extern "C" {
@@ -36,8 +36,12 @@ extern "C" {
   void init_parser(void);
   void do_parse(char *line);
 
+#ifndef DEBUG
+
   // Declrations to remove compiler warninigs.
   char *strcasestr(const char *haystack, const char *needle);
+
+#endif /* DEBUG */
 
 #ifdef __cplusplus
 }

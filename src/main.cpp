@@ -1,13 +1,31 @@
+#include "platform.h"
+
+// DEBUG mode is used for testing the parser on a host machine without Arduino hardware.
+// To use the DEBUG mode, run the make command from the root directory.
+
+#ifndef DEBUG
+
 #include <Arduino.h>
 
-#include "platform.h"
 #include "platform_io.h"
+
+#else
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LINES 256
+#define MAX_LINE_LEN 256
+
+#endif
 
 // Buffer for the current command line entered over Serial.
 char line[MAX_LINE_LEN];
 // Current index into the command line buffer.
 short lineIdx = 0;
 
+#ifndef DEBUG
 // Print formatted text to the Serial interface.
 int serialPrint(const char *format, ...)
 {
@@ -130,3 +148,47 @@ void loop()
     }
   }
 }
+
+#else
+
+extern unsigned char is_continue;
+
+int main()
+{
+  err_print = printf;
+  str_print = printf;
+
+  init_parser();
+
+  while (is_continue)
+  {
+    printf("> ");
+    fflush(stdout);
+
+    if (!fgets(line, sizeof(line), stdin))
+      break;
+
+    // strip trailing newline.
+    int len = strlen(line);
+    if (len > 0 && line[len - 1] == '\n')
+    {
+      line[--len] = '\0';
+    }
+
+    // skip blank input.
+    char *p = line;
+    while (*p == ' ' || *p == '\t')
+      p++;
+
+    if (*p == '\0')
+      continue;
+
+    do_parse(line);
+  }
+
+  printf("\n");
+
+  return 0;
+}
+
+#endif

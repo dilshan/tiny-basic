@@ -4,6 +4,10 @@
 .vscode/launch.json
 .vscode/ipch
 
+/build/
+
 src/tinybasic.tab.c
 src/lex.yy.c
 include/tinybasic.tab.h
+
+tinybasic

@@ -93,7 +93,6 @@ static ConditionalJumpMap cjump_map[128];
 static JumpType jump_pending = JUMP_NONE;
 static short jump_target = 0;
 static unsigned char if_skip = 0;
-static unsigned char is_continue = 1;
 
 static unsigned short prog_size = 0;
 static short pc = 0;
@@ -103,6 +102,8 @@ static unsigned char cjump_map_size;
 
 static short call_stack[STACK_DEPTH];
 static short stack_top = 0;
+
+unsigned char is_continue = 1;
 
 void yyerror(const char* s);
 

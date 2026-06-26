@@ -1,0 +1,335 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ANALOG	parser/tinybasic.tab.c	/^    ANALOG = 280,                  \/* ANALOG  *\/$/;"	e	enum:yytokentype	file:
+CLEAR	parser/tinybasic.tab.c	/^    CLEAR = 269,                   \/* CLEAR  *\/$/;"	e	enum:yytokentype	file:
+CR	parser/tinybasic.tab.c	/^    CR = 273,                      \/* CR  *\/$/;"	e	enum:yytokentype	file:
+DELAY	parser/tinybasic.tab.c	/^    DELAY = 279,                   \/* DELAY  *\/$/;"	e	enum:yytokentype	file:
+DIGITAL	parser/tinybasic.tab.c	/^    DIGITAL = 284,                 \/* DIGITAL  *\/$/;"	e	enum:yytokentype	file:
+END	parser/tinybasic.tab.c	/^    END = 272,                     \/* END  *\/$/;"	e	enum:yytokentype	file:
+EXIT_SUCCESS	parser/tinybasic.tab.c	589;"	d	file:
+EXIT_SUCCESS	parser/tinybasic.tab.c	617;"	d	file:
+FOR	parser/tinybasic.tab.c	/^    FOR = 275,                     \/* FOR  *\/$/;"	e	enum:yytokentype	file:
+FOR_STACK_DEPTH	parser/tinybasic.tab.c	85;"	d	file:
+ForFrame	parser/tinybasic.tab.c	/^} ForFrame;$/;"	t	typeref:struct:__anon2	file:
+GOSUB	parser/tinybasic.tab.c	/^    GOSUB = 267,                   \/* GOSUB  *\/$/;"	e	enum:yytokentype	file:
+GOTO	parser/tinybasic.tab.c	/^    GOTO = 264,                    \/* GOTO  *\/$/;"	e	enum:yytokentype	file:
+HIGH	parser/tinybasic.tab.c	/^    HIGH = 281,                    \/* HIGH  *\/$/;"	e	enum:yytokentype	file:
+IF	parser/tinybasic.tab.c	/^    IF = 262,                      \/* IF  *\/$/;"	e	enum:yytokentype	file:
+IN	parser/tinybasic.tab.c	/^    IN = 285,                      \/* IN  *\/$/;"	e	enum:yytokentype	file:
+INPUT	parser/tinybasic.tab.c	/^    INPUT = 265,                   \/* INPUT  *\/$/;"	e	enum:yytokentype	file:
+JUMP_GOSUB	parser/tinybasic.tab.c	89;"	d	file:
+JUMP_GOTO	parser/tinybasic.tab.c	88;"	d	file:
+JUMP_NONE	parser/tinybasic.tab.c	87;"	d	file:
+JUMP_RETURN	parser/tinybasic.tab.c	90;"	d	file:
+LET	parser/tinybasic.tab.c	/^    LET = 266,                     \/* LET  *\/$/;"	e	enum:yytokentype	file:
+LIST	parser/tinybasic.tab.c	/^    LIST = 270,                    \/* LIST  *\/$/;"	e	enum:yytokentype	file:
+LOW	parser/tinybasic.tab.c	/^    LOW = 282,                     \/* LOW  *\/$/;"	e	enum:yytokentype	file:
+Line	parser/tinybasic.tab.c	/^} Line;$/;"	t	typeref:struct:__anon1	file:
+MAX_ANALOG_PIN_COUNT	include/platform.h	17;"	d
+MAX_DIGITAL_PIN_COUNT	include/platform.h	18;"	d
+MAX_LINES	include/platform.h	9;"	d
+MAX_LINE_LEN	include/platform.h	10;"	d
+NEXT	parser/tinybasic.tab.c	/^    NEXT = 278,                    \/* NEXT  *\/$/;"	e	enum:yytokentype	file:
+NUMBER	parser/tinybasic.tab.c	/^    NUMBER = 258,                  \/* NUMBER  *\/$/;"	e	enum:yytokentype	file:
+OUT	parser/tinybasic.tab.c	/^    OUT = 286,                     \/* OUT  *\/$/;"	e	enum:yytokentype	file:
+PIN	parser/tinybasic.tab.c	/^    PIN = 283,                     \/* PIN  *\/$/;"	e	enum:yytokentype	file:
+PIN_MODE_INPUT	include/platform.h	13;"	d
+PIN_MODE_OUTPUT	include/platform.h	14;"	d
+PRINT	parser/tinybasic.tab.c	/^    PRINT = 261,                   \/* PRINT  *\/$/;"	e	enum:yytokentype	file:
+RAND	parser/tinybasic.tab.c	/^    RAND = 274,                    \/* RAND  *\/$/;"	e	enum:yytokentype	file:
+REL_GE	parser/tinybasic.tab.c	/^    REL_GE = 291,                  \/* REL_GE  *\/$/;"	e	enum:yytokentype	file:
+REL_GT	parser/tinybasic.tab.c	/^    REL_GT = 290,                  \/* REL_GT  *\/$/;"	e	enum:yytokentype	file:
+REL_LE	parser/tinybasic.tab.c	/^    REL_LE = 288,                  \/* REL_LE  *\/$/;"	e	enum:yytokentype	file:
+REL_LT	parser/tinybasic.tab.c	/^    REL_LT = 287,                  \/* REL_LT  *\/$/;"	e	enum:yytokentype	file:
+REL_NE	parser/tinybasic.tab.c	/^    REL_NE = 289,                  \/* REL_NE  *\/$/;"	e	enum:yytokentype	file:
+RETURN	parser/tinybasic.tab.c	/^    RETURN = 268,                  \/* RETURN  *\/$/;"	e	enum:yytokentype	file:
+RUN	parser/tinybasic.tab.c	/^    RUN = 271,                     \/* RUN  *\/$/;"	e	enum:yytokentype	file:
+SET_PULL_UP	include/platform.h	6;"	d
+STACK_DEPTH	parser/tinybasic.tab.c	84;"	d	file:
+STEP	parser/tinybasic.tab.c	/^    STEP = 277,                    \/* STEP  *\/$/;"	e	enum:yytokentype	file:
+STRING	parser/tinybasic.tab.c	/^    STRING = 260,                  \/* STRING  *\/$/;"	e	enum:yytokentype	file:
+THEN	parser/tinybasic.tab.c	/^    THEN = 263,                    \/* THEN  *\/$/;"	e	enum:yytokentype	file:
+TO	parser/tinybasic.tab.c	/^    TO = 276,                      \/* TO  *\/$/;"	e	enum:yytokentype	file:
+UINT_LEAST16_MAX	parser/tinybasic.tab.c	421;"	d	file:
+UINT_LEAST16_MAX	parser/tinybasic.tab.c	423;"	d	file:
+UINT_LEAST8_MAX	parser/tinybasic.tab.c	420;"	d	file:
+UINT_LEAST8_MAX	parser/tinybasic.tab.c	422;"	d	file:
+UMINUS	parser/tinybasic.tab.c	/^    UMINUS = 292,                  \/* UMINUS  *\/$/;"	e	enum:yytokentype	file:
+UPLUS	parser/tinybasic.tab.c	/^    UPLUS = 293                    \/* UPLUS  *\/$/;"	e	enum:yytokentype	file:
+VAR	parser/tinybasic.tab.c	/^    VAR = 259,                     \/* VAR  *\/$/;"	e	enum:yytokentype	file:
+YYABORT	parser/tinybasic.tab.c	934;"	d	file:
+YYACCEPT	parser/tinybasic.tab.c	933;"	d	file:
+YYBACKUP	parser/tinybasic.tab.c	941;"	d	file:
+YYBISON	parser/tinybasic.tab.c	49;"	d	file:
+YYBISON_VERSION	parser/tinybasic.tab.c	52;"	d	file:
+YYCOPY	parser/tinybasic.tab.c	680;"	d	file:
+YYCOPY	parser/tinybasic.tab.c	683;"	d	file:
+YYCOPY_NEEDED	parser/tinybasic.tab.c	655;"	d	file:
+YYDEBUG	parser/tinybasic.tab.c	226;"	d	file:
+YYDPRINTF	parser/tinybasic.tab.c	1083;"	d	file:
+YYDPRINTF	parser/tinybasic.tab.c	971;"	d	file:
+YYEMPTY	parser/tinybasic.tab.c	/^    YYEMPTY = -2,$/;"	e	enum:yytokentype	file:
+YYENOMEM	parser/tinybasic.tab.c	/^enum { YYENOMEM = -2 };$/;"	e	enum:__anon3	file:
+YYEOF	parser/tinybasic.tab.c	/^    YYEOF = 0,                     \/* "end of file"  *\/$/;"	e	enum:yytokentype	file:
+YYERRCODE	parser/tinybasic.tab.c	960;"	d	file:
+YYERROR	parser/tinybasic.tab.c	935;"	d	file:
+YYFINAL	parser/tinybasic.tab.c	696;"	d	file:
+YYFPRINTF	parser/tinybasic.tab.c	968;"	d	file:
+YYFREE	parser/tinybasic.tab.c	627;"	d	file:
+YYINITDEPTH	parser/tinybasic.tab.c	1092;"	d	file:
+YYLAST	parser/tinybasic.tab.c	698;"	d	file:
+YYMALLOC	parser/tinybasic.tab.c	621;"	d	file:
+YYMAXDEPTH	parser/tinybasic.tab.c	1103;"	d	file:
+YYMAXUTOK	parser/tinybasic.tab.c	710;"	d	file:
+YYNNTS	parser/tinybasic.tab.c	703;"	d	file:
+YYNOMEM	parser/tinybasic.tab.c	936;"	d	file:
+YYNRULES	parser/tinybasic.tab.c	705;"	d	file:
+YYNSTATES	parser/tinybasic.tab.c	707;"	d	file:
+YYNTOKENS	parser/tinybasic.tab.c	701;"	d	file:
+YYPACT_NINF	parser/tinybasic.tab.c	798;"	d	file:
+YYPOPSTACK	parser/tinybasic.tab.c	1179;"	d	file:
+YYPTRDIFF_MAXIMUM	parser/tinybasic.tab.c	451;"	d	file:
+YYPTRDIFF_MAXIMUM	parser/tinybasic.tab.c	457;"	d	file:
+YYPTRDIFF_MAXIMUM	parser/tinybasic.tab.c	460;"	d	file:
+YYPTRDIFF_T	parser/tinybasic.tab.c	450;"	d	file:
+YYPTRDIFF_T	parser/tinybasic.tab.c	456;"	d	file:
+YYPTRDIFF_T	parser/tinybasic.tab.c	459;"	d	file:
+YYPULL	parser/tinybasic.tab.c	64;"	d	file:
+YYPURE	parser/tinybasic.tab.c	58;"	d	file:
+YYPUSH	parser/tinybasic.tab.c	61;"	d	file:
+YYRECOVERING	parser/tinybasic.tab.c	939;"	d	file:
+YYSIZEOF	parser/tinybasic.tab.c	483;"	d	file:
+YYSIZE_MAXIMUM	parser/tinybasic.tab.c	477;"	d	file:
+YYSIZE_T	parser/tinybasic.tab.c	466;"	d	file:
+YYSIZE_T	parser/tinybasic.tab.c	468;"	d	file:
+YYSIZE_T	parser/tinybasic.tab.c	471;"	d	file:
+YYSIZE_T	parser/tinybasic.tab.c	473;"	d	file:
+YYSKELETON_NAME	parser/tinybasic.tab.c	55;"	d	file:
+YYSTACK_ALLOC	parser/tinybasic.tab.c	575;"	d	file:
+YYSTACK_ALLOC	parser/tinybasic.tab.c	579;"	d	file:
+YYSTACK_ALLOC	parser/tinybasic.tab.c	584;"	d	file:
+YYSTACK_ALLOC	parser/tinybasic.tab.c	607;"	d	file:
+YYSTACK_ALLOC_MAXIMUM	parser/tinybasic.tab.c	604;"	d	file:
+YYSTACK_ALLOC_MAXIMUM	parser/tinybasic.tab.c	610;"	d	file:
+YYSTACK_BYTES	parser/tinybasic.tab.c	651;"	d	file:
+YYSTACK_FREE	parser/tinybasic.tab.c	598;"	d	file:
+YYSTACK_FREE	parser/tinybasic.tab.c	608;"	d	file:
+YYSTACK_GAP_MAXIMUM	parser/tinybasic.tab.c	647;"	d	file:
+YYSTACK_RELOCATE	parser/tinybasic.tab.c	662;"	d	file:
+YYSTYPE	parser/tinybasic.tab.c	/^typedef union YYSTYPE YYSTYPE;$/;"	t	typeref:union:YYSTYPE	file:
+YYSTYPE	parser/tinybasic.tab.c	/^union YYSTYPE$/;"	u	file:
+YYSTYPE_IS_DECLARED	parser/tinybasic.tab.c	296;"	d	file:
+YYSTYPE_IS_TRIVIAL	parser/tinybasic.tab.c	295;"	d	file:
+YYSYMBOL_37_	parser/tinybasic.tab.c	/^  YYSYMBOL_37_ = 37,                       \/* '+'  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_38_	parser/tinybasic.tab.c	/^  YYSYMBOL_38_ = 38,                       \/* '-'  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_39_	parser/tinybasic.tab.c	/^  YYSYMBOL_39_ = 39,                       \/* '*'  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_40_	parser/tinybasic.tab.c	/^  YYSYMBOL_40_ = 40,                       \/* '\/'  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_43_	parser/tinybasic.tab.c	/^  YYSYMBOL_43_ = 43,                       \/* '='  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_44_	parser/tinybasic.tab.c	/^  YYSYMBOL_44_ = 44,                       \/* ','  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_45_	parser/tinybasic.tab.c	/^  YYSYMBOL_45_ = 45,                       \/* '('  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_46_	parser/tinybasic.tab.c	/^  YYSYMBOL_46_ = 46,                       \/* ')'  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_51_1	parser/tinybasic.tab.c	/^  YYSYMBOL_51_1 = 51,                      \/* $@1  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_ANALOG	parser/tinybasic.tab.c	/^  YYSYMBOL_ANALOG = 25,                    \/* ANALOG  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_CLEAR	parser/tinybasic.tab.c	/^  YYSYMBOL_CLEAR = 14,                     \/* CLEAR  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_CR	parser/tinybasic.tab.c	/^  YYSYMBOL_CR = 18,                        \/* CR  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_DELAY	parser/tinybasic.tab.c	/^  YYSYMBOL_DELAY = 24,                     \/* DELAY  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_DIGITAL	parser/tinybasic.tab.c	/^  YYSYMBOL_DIGITAL = 29,                   \/* DIGITAL  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_END	parser/tinybasic.tab.c	/^  YYSYMBOL_END = 17,                       \/* END  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_FOR	parser/tinybasic.tab.c	/^  YYSYMBOL_FOR = 20,                       \/* FOR  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_GOSUB	parser/tinybasic.tab.c	/^  YYSYMBOL_GOSUB = 12,                     \/* GOSUB  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_GOTO	parser/tinybasic.tab.c	/^  YYSYMBOL_GOTO = 9,                       \/* GOTO  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_HIGH	parser/tinybasic.tab.c	/^  YYSYMBOL_HIGH = 26,                      \/* HIGH  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_IF	parser/tinybasic.tab.c	/^  YYSYMBOL_IF = 7,                         \/* IF  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_IN	parser/tinybasic.tab.c	/^  YYSYMBOL_IN = 30,                        \/* IN  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_INPUT	parser/tinybasic.tab.c	/^  YYSYMBOL_INPUT = 10,                     \/* INPUT  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_LET	parser/tinybasic.tab.c	/^  YYSYMBOL_LET = 11,                       \/* LET  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_LIST	parser/tinybasic.tab.c	/^  YYSYMBOL_LIST = 15,                      \/* LIST  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_LOW	parser/tinybasic.tab.c	/^  YYSYMBOL_LOW = 27,                       \/* LOW  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_NEXT	parser/tinybasic.tab.c	/^  YYSYMBOL_NEXT = 23,                      \/* NEXT  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_NUMBER	parser/tinybasic.tab.c	/^  YYSYMBOL_NUMBER = 3,                     \/* NUMBER  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_OUT	parser/tinybasic.tab.c	/^  YYSYMBOL_OUT = 31,                       \/* OUT  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_PIN	parser/tinybasic.tab.c	/^  YYSYMBOL_PIN = 28,                       \/* PIN  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_PRINT	parser/tinybasic.tab.c	/^  YYSYMBOL_PRINT = 6,                      \/* PRINT  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_RAND	parser/tinybasic.tab.c	/^  YYSYMBOL_RAND = 19,                      \/* RAND  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_REL_GE	parser/tinybasic.tab.c	/^  YYSYMBOL_REL_GE = 36,                    \/* REL_GE  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_REL_GT	parser/tinybasic.tab.c	/^  YYSYMBOL_REL_GT = 35,                    \/* REL_GT  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_REL_LE	parser/tinybasic.tab.c	/^  YYSYMBOL_REL_LE = 33,                    \/* REL_LE  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_REL_LT	parser/tinybasic.tab.c	/^  YYSYMBOL_REL_LT = 32,                    \/* REL_LT  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_REL_NE	parser/tinybasic.tab.c	/^  YYSYMBOL_REL_NE = 34,                    \/* REL_NE  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_RETURN	parser/tinybasic.tab.c	/^  YYSYMBOL_RETURN = 13,                    \/* RETURN  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_RUN	parser/tinybasic.tab.c	/^  YYSYMBOL_RUN = 16,                       \/* RUN  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_STEP	parser/tinybasic.tab.c	/^  YYSYMBOL_STEP = 22,                      \/* STEP  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_STRING	parser/tinybasic.tab.c	/^  YYSYMBOL_STRING = 5,                     \/* STRING  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_THEN	parser/tinybasic.tab.c	/^  YYSYMBOL_THEN = 8,                       \/* THEN  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_TO	parser/tinybasic.tab.c	/^  YYSYMBOL_TO = 21,                        \/* TO  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_UMINUS	parser/tinybasic.tab.c	/^  YYSYMBOL_UMINUS = 41,                    \/* UMINUS  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_UPLUS	parser/tinybasic.tab.c	/^  YYSYMBOL_UPLUS = 42,                     \/* UPLUS  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_VAR	parser/tinybasic.tab.c	/^  YYSYMBOL_VAR = 4,                        \/* VAR  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_YYACCEPT	parser/tinybasic.tab.c	/^  YYSYMBOL_YYACCEPT = 47,                  \/* $accept  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_YYEMPTY	parser/tinybasic.tab.c	/^  YYSYMBOL_YYEMPTY = -2,$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_YYEOF	parser/tinybasic.tab.c	/^  YYSYMBOL_YYEOF = 0,                      \/* "end of file"  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_YYUNDEF	parser/tinybasic.tab.c	/^  YYSYMBOL_YYUNDEF = 2,                    \/* "invalid token"  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_YYerror	parser/tinybasic.tab.c	/^  YYSYMBOL_YYerror = 1,                    \/* error  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_expr_item	parser/tinybasic.tab.c	/^  YYSYMBOL_expr_item = 53,                 \/* expr_item  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_expr_list	parser/tinybasic.tab.c	/^  YYSYMBOL_expr_list = 52,                 \/* expr_list  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_expression	parser/tinybasic.tab.c	/^  YYSYMBOL_expression = 56,                \/* expression  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_factor	parser/tinybasic.tab.c	/^  YYSYMBOL_factor = 59                     \/* factor  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_line	parser/tinybasic.tab.c	/^  YYSYMBOL_line = 49,                      \/* line  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_mode	parser/tinybasic.tab.c	/^  YYSYMBOL_mode = 57,                      \/* mode  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_program	parser/tinybasic.tab.c	/^  YYSYMBOL_program = 48,                   \/* program  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_relop	parser/tinybasic.tab.c	/^  YYSYMBOL_relop = 55,                     \/* relop  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_statement	parser/tinybasic.tab.c	/^  YYSYMBOL_statement = 50,                 \/* statement  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_term	parser/tinybasic.tab.c	/^  YYSYMBOL_term = 58,                      \/* term  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYSYMBOL_var_list	parser/tinybasic.tab.c	/^  YYSYMBOL_var_list = 54,                  \/* var_list  *\/$/;"	e	enum:yysymbol_kind_t	file:
+YYTABLE_NINF	parser/tinybasic.tab.c	803;"	d	file:
+YYTOKENTYPE	parser/tinybasic.tab.c	234;"	d	file:
+YYTRANSLATE	parser/tinybasic.tab.c	715;"	d	file:
+YYUNDEF	parser/tinybasic.tab.c	/^    YYUNDEF = 257,                 \/* "invalid token"  *\/$/;"	e	enum:yytokentype	file:
+YY_	parser/tinybasic.tab.c	496;"	d	file:
+YY_	parser/tinybasic.tab.c	500;"	d	file:
+YY_ACCESSING_SYMBOL	parser/tinybasic.tab.c	770;"	d	file:
+YY_ASSERT	parser/tinybasic.tab.c	566;"	d	file:
+YY_ATTRIBUTE_PURE	parser/tinybasic.tab.c	507;"	d	file:
+YY_ATTRIBUTE_PURE	parser/tinybasic.tab.c	509;"	d	file:
+YY_ATTRIBUTE_UNUSED	parser/tinybasic.tab.c	515;"	d	file:
+YY_ATTRIBUTE_UNUSED	parser/tinybasic.tab.c	517;"	d	file:
+YY_BUFFER_STATE	parser/tinybasic.tab.c	/^typedef struct yy_buffer_state* YY_BUFFER_STATE;$/;"	t	typeref:struct:yy_buffer_state	file:
+YY_CAST	parser/tinybasic.tab.c	204;"	d	file:
+YY_CAST	parser/tinybasic.tab.c	207;"	d	file:
+YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN	parser/tinybasic.tab.c	531;"	d	file:
+YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN	parser/tinybasic.tab.c	535;"	d	file:
+YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN	parser/tinybasic.tab.c	546;"	d	file:
+YY_IGNORE_MAYBE_UNINITIALIZED_END	parser/tinybasic.tab.c	540;"	d	file:
+YY_IGNORE_MAYBE_UNINITIALIZED_END	parser/tinybasic.tab.c	547;"	d	file:
+YY_IGNORE_USELESS_CAST_BEGIN	parser/tinybasic.tab.c	554;"	d	file:
+YY_IGNORE_USELESS_CAST_BEGIN	parser/tinybasic.tab.c	561;"	d	file:
+YY_IGNORE_USELESS_CAST_END	parser/tinybasic.tab.c	557;"	d	file:
+YY_IGNORE_USELESS_CAST_END	parser/tinybasic.tab.c	562;"	d	file:
+YY_INITIAL_VALUE	parser/tinybasic.tab.c	543;"	d	file:
+YY_INITIAL_VALUE	parser/tinybasic.tab.c	550;"	d	file:
+YY_NULLPTR	parser/tinybasic.tab.c	214;"	d	file:
+YY_NULLPTR	parser/tinybasic.tab.c	216;"	d	file:
+YY_NULLPTR	parser/tinybasic.tab.c	219;"	d	file:
+YY_REDUCE_PRINT	parser/tinybasic.tab.c	1073;"	d	file:
+YY_REDUCE_PRINT	parser/tinybasic.tab.c	1086;"	d	file:
+YY_REINTERPRET_CAST	parser/tinybasic.tab.c	205;"	d	file:
+YY_REINTERPRET_CAST	parser/tinybasic.tab.c	208;"	d	file:
+YY_STACK_PRINT	parser/tinybasic.tab.c	1042;"	d	file:
+YY_STACK_PRINT	parser/tinybasic.tab.c	1085;"	d	file:
+YY_STDINT_H	parser/tinybasic.tab.c	389;"	d	file:
+YY_SYMBOL_PRINT	parser/tinybasic.tab.c	1084;"	d	file:
+YY_SYMBOL_PRINT	parser/tinybasic.tab.c	980;"	d	file:
+YY_TYPEDEF_YY_BUFFER_STATE	parser/tinybasic.tab.c	80;"	d	file:
+YY_USE	parser/tinybasic.tab.c	523;"	d	file:
+YY_USE	parser/tinybasic.tab.c	525;"	d	file:
+YYerror	parser/tinybasic.tab.c	/^    YYerror = 256,                 \/* error  *\/$/;"	e	enum:yytokentype	file:
+__PLATFORM_DEF_HEADER__	include/platform.h	2;"	d
+__PLATFORM_IO_HEADER__	include/platform_io.h	2;"	d
+alloca	parser/tinybasic.tab.c	582;"	d	file:
+call_stack	parser/tinybasic.tab.c	/^static short call_stack[STACK_DEPTH];$/;"	v	file:
+cval	parser/tinybasic.tab.c	/^    char  cval;     \/* For single-letter variables. *\/$/;"	m	union:YYSTYPE	file:
+delayMs	src/main.cpp	/^void delayMs(int ms)$/;"	f
+do_parse	parser/tinybasic.tab.c	/^void do_parse(char *line) {$/;"	f
+do_run	parser/tinybasic.tab.c	/^static void do_run(void) {$/;"	f	file:
+err_print	src/platform.c	/^int (*err_print)(const char*, ...) = NULL;$/;"	v
+for_stack	parser/tinybasic.tab.c	/^static ForFrame for_stack[FOR_STACK_DEPTH];$/;"	v	file:
+for_top	parser/tinybasic.tab.c	/^static size_t for_top = 0;$/;"	v	file:
+getAnalogPortValue	src/platform_io.cpp	/^int getAnalogPortValue(int pin)$/;"	f
+getPinValue	src/platform_io.cpp	/^int getPinValue(int pin)$/;"	f
+if_skip	parser/tinybasic.tab.c	/^static unsigned char if_skip = 0;$/;"	v	file:
+init_parser	parser/tinybasic.tab.c	/^void init_parser(void) {$/;"	f
+int_input	src/platform.c	/^int (*int_input)(void) = NULL;$/;"	v
+is_continue	parser/tinybasic.tab.c	/^static unsigned char is_continue = 1;$/;"	v	file:
+ival	parser/tinybasic.tab.c	/^    int   ival;     \/* For numeric literals. *\/$/;"	m	union:YYSTYPE	file:
+jump_pending	parser/tinybasic.tab.c	/^static unsigned char jump_pending = JUMP_NONE;$/;"	v	file:
+jump_target	parser/tinybasic.tab.c	/^static short jump_target = 0;$/;"	v	file:
+limit	parser/tinybasic.tab.c	/^  int limit;$/;"	m	struct:__anon2	file:
+line	src/main.cpp	/^char line[MAX_LINE_LEN];$/;"	v
+lineIdx	src/main.cpp	/^short lineIdx = 0;$/;"	v
+loop	src/main.cpp	/^void loop()$/;"	f
+num	parser/tinybasic.tab.c	/^  short num;$/;"	m	struct:__anon1	file:
+pc	parser/tinybasic.tab.c	/^static short pc = 0;$/;"	v	file:
+platform_analog_read	src/platform.c	/^int (*platform_analog_read)(int pin) = NULL;$/;"	v
+platform_delay_ms	src/platform.c	/^void (*platform_delay_ms)(int ms) = NULL;$/;"	v
+platform_digital_read	src/platform.c	/^int (*platform_digital_read)(int pin) = NULL;/;"	v
+platform_digital_write	src/platform.c	/^void (*platform_digital_write)(int pin, int value) = NULL;$/;"	v
+platform_pin_mode	src/platform.c	/^void (*platform_pin_mode)(int pin, int mode) = NULL;$/;"	v
+prog_clear	parser/tinybasic.tab.c	/^static void prog_clear(void) {$/;"	f	file:
+prog_find	parser/tinybasic.tab.c	/^static int prog_find(int num) {$/;"	f	file:
+prog_size	parser/tinybasic.tab.c	/^static unsigned short prog_size = 0;$/;"	v	file:
+prog_store	parser/tinybasic.tab.c	/^static void prog_store(int num, const char* text) {$/;"	f	file:
+program	parser/tinybasic.tab.c	/^static Line program[MAX_LINES];$/;"	v	file:
+ret_pc	parser/tinybasic.tab.c	/^  unsigned short ret_pc;$/;"	m	struct:__anon2	file:
+running	parser/tinybasic.tab.c	/^static unsigned char running = 0;$/;"	v	file:
+serialInput	src/main.cpp	/^int serialInput()$/;"	f
+serialPrint	src/main.cpp	/^int serialPrint(const char *format, ...)$/;"	f
+setPinMode	src/platform_io.cpp	/^void setPinMode(int pin, int mode)$/;"	f
+setPinValue	src/platform_io.cpp	/^void setPinValue(int pin, int value)$/;"	f
+setup	src/main.cpp	/^void setup()$/;"	f
+short	parser/tinybasic.tab.c	378;"	d	file:
+stack_pop	parser/tinybasic.tab.c	/^static short stack_pop(void) {$/;"	f	file:
+stack_push	parser/tinybasic.tab.c	/^static void stack_push(short ret_pc) {$/;"	f	file:
+stack_top	parser/tinybasic.tab.c	/^static short stack_top = 0;$/;"	v	file:
+step	parser/tinybasic.tab.c	/^  int step;$/;"	m	struct:__anon2	file:
+str_print	src/platform.c	/^int (*str_print)(const char*, ...) = NULL;$/;"	v
+sval	parser/tinybasic.tab.c	/^    char* sval;     $/;"	m	union:YYSTYPE	file:
+text	parser/tinybasic.tab.c	/^  char text[MAX_LINE_LEN];$/;"	m	struct:__anon1	file:
+var	parser/tinybasic.tab.c	/^  char var;$/;"	m	struct:__anon2	file:
+var_get	parser/tinybasic.tab.c	/^static inline int var_get(char c) {$/;"	f	file:
+var_set	parser/tinybasic.tab.c	/^static inline void var_set(char c, int v) {$/;"	f	file:
+variables	parser/tinybasic.tab.c	/^static int variables[26];$/;"	v	file:
+yy_reduce_print	parser/tinybasic.tab.c	/^yy_reduce_print (yy_state_t *yyssp, YYSTYPE *yyvsp,$/;"	f	file:
+yy_stack_print	parser/tinybasic.tab.c	/^yy_stack_print (yy_state_t *yybottom, yy_state_t *yytop)$/;"	f	file:
+yy_state_fast_t	parser/tinybasic.tab.c	/^typedef int yy_state_fast_t;$/;"	t	file:
+yy_state_t	parser/tinybasic.tab.c	/^typedef yytype_int8 yy_state_t;$/;"	t	file:
+yy_symbol_print	parser/tinybasic.tab.c	/^yy_symbol_print (FILE *yyo,$/;"	f	file:
+yy_symbol_value_print	parser/tinybasic.tab.c	/^yy_symbol_value_print (FILE *yyo,$/;"	f	file:
+yyalloc	parser/tinybasic.tab.c	/^union yyalloc$/;"	u	file:
+yychar	parser/tinybasic.tab.c	/^int yychar;$/;"	v
+yycheck	parser/tinybasic.tab.c	/^static const yytype_int8 yycheck[] =$/;"	v	file:
+yyclearin	parser/tinybasic.tab.c	931;"	d	file:
+yydebug	parser/tinybasic.tab.c	/^int yydebug;$/;"	v
+yydefact	parser/tinybasic.tab.c	/^static const yytype_int8 yydefact[] =$/;"	v	file:
+yydefgoto	parser/tinybasic.tab.c	/^static const yytype_int8 yydefgoto[] =$/;"	v	file:
+yydestruct	parser/tinybasic.tab.c	/^yydestruct (const char *yymsg,$/;"	f	file:
+yyerrok	parser/tinybasic.tab.c	930;"	d	file:
+yyerror	parser/tinybasic.tab.c	/^void yyerror(const char* s) { err_print("Error: %s\\n", s); }$/;"	f
+yylval	parser/tinybasic.tab.c	/^YYSTYPE yylval;$/;"	v
+yynerrs	parser/tinybasic.tab.c	/^int yynerrs;$/;"	v
+yypact	parser/tinybasic.tab.c	/^static const yytype_int8 yypact[] =$/;"	v	file:
+yypact_value_is_default	parser/tinybasic.tab.c	800;"	d	file:
+yyparse	parser/tinybasic.tab.c	/^yyparse (void)$/;"	f
+yypgoto	parser/tinybasic.tab.c	/^static const yytype_int8 yypgoto[] =$/;"	v	file:
+yyr1	parser/tinybasic.tab.c	/^static const yytype_int8 yyr1[] =$/;"	v	file:
+yyr2	parser/tinybasic.tab.c	/^static const yytype_int8 yyr2[] =$/;"	v	file:
+yyrline	parser/tinybasic.tab.c	/^static const yytype_int16 yyrline[] =$/;"	v	file:
+yyss_alloc	parser/tinybasic.tab.c	/^  yy_state_t yyss_alloc;$/;"	m	union:yyalloc	file:
+yystos	parser/tinybasic.tab.c	/^static const yytype_int8 yystos[] =$/;"	v	file:
+yysymbol_kind_t	parser/tinybasic.tab.c	/^enum yysymbol_kind_t$/;"	g	file:
+yysymbol_kind_t	parser/tinybasic.tab.c	/^typedef enum yysymbol_kind_t yysymbol_kind_t;$/;"	t	typeref:enum:yysymbol_kind_t	file:
+yysymbol_name	parser/tinybasic.tab.c	/^yysymbol_name (yysymbol_kind_t yysymbol)$/;"	f	file:
+yytable	parser/tinybasic.tab.c	/^static const yytype_int8 yytable[] =$/;"	v	file:
+yytable_value_is_error	parser/tinybasic.tab.c	805;"	d	file:
+yytname	parser/tinybasic.tab.c	/^static const char *const yytname[] =$/;"	v	file:
+yytoken_kind_t	parser/tinybasic.tab.c	/^  typedef enum yytokentype yytoken_kind_t;$/;"	t	typeref:enum:yytokentype	file:
+yytokentype	parser/tinybasic.tab.c	/^  enum yytokentype$/;"	g	file:
+yytranslate	parser/tinybasic.tab.c	/^static const yytype_int8 yytranslate[] =$/;"	v	file:
+yytype_int16	parser/tinybasic.tab.c	/^typedef __INT_LEAST16_TYPE__ yytype_int16;$/;"	t	file:
+yytype_int16	parser/tinybasic.tab.c	/^typedef int_least16_t yytype_int16;$/;"	t	file:
+yytype_int16	parser/tinybasic.tab.c	/^typedef short yytype_int16;$/;"	t	file:
+yytype_int8	parser/tinybasic.tab.c	/^typedef __INT_LEAST8_TYPE__ yytype_int8;$/;"	t	file:
+yytype_int8	parser/tinybasic.tab.c	/^typedef int_least8_t yytype_int8;$/;"	t	file:
+yytype_int8	parser/tinybasic.tab.c	/^typedef signed char yytype_int8;$/;"	t	file:
+yytype_uint16	parser/tinybasic.tab.c	/^typedef __UINT_LEAST16_TYPE__ yytype_uint16;$/;"	t	file:
+yytype_uint16	parser/tinybasic.tab.c	/^typedef int yytype_uint16;$/;"	t	file:
+yytype_uint16	parser/tinybasic.tab.c	/^typedef uint_least16_t yytype_uint16;$/;"	t	file:
+yytype_uint16	parser/tinybasic.tab.c	/^typedef unsigned short yytype_uint16;$/;"	t	file:
+yytype_uint8	parser/tinybasic.tab.c	/^typedef __UINT_LEAST8_TYPE__ yytype_uint8;$/;"	t	file:
+yytype_uint8	parser/tinybasic.tab.c	/^typedef short yytype_uint8;$/;"	t	file:
+yytype_uint8	parser/tinybasic.tab.c	/^typedef uint_least8_t yytype_uint8;$/;"	t	file:
+yytype_uint8	parser/tinybasic.tab.c	/^typedef unsigned char yytype_uint8;$/;"	t	file:
+yyvs_alloc	parser/tinybasic.tab.c	/^  YYSTYPE yyvs_alloc;$/;"	m	union:yyalloc	file:

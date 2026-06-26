@@ -1,3 +1,5 @@
+#ifndef DEBUG
+
 #include <Arduino.h>
 
 #include "platform_io.h"
@@ -56,3 +58,5 @@ int getPinValue(int pin)
 
   return digitalRead(pin);
 }
+
+#endif
