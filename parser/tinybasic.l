@@ -47,6 +47,8 @@ digit [0-9]
 (?i:wend)    { return WEND;   }
 (?i:abs)     { return ABS;    }
 (?i:exit)    { return EXIT;   }
+(?i:repeat)  { return REPEAT; }
+(?i:until)   { return UNTIL;  }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }

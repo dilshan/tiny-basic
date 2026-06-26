@@ -50,7 +50,9 @@ typedef enum {
     LINE_SINGLE_IF,
     LINE_IF,
     LINE_ELSE,
-    LINE_ENDIF
+    LINE_ENDIF,
+    LINE_UNTIL,
+    LINE_REPEAT
 } LineType;
 
 // Mapping from control structure root lines to matching terminators.
@@ -142,6 +144,12 @@ static int is_keyword_end(char c) {
 
     if (strncasecmp(line, "ENDIF", 5) == 0 && is_keyword_end(line[5]))
         return LINE_ENDIF;
+
+    if (strncasecmp(line, "REPEAT", 6) == 0 && is_keyword_end(line[6]))
+        return LINE_REPEAT;
+
+    if (strncasecmp(line, "UNTIL", 5) == 0 && is_keyword_end(line[5]))
+        return LINE_UNTIL;
 
     // Identify single line IF and multi-line IF statements.
     if (strncasecmp(line, "IF", 2) == 0 && is_keyword_end(line[2])){
@@ -241,7 +249,7 @@ static void build_conditional_jump_map(void) {
     for (int i = 0; i < prog_size; i++) {
         if(program[i].type != LINE_OTHER) {
 
-            if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE) || (program[i].type == LINE_IF)) {
+            if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE) || (program[i].type == LINE_REPEAT) || (program[i].type == LINE_IF)) {
                 if (cjump_map_size >= (sizeof(cjump_map) / sizeof(cjump_map[0]))) {
                     err_print("Too many loop blocks\n");
                     return;
@@ -257,6 +265,7 @@ static void build_conditional_jump_map(void) {
             {
                 if(program[i].type == LINE_NEXT) expected_root_node = LINE_FOR;
                 else if(program[i].type == LINE_WEND) expected_root_node = LINE_WHILE;  
+                else if(program[i].type == LINE_UNTIL) expected_root_node = LINE_REPEAT; 
                 else continue;
 
                 for(int j = (cjump_map_size - 1); j >= 0; j--) {
@@ -301,7 +310,7 @@ static void build_conditional_jump_map(void) {
 
 static unsigned char find_lowest_loop_node(short current_node_num, ConditionalJumpMap **node) {   
     for(int i = cjump_map_size - 1; i >= 0; i--) {
-        if((cjump_map[i].type == LINE_FOR) || (cjump_map[i].type == LINE_WHILE)) {
+        if((cjump_map[i].type == LINE_FOR) || (cjump_map[i].type == LINE_WHILE) || (cjump_map[i].type == LINE_REPEAT)) {
             if((cjump_map[i].root_node_num < current_node_num) && (cjump_map[i].end_node_num > current_node_num)) {
                 *node = &cjump_map[i];
                 return 1;
@@ -400,7 +409,7 @@ static int eval_condition(int lhs, int op, int rhs) {
 
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
-%token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT
+%token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL
 
 %type <ival> expression term factor relop mode
 
@@ -574,6 +583,29 @@ statement
                     err_print("WEND without WHILE\n");
                 else
                     jump_pending = JUMP_GOTO;
+            }
+        }
+
+    | REPEAT 
+        {
+            if ((running) && (!if_skip)) {
+                if(find_end_node(program[pc].num, LINE_REPEAT) < 0) {
+                    err_print("Missing UNTIL\n");
+                }
+            }
+        }
+
+    | UNTIL expression relop expression
+        {
+            if ((running) && (!if_skip)) {
+                if (eval_condition($2, $3, $4)) {
+                    jump_target = find_root_node(program[pc].num, LINE_REPEAT);
+
+                    if (jump_target < 0)
+                        err_print("Missing REPEAT\n");
+                    else
+                        jump_pending = JUMP_CONDITION_SKIP;
+                }
             }
         }
 
