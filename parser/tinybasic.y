@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "platform.h"
+#include "math.h"
 
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
@@ -409,7 +410,8 @@ static int eval_condition(int lhs, int op, int rhs) {
 
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
-%token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL
+%token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
+%token BYTE HBYTE LBYTE LSHIFT RSHIFT
 
 %type <ival> expression term factor relop mode
 
@@ -834,6 +836,13 @@ factor
     | LOW                        { $$ = 0; }
     | RAND '(' ')'               { $$ = rand() % 32768; }
     | ABS '(' expression ')'     { $$ = abs($3); }
+    | MIN '(' expression ',' expression ')'     { $$ = min($3, $5); }
+    | MAX '(' expression ',' expression ')'     { $$ = max($3, $5); }
+    | BYTE '(' expression ')'    { $$ = $3 & 0xFF; }
+    | HBYTE '(' expression ')'   { $$ = $3 & 0xF0; }
+    | LBYTE '(' expression ')'   { $$ = $3 & 0x0F; }
+    | LSHIFT '(' expression ',' expression  ')'     { $$ = $3 << $5; }
+    | RSHIFT '(' expression ',' expression  ')'     { $$ = $3 >> $5; }
     ;
 
 %%

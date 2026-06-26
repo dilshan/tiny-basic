@@ -49,6 +49,13 @@ digit [0-9]
 (?i:exit)    { return EXIT;   }
 (?i:repeat)  { return REPEAT; }
 (?i:until)   { return UNTIL;  }
+(?i:min)     { return MIN;    }
+(?i:max)     { return MAX;    }
+(?i:byte)    { return BYTE;   }
+(?i:hbyte)   { return HBYTE;  }
+(?i:lbyte)   { return LBYTE;  }
+(?i:lshift)  { return LSHIFT; }
+(?i:rshift)  { return RSHIFT; }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
