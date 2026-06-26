@@ -257,6 +257,7 @@ static void build_conditional_jump_map(void) {
             {
                 if(program[i].type == LINE_NEXT) expected_root_node = LINE_FOR;
                 else if(program[i].type == LINE_WEND) expected_root_node = LINE_WHILE;  
+                else continue;
 
                 for(int j = (cjump_map_size - 1); j >= 0; j--) {
                     if((cjump_map[j].type == expected_root_node) && (cjump_map[j].end_node_num == -1)) {
@@ -296,6 +297,19 @@ static void build_conditional_jump_map(void) {
             err_print("Missing termination block for line %d\n", cjump_map[i].root_node_num);
         }
     }
+}
+
+static unsigned char find_lowest_loop_node(short current_node_num, ConditionalJumpMap **node) {   
+    for(int i = cjump_map_size - 1; i >= 0; i--) {
+        if((cjump_map[i].type == LINE_FOR) || (cjump_map[i].type == LINE_WHILE)) {
+            if((cjump_map[i].root_node_num < current_node_num) && (cjump_map[i].end_node_num > current_node_num)) {
+                *node = &cjump_map[i];
+                return 1;
+            }
+        }
+    }
+
+    return 0;
 }
 
 static short find_end_node(short parent_node_num, LineType node_type) {
@@ -386,7 +400,7 @@ static int eval_condition(int lhs, int op, int rhs) {
 
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
-%token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND
+%token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT
 
 %type <ival> expression term factor relop mode
 
@@ -560,6 +574,31 @@ statement
                     err_print("WEND without WHILE\n");
                 else
                     jump_pending = JUMP_GOTO;
+            }
+        }
+
+    | EXIT 
+        {
+            if ((running) && (!if_skip)) {
+                ConditionalJumpMap* lowest_loop_node = NULL;
+
+                if(find_lowest_loop_node(program[pc].num, &lowest_loop_node)) {
+                    jump_target = lowest_loop_node->end_node_num;
+
+                    if((lowest_loop_node->type == LINE_FOR) && (loop_top > 0)) {
+                        loop_top--;
+                    }
+
+                    if (jump_target < 0) {
+                        err_print("EXIT without a loop\n");
+                    }
+                    else {
+                        jump_pending = JUMP_CONDITION_SKIP;
+                    }
+                }
+                else {
+                    err_print("EXIT without a loop\n");
+                }
             }
         }
 
@@ -779,6 +818,14 @@ static void do_run(void) {
   pc = 0;
 
   build_conditional_jump_map();
+
+#ifdef DEBUG
+  printf("Conditional Jump Map\n");
+  for(int i = 0; i < cjump_map_size; i++) {
+      printf("Type=%d, Root=%d, End=%d, Else=%d\n", cjump_map[i].type, cjump_map[i].root_node_num, cjump_map[i].end_node_num, cjump_map[i].else_node_num);
+  }
+  printf("--------------------------------\n");
+#endif
 
   while (running && pc < prog_size) {
     char exec[MAX_LINE_LEN + 2];
