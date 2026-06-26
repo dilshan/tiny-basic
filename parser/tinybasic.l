@@ -56,6 +56,7 @@ digit [0-9]
 (?i:lbyte)   { return LBYTE;  }
 (?i:lshift)  { return LSHIFT; }
 (?i:rshift)  { return RSHIFT; }
+(?i:mod)     { return MOD;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
