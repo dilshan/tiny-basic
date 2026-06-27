@@ -16,16 +16,6 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
 #define STACK_DEPTH 32
 #define LOOP_STACK_DEPTH 16
 
-// Conditional comparison operators.
-typedef enum {
-    OP_LT,
-    OP_LE,
-    OP_NE,
-    OP_GT,
-    OP_GE,
-    OP_EQ
-} ConditionType;
-
 // Control flow actions that can be requested during parsing.
 typedef enum {
     JUMP_NONE,
@@ -380,21 +370,6 @@ static short stack_pop(void) {
   return call_stack[--stack_top];
 }
 
-// Evaluate a relational operator for IF and WHILE conditions.
-static int eval_condition(int lhs, int op, int rhs) {
-    switch (op) {
-        case OP_LT: return lhs < rhs;
-        case OP_LE: return lhs <= rhs;
-        case OP_NE: return lhs != rhs;
-        case OP_GT: return lhs > rhs;
-        case OP_GE: return lhs >= rhs;
-        case OP_EQ: return lhs == rhs;
-    }
-
-    return 0;
-}
-
-
 %}
 
 %union {
@@ -411,13 +386,15 @@ static int eval_condition(int lhs, int op, int rhs) {
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
-%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW
+%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR
 
-%type <ival> expression term factor relop mode sum_args sumsq_args
+%type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
 // Operator precedence and associativity for arithmetic expressions.
+%left AND OR
+%left '=' REL_NE REL_LT REL_LE REL_GT REL_GE
 %left '+' '-'
-%left '*' '/'
+%left '*' '/' MOD
 %right UMINUS UPLUS INVERT
 
 %%
@@ -573,10 +550,10 @@ statement
             }
        }
 
-    | WHILE expression relop expression
+    | WHILE boolean_expr
         {
             if ((running) && (!if_skip)) {
-                if (!eval_condition($2, $3, $4)) {
+                if (!$2) {
 
                     jump_target = find_end_node(program[pc].num, LINE_WHILE);
 
@@ -609,10 +586,10 @@ statement
             }
         }
 
-    | UNTIL expression relop expression
+    | UNTIL boolean_expr
         {
             if ((running) && (!if_skip)) {
-                if (eval_condition($2, $3, $4)) {
+                if (!$2) {
                     jump_target = find_root_node(program[pc].num, LINE_REPEAT);
 
                     if (jump_target < 0)
@@ -648,19 +625,19 @@ statement
             }
         }
 
-    | IF expression relop expression THEN
+    | IF boolean_expr THEN
         {
             // Only evaluate the condition if we're not already skipping due to an outer IF.
             if (!if_skip) {
-                if_skip = !eval_condition($2, $3, $4);
+                if_skip = !$2;
             }
         }
       statement
 
-    | IF expression relop expression THEN
+    | IF boolean_expr THEN
         {
             if ((running) && (!if_skip)) {
-                if(!eval_condition($2, $3, $4))
+                if(!$2)
                 {
                     short else_node = find_else_node(program[pc].num);
 
@@ -801,21 +778,25 @@ var_list
         }
     ;
 
-relop
-    : REL_LT    { $$ = OP_LT; }
-    | REL_LE    { $$ = OP_LE; }
-    | REL_NE    { $$ = OP_NE; }
-    | REL_GT    { $$ = OP_GT; }
-    | REL_GE    { $$ = OP_GE; }
-    | '='       { $$ = OP_EQ; }
-    ;
-
 expression
-    : term                       { $$ = $1; }
-    | '+' term   %prec UPLUS     { $$ = $2; }
-    | '-' term   %prec UMINUS    { $$ = -$2; }
+    : term                       { $$ = $1;      }
+    | '+' term   %prec UPLUS     { $$ = $2;      }
+    | '-' term   %prec UMINUS    { $$ = -$2;     }
+    | INVERT expression          { $$ = !($2);   }
     | expression '+' term        { $$ = $1 + $3; }
     | expression '-' term        { $$ = $1 - $3; }
+    | expression '=' expression    { $$ = ($1 == $3); }
+    | expression REL_NE expression { $$ = ($1 != $3); }
+    | expression REL_LT expression { $$ = ($1 < $3); }
+    | expression REL_LE expression { $$ = ($1 <= $3); }
+    | expression REL_GT expression { $$ = ($1 > $3); }
+    | expression REL_GE expression { $$ = ($1 >= $3); }
+    | expression AND expression    { $$ = ($1 && $3); }
+    | expression OR expression     { $$ = ($1 || $3); }
+    ;
+
+boolean_expr
+    : expression                 { $$ = ($1 != 0); }
     ;
 
 mode
@@ -874,7 +855,6 @@ factor
     | '(' expression ')'         { $$ = $2; }
     | ANALOG '(' factor ')'      { $$ = platform_analog_read($3); }
     | GET '(' factor ')'         { $$ = platform_digital_read($3); }
-    | INVERT '(' factor ')'      { $$ = !($3); }
     | HIGH                       { $$ = 1; }
     | LOW                        { $$ = 0; }
     | RAND '(' ')'               { $$ = rand() % 32768; }

@@ -61,6 +61,8 @@ digit [0-9]
 (?i:sum)     { return SUM;    }
 (?i:sumsq)   { return SUMSQ;  }
 (?i:pow)     { return POW;    }
+(?i:and)     { return AND;    }
+(?i:or)      { return OR;     }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
