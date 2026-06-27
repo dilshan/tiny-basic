@@ -387,6 +387,7 @@ static short stack_pop(void) {
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
+%token BAND BOR NOR NAND NOT XNOR XOR
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -394,8 +395,8 @@ static short stack_pop(void) {
 %left AND OR
 %left '=' REL_NE REL_LT REL_LE REL_GT REL_GE
 %left '+' '-'
-%left '*' '/' MOD
-%right UMINUS UPLUS INVERT
+%left '*' '/' MOD BAND BOR NOR NAND XNOR XOR
+%right UMINUS UPLUS INVERT NOT
 
 %%
 
@@ -783,6 +784,7 @@ expression
     | '+' term   %prec UPLUS     { $$ = $2;      }
     | '-' term   %prec UMINUS    { $$ = -$2;     }
     | INVERT expression          { $$ = !($2);   }
+    | NOT expression             { $$ = ~($2);   }
     | expression '+' term        { $$ = $1 + $3; }
     | expression '-' term        { $$ = $1 - $3; }
     | expression '=' expression    { $$ = ($1 == $3); }
@@ -838,6 +840,7 @@ term
             else          
                 $$ = $1 / $3;
         }
+
     | term MOD factor
         {
              if ($3 == 0) { 
@@ -847,6 +850,13 @@ term
             else          
                 $$ = $1 % $3;
         }
+    
+    | term BAND factor  { $$ = $1 & $3;     }
+    | term BOR factor   { $$ = $1 | $3;     }
+    | term NOR factor   { $$ = !($1 | $3);  }
+    | term NAND factor  { $$ = !($1 & $3);  }
+    | term XNOR factor  { $$ = !($1 ^ $3);  }
+    | term XOR factor   { $$ = $1 ^ $3;     }
     ;
 
 factor

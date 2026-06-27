@@ -65,6 +65,13 @@ digit [0-9]
 (?i:or)      { return OR;     }
 (?i:true)    { return BTRUE;  }
 (?i:false)   { return BFALSE; }
+(?i:band)    { return BAND;   }
+(?i:bor)     { return BOR;    }
+(?i:nor)     { return NOR;    }
+(?i:nand)    { return NAND;   }
+(?i:not)     { return NOT;    }
+(?i:xnor)    { return XNOR;   }
+(?i:xor)     { return XOR;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
