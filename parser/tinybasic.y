@@ -411,7 +411,7 @@ static int eval_condition(int lhs, int op, int rhs) {
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
-%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD
+%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT
 
 %type <ival> expression term factor relop mode
 
@@ -458,6 +458,18 @@ statement
         {
             if (!if_skip) {
                 platform_digital_write($3, $5);
+            }
+        }
+
+    | WAIT '(' expression ',' expression ')'
+        {
+            if (!if_skip) {
+                while(is_continue) {
+                    if(platform_digital_read($3) == $5) {
+                        break;
+                    }                    
+                    platform_delay_ms(10);
+                }
             }
         }
 
