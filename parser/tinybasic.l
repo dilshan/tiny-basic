@@ -63,6 +63,8 @@ digit [0-9]
 (?i:pow)     { return POW;    }
 (?i:and)     { return AND;    }
 (?i:or)      { return OR;     }
+(?i:true)    { return BTRUE;  }
+(?i:false)   { return BFALSE; }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }

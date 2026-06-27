@@ -386,7 +386,7 @@ static short stack_pop(void) {
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
-%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR
+%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -857,6 +857,8 @@ factor
     | GET '(' factor ')'         { $$ = platform_digital_read($3); }
     | HIGH                       { $$ = 1; }
     | LOW                        { $$ = 0; }
+    | BTRUE                      { $$ = 1; }
+    | BFALSE                     { $$ = 0; }
     | RAND '(' ')'               { $$ = rand() % 32768; }
     | ABS '(' expression ')'     { $$ = abs($3); }
     | MIN '(' expression ',' expression ')'         { $$ = min($3, $5); }
