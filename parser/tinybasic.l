@@ -58,6 +58,9 @@ digit [0-9]
 (?i:rshift)  { return RSHIFT; }
 (?i:mod)     { return MOD;    }
 (?i:wait)    { return WAIT;   }
+(?i:sum)     { return SUM;    }
+(?i:sumsq)   { return SUMSQ;  }
+(?i:pow)     { return POW;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }

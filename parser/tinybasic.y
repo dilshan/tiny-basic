@@ -411,9 +411,9 @@ static int eval_condition(int lhs, int op, int rhs) {
 %token PRINT IF THEN ELSE ENDIF GOTO INPUT LET GOSUB RETURN CLEAR LIST RUN END CR
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
-%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT
+%token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW
 
-%type <ival> expression term factor relop mode
+%type <ival> expression term factor relop mode sum_args sumsq_args
 
 // Operator precedence and associativity for arithmetic expressions.
 %left '+' '-'
@@ -823,6 +823,28 @@ mode
     | OUT                        { $$ = PIN_MODE_OUTPUT; }
     ;
 
+sum_args
+    : expression
+       {
+            $$ = $1; 
+       }
+    | sum_args ',' expression
+       {
+            $$ = $1 + $3;
+       }
+    ;
+
+sumsq_args
+    : expression
+       {
+            $$ = ($1 * $1); 
+       }
+    | sumsq_args ',' expression
+       {
+            $$ = $1 + ($3 * $3);
+       }
+    ;
+
 term
     : factor                     { $$ = $1; }
     | term '*' factor            { $$ = $1 * $3; }
@@ -864,6 +886,9 @@ factor
     | LBYTE '(' expression ')'   { $$ = $3 & 0x0F; }
     | LSHIFT '(' expression ',' expression  ')'     { $$ = $3 << $5; }
     | RSHIFT '(' expression ',' expression  ')'     { $$ = $3 >> $5; }
+    | SUMSQ '(' sumsq_args ')'   { $$ = $3; }
+    | SUM '(' sum_args ')'       { $$ = $3; }
+    | POW '(' expression ',' expression ')'         { $$ = power($3, $5); }
     ;
 
 %%
