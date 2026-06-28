@@ -76,6 +76,7 @@ digit [0-9]
 (?i:bin)     { return BIN;    }
 (?i:bin8)    { return BIN8;   }
 (?i:oct)     { return OCT;    }
+(?i:iff)     { return IFF;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }

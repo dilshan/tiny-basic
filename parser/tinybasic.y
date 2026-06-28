@@ -401,7 +401,7 @@ static short stack_pop(void) {
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
-%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT
+%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -933,6 +933,7 @@ factor
     | SUMSQ '(' sumsq_args ')'   { $$ = $3; }
     | SUM '(' sum_args ')'       { $$ = $3; }
     | POW '(' expression ',' expression ')'         { $$ = power($3, $5); }
+    | IFF '(' boolean_expr ',' expression ',' expression ')'    { $$ = $3 ? $5 : $7; }
     ;
 
 %%
@@ -955,7 +956,8 @@ static void do_run(void) {
 #ifdef DEBUG
   printf("Conditional Jump Map\n");
   for(int i = 0; i < cjump_map_size; i++) {
-      printf("Type=%d, Root=%d, End=%d, Else=%d\n", cjump_map[i].type, cjump_map[i].root_node_num, cjump_map[i].end_node_num, cjump_map[i].else_node_num);
+      printf("Type=%d, Root=%d, End=%d, Else=%d\n", cjump_map[i].type, cjump_map[i].root_node_num, 
+        cjump_map[i].end_node_num, cjump_map[i].else_node_num);
   }
   printf("--------------------------------\n");
 #endif
