@@ -80,6 +80,12 @@ typedef struct {
   unsigned short ret_pc;
 } LoopFrame;
 
+typedef struct {
+    unsigned char index;
+    unsigned char target;
+    short target_num;
+} OnGotoFrame;
+
 extern YY_BUFFER_STATE yy_scan_string(const char*);
 extern void yy_delete_buffer(YY_BUFFER_STATE);
 
@@ -102,6 +108,7 @@ static short pc = 0;
 static unsigned char running = 0;
 static size_t loop_top = 0;
 static unsigned char cjump_map_size;
+static OnGotoFrame on_goto_frame;
 
 static short call_stack[STACK_DEPTH];
 static short stack_top = 0;
@@ -226,7 +233,7 @@ static void flush_memory(void) {
     jump_pending = JUMP_NONE;
     jump_target = 0;
     cjump_map_size = 0;
-
+    
     current_print_mode = PRINT_DEC;
 
     loop_top = 0;
@@ -401,7 +408,7 @@ static short stack_pop(void) {
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
-%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC
+%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -440,6 +447,24 @@ statement
 
     | PRINT '(' OCT ','                { if (!if_skip) current_print_mode = PRINT_OCT; }   
     expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }      
+
+    | ON expression ','                
+        { 
+            if ((running) && (!if_skip)) { 
+                on_goto_frame.target = $2; 
+                on_goto_frame.index = 0; 
+                on_goto_frame.target_num = -1;
+            } 
+        }
+    line_args      
+        {
+            if ((running) && (!if_skip)) {
+                if(on_goto_frame.target_num >= 0) {
+                    jump_pending = JUMP_GOSUB; 
+                    jump_target = on_goto_frame.target_num;
+                }
+            }
+        }
 
     | DELAY '(' expression ')'
         {
@@ -857,6 +882,18 @@ mode
     : IN                         { $$ = PIN_MODE_INPUT;  }
     | OUT                        { $$ = PIN_MODE_OUTPUT; }
     ;
+
+line_args
+    : expression
+        {
+            if(on_goto_frame.index == on_goto_frame.target) on_goto_frame.target_num = $1;
+            on_goto_frame.index++;
+        }
+    | line_args ',' expression
+        {
+            if(on_goto_frame.index == on_goto_frame.target) on_goto_frame.target_num = $3;
+            on_goto_frame.index++;
+        }
 
 sum_args
     : expression

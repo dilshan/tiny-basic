@@ -84,6 +84,7 @@ hex     [0-9a-fA-F]
 (?i:eqv)     { return EQV;    }
 (?i:imp)     { return IMP;    }
 (?i:asc)     { return ASC;    }
+(?i:on)      { return ON;     }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 
