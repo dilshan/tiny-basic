@@ -1,6 +1,8 @@
 #ifndef __PLATFORM_DEF_HEADER__
 #define __PLATFORM_DEF_HEADER__
 
+#define INT_SIZE  32
+
 // Maximum number of stored command lines and characters per line.
 #define MAX_LINES 256
 #define MAX_LINE_LEN 256

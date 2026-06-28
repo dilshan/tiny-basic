@@ -72,6 +72,10 @@ digit [0-9]
 (?i:not)     { return NOT;    }
 (?i:xnor)    { return XNOR;   }
 (?i:xor)     { return XOR;    }
+(?i:hex)     { return HEX;    }
+(?i:bin)     { return BIN;    }
+(?i:bin8)    { return BIN8;   }
+(?i:oct)     { return OCT;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 {digit}+     { yylval.ival = atoi(yytext); return NUMBER; }

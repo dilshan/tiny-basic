@@ -6,6 +6,7 @@
 
 #include "platform.h"
 #include "math.h"
+#include "formatter.h"
 
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
@@ -45,6 +46,15 @@ typedef enum {
     LINE_UNTIL,
     LINE_REPEAT
 } LineType;
+
+// Print mode for integers.
+typedef enum {
+    PRINT_DEC,
+    PRINT_HEX,
+    PRINT_BIN,
+    PRINT_BIN_GRP,
+    PRINT_OCT
+} PrintMode;
 
 // Mapping from control structure root lines to matching terminators.
 typedef struct {
@@ -95,6 +105,8 @@ static unsigned char cjump_map_size;
 
 static short call_stack[STACK_DEPTH];
 static short stack_top = 0;
+
+static PrintMode current_print_mode = PRINT_DEC;
 
 unsigned char is_continue = 1;
 
@@ -214,6 +226,8 @@ static void flush_memory(void) {
     jump_pending = JUMP_NONE;
     jump_target = 0;
     cjump_map_size = 0;
+
+    current_print_mode = PRINT_DEC;
 
     loop_top = 0;
     stack_top = 0;
@@ -387,7 +401,7 @@ static short stack_pop(void) {
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
-%token BAND BOR NOR NAND NOT XNOR XOR
+%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -414,6 +428,18 @@ line
 
 statement
     : PRINT '(' expr_list ')'          { if (!if_skip) str_print("\n"); }
+
+    | PRINT '(' HEX ','                { if (!if_skip) current_print_mode = PRINT_HEX; }   
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }
+
+    | PRINT '(' BIN ','                { if (!if_skip) current_print_mode = PRINT_BIN; }   
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }
+
+    | PRINT '(' BIN8 ','               { if (!if_skip) current_print_mode = PRINT_BIN_GRP; }   
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }   
+
+    | PRINT '(' OCT ','                { if (!if_skip) current_print_mode = PRINT_OCT; }   
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }      
 
     | DELAY '(' expression ')'
         {
@@ -752,7 +778,33 @@ expr_item
         }
     | expression
         {
-            if (!if_skip) str_print("%d", $1);
+            if (!if_skip) {
+                switch(current_print_mode)
+                {
+                    case PRINT_HEX:
+                        str_print("%x", $1);
+                        break;
+                    case PRINT_OCT:
+                        str_print("%o", $1);
+                        break;
+                    case PRINT_BIN:
+                        {
+                            char temp_buffer[INT_SIZE + 1];
+                            int_to_binary($1, temp_buffer, 0);
+                            str_print("%s", temp_buffer);
+                        }
+                        break;
+                    case PRINT_BIN_GRP:
+                        {
+                            char temp_buffer[INT_SIZE + 13];
+                            int_to_binary($1, temp_buffer, 1);
+                            str_print("%s", temp_buffer);
+                        }
+                        break;
+                    default:
+                        str_print("%d", $1);
+                }
+            }
         }
     ;
 
@@ -895,6 +947,8 @@ static void do_run(void) {
   
   cjump_map_size = 0;
   pc = 0;
+
+  current_print_mode = PRINT_DEC;
 
   build_conditional_jump_map();
 

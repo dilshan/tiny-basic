@@ -30,6 +30,7 @@ CPP_SRCS := \
     $(SRC_DIR)/main.cpp \
     $(SRC_DIR)/platform.c \
     $(SRC_DIR)/math.c \
+    $(SRC_DIR)/formatter.c \
     $(SRC_DIR)/platform_io.cpp \
     $(SRC_DIR)/tinybasic.tab.c \
     $(SRC_DIR)/lex.yy.c
