@@ -81,6 +81,8 @@ hex     [0-9a-fA-F]
 (?i:bin8)    { return BIN8;   }
 (?i:oct)     { return OCT;    }
 (?i:iff)     { return IFF;    }
+(?i:eqv)     { return EQV;    }
+(?i:imp)     { return IMP;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 
