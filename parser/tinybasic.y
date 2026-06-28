@@ -401,7 +401,7 @@ static short stack_pop(void) {
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
-%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP
+%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -936,6 +936,11 @@ factor
     | SUM '(' sum_args ')'       { $$ = $3; }
     | POW '(' expression ',' expression ')'         { $$ = power($3, $5); }
     | IFF '(' boolean_expr ',' expression ',' expression ')'    { $$ = $3 ? $5 : $7; }
+    | ASC '(' STRING ')'  
+        {
+            char* s = $3;
+            $$ = (strlen(s) > 2) ? s[1] : 0;
+        }
     ;
 
 %%

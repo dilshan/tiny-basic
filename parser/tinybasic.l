@@ -83,6 +83,7 @@ hex     [0-9a-fA-F]
 (?i:iff)     { return IFF;    }
 (?i:eqv)     { return EQV;    }
 (?i:imp)     { return IMP;    }
+(?i:asc)     { return ASC;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 
