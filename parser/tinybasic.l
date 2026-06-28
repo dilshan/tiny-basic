@@ -10,7 +10,11 @@
 %option yylineno noyywrap noinput nounput
 
 alpha [a-zA-Z]
-digit [0-9]
+
+decimal [0-9]
+octal   [0-7]
+binary  [01]
+hex     [0-9a-fA-F]
 
 %%
 
@@ -79,7 +83,27 @@ digit [0-9]
 (?i:iff)     { return IFF;    }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
-{digit}+     { yylval.ival = atoi(yytext); return NUMBER; }
+
+0[xX]{hex}+ {
+    yylval.ival = (int)strtol(yytext, NULL, 16);
+    return NUMBER;
+}
+
+0[bB]{binary}+ {
+    yylval.ival = (int)strtol(yytext + 2, NULL, 2); 
+    return NUMBER;
+}
+
+0[oO]{octal}+ {
+    yylval.ival = (int)strtol(yytext + 2, NULL, 8);
+    return NUMBER;
+}
+
+{decimal}+ {
+    yylval.ival = (int)strtol(yytext, NULL, 10);
+    return NUMBER;
+}
+
 \"[^\"]*\"   { yylval.sval = strdup(yytext); return STRING; }
 
 "<="         { return REL_LE; }
