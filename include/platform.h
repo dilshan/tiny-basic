@@ -7,18 +7,6 @@
 #define MAX_LINES 256
 #define MAX_LINE_LEN 256
 
-// Digital pin modes for the platform abstraction.
-#define PIN_MODE_INPUT 0
-#define PIN_MODE_OUTPUT 1
-
-// Maximum supported analog and digital pins for the target board.
-#define MAX_ANALOG_PIN_COUNT 16
-#define MAX_DIGITAL_PIN_COUNT 54
-
-// Enable internal use of pull-up resistors when available.
-// If enabled, the SET operation always activate the internal pull-ups of the MCU digital inputs.
-#define SET_PULL_UP
-
 #ifdef __cplusplus
 extern "C" {
 #endif

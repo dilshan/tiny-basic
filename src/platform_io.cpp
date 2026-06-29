@@ -3,6 +3,7 @@
 #include <Arduino.h>
 
 #include "platform_io.h"
+#include "platform_def.h"
 #include "platform.h"
 
 int getAnalogPortValue(int pin)

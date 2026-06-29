@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "platform.h"
+#include "platform_def.h"
 #include "math.h"
 #include "formatter.h"
 

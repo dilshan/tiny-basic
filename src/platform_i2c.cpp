@@ -3,10 +3,7 @@
 #include <Arduino.h>
 
 #include "platform_io.h"
-#include "platform.h"
-
-#define I2C_SDA_PIN   20
-#define I2C_SCL_PIN   21
+#include "platform_def.h"
 
 // Set to 100kHz standard mode speed.
 #define I2C_DELAY() delayMicroseconds(4)
