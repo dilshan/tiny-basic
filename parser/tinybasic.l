@@ -92,6 +92,7 @@ hex     [0-9a-fA-F]
 (?i:start)   { return START;  }
 (?i:restart) { return RESTART; }
 (?i:init)    { return INIT;   }
+(?i:spi)     { return SPI;    }
  
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 

@@ -33,6 +33,13 @@ extern unsigned char (*platform_i2c_write)(unsigned char data);
 extern unsigned char (*platform_i2c_read)(unsigned char ack);
 extern void (*platform_i2c_stop)(void);
 
+extern void (*platform_spi_init)(void);
+extern void (*platform_spi_select)(void);
+extern void (*platform_spi_deselect)(void);
+extern unsigned char (*platform_spi_transfer)(unsigned char output_byte);
+
+extern unsigned char platform_spi_read_buffer;
+
 void init_parser(void);
 void do_parse(char *line);
 

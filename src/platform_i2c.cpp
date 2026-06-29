@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "platform_io.h"
+#include "platform_i2c.h"
 #include "platform_def.h"
 
 // Set to 100kHz standard mode speed.

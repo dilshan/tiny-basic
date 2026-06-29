@@ -9,6 +9,7 @@
 
 #include "platform_io.h"
 #include "platform_i2c.h"
+#include "platform_spi.h"
 
 #else
 
@@ -112,6 +113,11 @@ void setup()
   platform_i2c_stop = i2cStop;
   platform_i2c_write = i2cWrite;
   platform_i2c_read = i2cRead;
+
+  platform_spi_init = spiInit;
+  platform_spi_select = spiSelect;
+  platform_spi_deselect = spiDeselect;
+  platform_spi_transfer = spiTransfer;
 
   lineIdx = 0;
 

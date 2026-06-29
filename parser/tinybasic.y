@@ -237,6 +237,8 @@ static void flush_memory(void) {
     
     current_print_mode = PRINT_DEC;
 
+    platform_spi_read_buffer = 0xFF;
+
     loop_top = 0;
     stack_top = 0;
 
@@ -410,7 +412,7 @@ static short stack_pop(void) {
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON
-%token I2C START RESTART STOP INIT READ WRITE
+%token I2C SPI START RESTART STOP INIT READ WRITE
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -512,6 +514,16 @@ statement
         { 
             if (!if_skip) {
                 if(!platform_i2c_write($5)) warn_print("Received NACK from I2C\n");
+            }
+        }
+
+    | SPI '(' INIT ')'      { if (!if_skip) platform_spi_init();     }
+    | SPI '(' START ')'     { if (!if_skip) platform_spi_select();   }
+    | SPI '(' STOP ')'      { if (!if_skip) platform_spi_deselect(); }
+    | SPI '(' WRITE ',' expression ')'
+        {
+            if (!if_skip) {
+                platform_spi_read_buffer = platform_spi_transfer($5);
             }
         }
 
@@ -992,6 +1004,7 @@ factor
             $$ = (strlen(s) > 2) ? s[1] : 0;
         }
     | I2C '(' READ ',' expression ')' { $$ = platform_i2c_read($5); }
+    | SPI '(' READ ')'           { $$ = platform_spi_read_buffer;   }
     ;
 
 %%
@@ -1009,6 +1022,8 @@ static void do_run(void) {
   is_continue = 1;
 
   current_print_mode = PRINT_DEC;
+
+  platform_spi_read_buffer = 0xFF;
 
   build_conditional_jump_map();
 

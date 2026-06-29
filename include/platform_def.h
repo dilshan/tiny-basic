@@ -17,4 +17,10 @@
 #define I2C_SDA_PIN   20
 #define I2C_SCL_PIN   21
 
+// MOSI, MISO, SCK and CS pin mapping for soft SPI implementation.
+#define SPI_MOSI_PIN  22
+#define SPI_MISO_PIN  23
+#define SPI_SCK_PIN   24
+#define SPI_CS_PIN    25
+
 #endif /* __PLATFORM_SYSTEM_DEF_HEADER__ */

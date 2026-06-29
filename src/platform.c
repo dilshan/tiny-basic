@@ -21,3 +21,10 @@ void (*platform_i2c_restart)(void) = NULL;
 unsigned char (*platform_i2c_write)(unsigned char data) = NULL;
 unsigned char (*platform_i2c_read)(unsigned char ack) = NULL;
 void (*platform_i2c_stop)(void) = NULL;
+
+unsigned char platform_spi_read_buffer = 0xFF;
+
+void (*platform_spi_init)(void) = NULL;
+void (*platform_spi_select)(void) = NULL;
+void (*platform_spi_deselect)(void) = NULL;
+unsigned char (*platform_spi_transfer)(unsigned char output_byte) = NULL;
