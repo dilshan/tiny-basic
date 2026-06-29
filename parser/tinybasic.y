@@ -409,6 +409,7 @@ static short stack_pop(void) {
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON
+%token I2C START RESTART STOP INIT READ WRITE
 
 %type <ival> expression term factor boolean_expr mode sum_args sumsq_args
 
@@ -446,7 +447,7 @@ statement
     expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }   
 
     | PRINT '(' OCT ','                { if (!if_skip) current_print_mode = PRINT_OCT; }   
-    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }      
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }  
 
     | ON expression ','                
         { 
@@ -499,6 +500,17 @@ statement
                     }                    
                     platform_delay_ms(10);
                 }
+            }
+        }
+
+    | I2C '(' INIT ')'     { if (!if_skip) platform_i2c_init();    }
+    | I2C '(' START ')'    { if (!if_skip) platform_i2c_start();   }
+    | I2C '(' RESTART ')'  { if (!if_skip) platform_i2c_restart(); }
+    | I2C '(' STOP ')'     { if (!if_skip) platform_i2c_stop();    }
+    | I2C '(' WRITE ',' expression ')' 
+        { 
+            if (!if_skip) {
+                if(!platform_i2c_write($5)) warn_print("Received NACK from I2C\n");
             }
         }
 
@@ -978,6 +990,7 @@ factor
             char* s = $3;
             $$ = (strlen(s) > 2) ? s[1] : 0;
         }
+    | I2C '(' READ ',' expression ')' { $$ = platform_i2c_read($5); }
     ;
 
 %%
@@ -1014,8 +1027,8 @@ static void do_run(void) {
     jump_pending = JUMP_NONE;
     if_skip = 0;
 
-    if(is_key_pressed != NULL) {
-        if(is_key_pressed() == 0x1B) {
+    if(platform_is_key_pressed != NULL) {
+        if(platform_is_key_pressed() == 0x1B) {
             running = 0;
             is_continue = 0;
             continue;

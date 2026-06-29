@@ -85,7 +85,14 @@ hex     [0-9a-fA-F]
 (?i:imp)     { return IMP;    }
 (?i:asc)     { return ASC;    }
 (?i:on)      { return ON;     }
-
+(?i:i2c)     { return I2C;    }
+(?i:write)   { return WRITE;  }
+(?i:read)    { return READ;   }
+(?i:stop)    { return STOP;   }
+(?i:start)   { return START;  }
+(?i:restart) { return RESTART; }
+(?i:init)    { return INIT;   }
+ 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 
 0[xX]{hex}+ {

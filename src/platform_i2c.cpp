@@ -1,0 +1,100 @@
+#ifndef DEBUG
+
+#include <Arduino.h>
+
+#include "platform_io.h"
+#include "platform.h"
+
+#define I2C_SDA_PIN   20
+#define I2C_SCL_PIN   21
+
+// Set to 100kHz standard mode speed.
+#define I2C_DELAY() delayMicroseconds(4)
+
+void i2cInit() {
+    pinMode(I2C_SDA_PIN, INPUT);
+    pinMode(I2C_SCL_PIN, INPUT);
+}
+
+void i2cStart() {
+    pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
+    I2C_DELAY();
+    pinMode(I2C_SCL_PIN, OUTPUT); digitalWrite(I2C_SCL_PIN, LOW);
+    I2C_DELAY();
+}
+
+void i2cRestart() {
+    pinMode(I2C_SDA_PIN, INPUT);
+    I2C_DELAY();
+    pinMode(I2C_SCL_PIN, INPUT);
+    I2C_DELAY();
+    i2cStart();
+}
+
+unsigned char i2cWrite(unsigned char data) {
+    // Clock out 8-bits.
+    for (int i = 0; i < 8; i++) {
+        if (data & 0x80) {
+            pinMode(I2C_SDA_PIN, INPUT);
+        } else {
+            pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
+        }
+        data <<= 1;
+        I2C_DELAY();
+        pinMode(I2C_SCL_PIN, INPUT);
+        I2C_DELAY();
+        pinMode(I2C_SCL_PIN, OUTPUT); digitalWrite(I2C_SCL_PIN, LOW);
+        I2C_DELAY();
+    }
+    
+    // Read 9th bit - ACK/NACK from the slave.
+    pinMode(I2C_SDA_PIN, INPUT); 
+    I2C_DELAY();
+    pinMode(I2C_SCL_PIN, INPUT);
+    I2C_DELAY();
+
+    unsigned char ack = (digitalRead(I2C_SDA_PIN) == LOW);
+    pinMode(I2C_SCL_PIN, OUTPUT); digitalWrite(I2C_SCL_PIN, LOW);
+    I2C_DELAY();
+    return ack; 
+}
+
+unsigned char i2cRead(unsigned char send_ack) {
+    unsigned char data = 0;
+    pinMode(I2C_SDA_PIN, INPUT);
+    
+    for (int i = 0; i < 8; i++) {
+        I2C_DELAY();
+        pinMode(I2C_SCL_PIN, INPUT);
+        I2C_DELAY();
+        data <<= 1;
+        if (digitalRead(I2C_SDA_PIN) == HIGH) data |= 0x01;
+        pinMode(I2C_SCL_PIN, OUTPUT); digitalWrite(I2C_SCL_PIN, LOW);
+    }
+    
+    // Send ACK or NACK master signal.
+    if (send_ack) {
+        pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
+    } else {
+        pinMode(I2C_SDA_PIN, INPUT);
+    }
+
+    I2C_DELAY();
+    pinMode(I2C_SCL_PIN, INPUT);
+    I2C_DELAY();
+    pinMode(I2C_SCL_PIN, OUTPUT); digitalWrite(I2C_SCL_PIN, LOW);
+    pinMode(I2C_SDA_PIN, INPUT);
+    I2C_DELAY();
+    return data;
+}
+
+void i2cStop() {
+    pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
+    I2C_DELAY();
+    pinMode(I2C_SCL_PIN, INPUT);
+    I2C_DELAY();
+    pinMode(I2C_SDA_PIN, INPUT);
+    I2C_DELAY();
+}
+
+#endif

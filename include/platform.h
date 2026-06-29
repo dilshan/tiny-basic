@@ -26,6 +26,7 @@ extern "C" {
 // Function pointers provided by the platform implementation.
 extern int (*str_print)(const char*, ...);
 extern int (*err_print)(const char*, ...);
+extern int (*warn_print)(const char*, ...);
 extern int (*int_input)(void);
 
 extern void (*platform_delay_ms)(int ms);
@@ -35,7 +36,14 @@ extern void (*platform_pin_mode)(int pin, int mode);
 extern void (*platform_digital_write)(int pin, int value);
 extern int (*platform_digital_read)(int pin);
 
-extern int (*is_key_pressed)(void);
+extern int (*platform_is_key_pressed)(void);
+
+extern void (*platform_i2c_init)(void);
+extern void (*platform_i2c_start)(void);
+extern void (*platform_i2c_restart)(void);
+extern unsigned char (*platform_i2c_write)(unsigned char data);
+extern unsigned char (*platform_i2c_read)(unsigned char ack);
+extern void (*platform_i2c_stop)(void);
 
 void init_parser(void);
 void do_parse(char *line);

@@ -8,6 +8,7 @@
 #include <Arduino.h>
 
 #include "platform_io.h"
+#include "platform_i2c.h"
 
 #else
 
@@ -93,6 +94,7 @@ void setup()
   // Connect the parser's print callbacks to the Serial interface.
   str_print = serialPrint;
   err_print = serialPrint;
+  warn_print = serialPrint;
 
   // Connect the platform abstraction callbacks.
   platform_delay_ms = delayMs;
@@ -101,7 +103,15 @@ void setup()
   platform_digital_write = setPinValue;
   platform_digital_read = getPinValue;
   int_input = serialInput;
-  is_key_pressed = isKeyPressed;
+
+  platform_is_key_pressed = isKeyPressed;
+
+  platform_i2c_init = i2cInit;
+  platform_i2c_start = i2cStart;
+  platform_i2c_restart = i2cRestart;
+  platform_i2c_stop = i2cStop;
+  platform_i2c_write = i2cWrite;
+  platform_i2c_read = i2cRead;
 
   lineIdx = 0;
 
@@ -159,7 +169,7 @@ int main()
 {
   err_print = printf;
   str_print = printf;
-  
+  warn_print = printf;
 
   init_parser();
 
