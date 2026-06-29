@@ -25,6 +25,9 @@ char line[MAX_LINE_LEN];
 // Current index into the command line buffer.
 short lineIdx = 0;
 
+extern unsigned char is_continue;
+extern unsigned char running;
+
 #ifndef DEBUG
 // Print formatted text to the Serial interface.
 int serialPrint(const char *format, ...)
@@ -98,6 +101,7 @@ void setup()
   platform_digital_write = setPinValue;
   platform_digital_read = getPinValue;
   int_input = serialInput;
+  is_key_pressed = isKeyPressed;
 
   lineIdx = 0;
 
@@ -151,12 +155,11 @@ void loop()
 
 #else
 
-extern unsigned char is_continue;
-
 int main()
 {
   err_print = printf;
   str_print = printf;
+  
 
   init_parser();
 

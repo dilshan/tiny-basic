@@ -59,4 +59,13 @@ int getPinValue(int pin)
   return digitalRead(pin);
 }
 
+int isKeyPressed()
+{
+  if(Serial.available()) {
+    return Serial.read();
+  }
+
+  return -1;
+}
+
 #endif

@@ -105,7 +105,6 @@ static unsigned char if_skip = 0;
 
 static unsigned short prog_size = 0;
 static short pc = 0;
-static unsigned char running = 0;
 static size_t loop_top = 0;
 static unsigned char cjump_map_size;
 static OnGotoFrame on_goto_frame;
@@ -116,6 +115,7 @@ static short stack_top = 0;
 static PrintMode current_print_mode = PRINT_DEC;
 
 unsigned char is_continue = 1;
+unsigned char running = 0;
 
 void yyerror(const char* s);
 
@@ -992,6 +992,7 @@ static void do_run(void) {
   
   cjump_map_size = 0;
   pc = 0;
+  is_continue = 1;
 
   current_print_mode = PRINT_DEC;
 
@@ -1012,6 +1013,14 @@ static void do_run(void) {
 
     jump_pending = JUMP_NONE;
     if_skip = 0;
+
+    if(is_key_pressed != NULL) {
+        if(is_key_pressed() == 0x1B) {
+            running = 0;
+            is_continue = 0;
+            continue;
+        }
+    }
 
     YY_BUFFER_STATE buf = yy_scan_string(exec);
     yyparse();

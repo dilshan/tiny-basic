@@ -7,4 +7,6 @@ void setPinMode(int pin, int mode);
 void setPinValue(int pin, int value);
 int getPinValue(int pin);
 
+int isKeyPressed();
+
 #endif /* __PLATFORM_IO_HEADER__ */
