@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tinybasic.tab.h"
 
+#include "value.h"
+#include "tinybasic.tab.h"
 #include "platform.h"
 %}
 
@@ -109,6 +110,11 @@ hex     [0-9a-fA-F]
 0[oO]{octal}+ {
     yylval.ival = (int)strtol(yytext + 2, NULL, 8);
     return NUMBER;
+}
+
+([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*) {
+    yylval.fval = atof(yytext);
+    return FLOAT_NUMBER;
 }
 
 {decimal}+ {
