@@ -109,8 +109,8 @@ typedef struct {
 typedef struct {
   LoopType type;
   char var;
-  int limit;
-  int step;
+  double limit;
+  double step;
   unsigned short ret_pc;
 } LoopFrame;
 
@@ -621,13 +621,12 @@ statement
                 if (loop_top >= LOOP_STACK_DEPTH) {
                     err_print("LOOP stack overflow\n");
                 } else {
-                    int start = to_int($4);
-                    int limit = to_int($6);
-                    int step  = 1;
+                    double start = to_float($4);
+                    double limit = to_float($6);
 
-                    var_set($2, make_int(start));
+                    var_set($2, make_float(start));
 
-                    if ((step > 0) ? (start > limit) : (start < limit)) {
+                    if (start > limit) {
                         jump_target = find_end_node(program[pc].num, program[pc].type);
                         if (jump_target < 0) {
                             err_print("Missing matching NEXT\n");
@@ -640,7 +639,7 @@ statement
                         loop_stack[loop_top].type = LOOP_FOR;
                         loop_stack[loop_top].var = toupper($2);
                         loop_stack[loop_top].limit = limit;
-                        loop_stack[loop_top].step = step;
+                        loop_stack[loop_top].step = 1;
                         loop_stack[loop_top].ret_pc = pc + 1;
 
                         loop_top++;
@@ -655,15 +654,15 @@ statement
                 if (loop_top >= LOOP_STACK_DEPTH) {
                     err_print("LOOP stack overflow\n");
                 } else {
-                    int start = to_int($4);
-                    int limit = to_int($6);
-                    int step  = to_int($8);
+                    double start = to_float($4);
+                    double limit = to_float($6);
+                    double step  = to_float($8);
 
                     if (step == 0) {
                         err_print("STEP cannot be zero\n");
                     }
                     else {
-                        var_set($2, make_int(start));
+                        var_set($2, make_float(start));
 
                         if ((step > 0) ? (start > limit) : (start < limit)) {
                             jump_target = find_end_node(program[pc].num, program[pc].type);
@@ -701,8 +700,8 @@ statement
                     err_print("Mismatched NEXT variable\n");
                 } else {
                     LoopFrame* f = &loop_stack[loop_top - 1];
-                    int newval = to_int(var_get(f->var)) + f->step;
-                    var_set(f->var, make_int(newval));
+                    double newval = to_float(var_get(f->var)) + f->step;
+                    var_set(f->var, make_float(newval));
 
                     int done = (f->step > 0) ? (newval > f->limit) : (newval < f->limit);
                     if (!done) {
