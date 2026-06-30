@@ -94,6 +94,8 @@ hex     [0-9a-fA-F]
 (?i:restart) { return RESTART; }
 (?i:init)    { return INIT;   }
 (?i:spi)     { return SPI;    }
+(?i:int)     { return INT;    }
+(?i:sgn)     { return SGN;    }
  
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 

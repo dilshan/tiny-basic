@@ -474,7 +474,7 @@ static short stack_pop(void) {
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON
-%token I2C SPI START RESTART STOP INIT READ WRITE
+%token I2C SPI START RESTART STOP INIT READ WRITE INT SGN
 
 %type <val> expression term factor sum_args sumsq_args
 %type <ival> boolean_expr mode
@@ -1100,6 +1100,14 @@ factor
         }
     | I2C '(' READ ',' expression ')' { REQUIRE_INT($$, $5, platform_i2c_read($5.as.i)); }
     | SPI '(' READ ')'                { $$ = make_int(platform_spi_read_buffer);     }
+    | INT '(' expression ')'          { $$ = make_int(to_int($3)); }
+    | SGN '(' expression ')'
+        {
+            double tmp = to_float($3);
+            if(tmp == 0) $$ = make_int(0);
+            else if(tmp < 0) $$ = make_int(-1);
+            else $$ = make_int(1);
+        }
     ;
 
 %%
