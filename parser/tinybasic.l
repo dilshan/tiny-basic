@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tinybasic.tab.h"
 
+#include "value.h"
+#include "tinybasic.tab.h"
 #include "platform.h"
 %}
 
@@ -93,6 +94,8 @@ hex     [0-9a-fA-F]
 (?i:restart) { return RESTART; }
 (?i:init)    { return INIT;   }
 (?i:spi)     { return SPI;    }
+(?i:int)     { return INT;    }
+(?i:sgn)     { return SGN;    }
  
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 
@@ -109,6 +112,11 @@ hex     [0-9a-fA-F]
 0[oO]{octal}+ {
     yylval.ival = (int)strtol(yytext + 2, NULL, 8);
     return NUMBER;
+}
+
+([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*) {
+    yylval.fval = atof(yytext);
+    return FLOAT_NUMBER;
 }
 
 {decimal}+ {

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "value.h"
 #include "platform.h"
 #include "platform_def.h"
 #include "math.h"
@@ -13,6 +14,38 @@
 #define YY_TYPEDEF_YY_BUFFER_STATE
 typedef struct yy_buffer_state* YY_BUFFER_STATE;
 #endif
+
+// Macro for arithmetic operators (+, -, *, /).
+#define DO_MATH_OP(res, a, b, op) \
+    if ((a).type == VAL_FLOAT || (b).type == VAL_FLOAT) { \
+        (res) = make_float(to_float(a) op to_float(b)); \
+    } else { \
+        (res) = make_int((a).as.i op (b).as.i); \
+    }
+
+// Macro for relational operators (=, <, >).
+#define DO_REL_OP(res, a, b, op) \
+    if ((a).type == VAL_FLOAT || (b).type == VAL_FLOAT) { \
+        (res) = make_int(to_float(a) op to_float(b)); \
+    } else { \
+        (res) = make_int((a).as.i op (b).as.i); \
+    }
+
+#define REQUIRE_INT(res, d, f) \
+    if((d).type != VAL_INT) { \
+        err_print("Required integer type\n");\
+        (res) = make_int(0); \
+    } else { \
+        (res) = make_int(f); \
+    }
+
+#define REQUIRE_INT_EX(res, d1, d2, f) \
+    if(((d1).type != VAL_INT) || ((d2).type != VAL_INT)){ \
+        err_print("Required integer type\n");\
+        (res) = make_int(0); \
+    } else { \
+        (res) = make_int(f); \
+    }
 
 // Parser runtime limits.
 #define STACK_DEPTH 32
@@ -76,8 +109,8 @@ typedef struct {
 typedef struct {
   LoopType type;
   char var;
-  int limit;
-  int step;
+  double limit;
+  double step;
   unsigned short ret_pc;
 } LoopFrame;
 
@@ -94,7 +127,7 @@ extern int yylex(void);
 extern int yylineno;
 
 // Variables A..Z stored as uppercase indices.
-static int variables[26];
+static VarVal variables[26];
 
 static Line program[MAX_LINES];
 static LoopFrame loop_stack[LOOP_STACK_DEPTH];
@@ -120,11 +153,37 @@ unsigned char running = 0;
 
 void yyerror(const char* s);
 
-static inline int var_get(char c) {
-  return variables[toupper((unsigned char)c) - 'A'];
+static inline VarVal make_int(int i) { 
+    VarVal v; 
+    v.type = VAL_INT; 
+    v.as.i = i; 
+    return v; 
 }
-static inline void var_set(char c, int v) {
-  variables[toupper((unsigned char)c) - 'A'] = v;
+
+static inline VarVal make_float(double f) { 
+    VarVal v; 
+    v.type = VAL_FLOAT; 
+    v.as.f = f; 
+    return v; 
+}
+
+static inline int to_int(VarVal v) {
+    if (v.type == VAL_INT) return v.as.i;
+    if (v.type == VAL_FLOAT) return (int)v.as.f;
+    return 0;
+}
+
+static inline double to_float(VarVal v) {
+    if (v.type == VAL_FLOAT) return v.as.f;
+    if (v.type == VAL_INT) return (double)v.as.i;
+    return 0.0;
+}
+
+static inline VarVal var_get(char c) {
+    return variables[toupper((unsigned char)c) - 'A'];
+}
+static inline void var_set(char c, VarVal v) {
+    variables[toupper((unsigned char)c) - 'A'] = v;
 }
 
 static int is_keyword_end(char c) {
@@ -397,13 +456,16 @@ static short stack_pop(void) {
 %}
 
 %union {
-    int   ival;     /* For numeric literals. */
-    char  cval;     /* For single-letter variables. */
-    char* sval;     /* For quoted strings. */
+    int    ival;
+    double fval;
+    char   cval;
+    char*  sval;
+    VarVal val;
 }
 
 // Terminals for BASIC keywords and operators.
 %token <ival> NUMBER
+%token <fval> FLOAT_NUMBER
 %token <cval> VAR
 %token <sval> STRING
 
@@ -412,9 +474,10 @@ static short stack_pop(void) {
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON
-%token I2C SPI START RESTART STOP INIT READ WRITE
+%token I2C SPI START RESTART STOP INIT READ WRITE INT SGN
 
-%type <ival> expression term factor boolean_expr mode sum_args sumsq_args
+%type <val> expression term factor sum_args sumsq_args
+%type <ival> boolean_expr mode
 
 // Operator precedence and associativity for arithmetic expressions.
 %left AND OR
@@ -455,9 +518,14 @@ statement
     | ON expression ','                
         { 
             if ((running) && (!if_skip)) { 
-                on_goto_frame.target = $2; 
-                on_goto_frame.index = 0; 
-                on_goto_frame.target_num = -1;
+
+                if($2.type != VAL_INT)
+                    err_print("Required integer type\n");
+                else {
+                    on_goto_frame.target = $2.as.i; 
+                    on_goto_frame.index = 0; 
+                    on_goto_frame.target_num = -1;
+                }
             } 
         }
     line_args      
@@ -473,24 +541,34 @@ statement
     | DELAY '(' expression ')'
         {
             if (!if_skip) {
-                int ms = $3;
-                if (ms < 0) ms = 0;
-                
-                platform_delay_ms(ms);
+                if($3.type != VAL_INT)
+                    err_print("Required integer type\n");
+                else {
+                    int ms = $3.as.i;
+                    if (ms < 0) ms = 0;
+                    
+                    platform_delay_ms(ms);
+                }
             }
         }
 
     | PIN '(' expression ',' mode ')'
         {
             if (!if_skip) {
-                platform_pin_mode($3, $5);
+                if($3.type != VAL_INT)
+                    err_print("Required integer type\n");
+                else
+                    platform_pin_mode($3.as.i, $5);
             }
         }
 
     | SET '(' expression ',' expression ')'
         {
             if (!if_skip) {
-                platform_digital_write($3, $5);
+                if(($3.type != VAL_INT) || ($5.type != VAL_INT))
+                    err_print("Required integer type\n");
+                else
+                    platform_digital_write($3.as.i, $5.as.i);
             }
         }
 
@@ -498,10 +576,14 @@ statement
         {
             if (!if_skip) {
                 while(is_continue) {
-                    if(platform_digital_read($3) == $5) {
-                        break;
-                    }                    
-                    platform_delay_ms(10);
+                    if(($3.type != VAL_INT) || ($5.type != VAL_INT))
+                        err_print("Required integer type\n");
+                    else {
+                        if(platform_digital_read($3.as.i) == $5.as.i) {
+                            break;
+                        }                    
+                        platform_delay_ms(10);
+                    }
                 }
             }
         }
@@ -513,7 +595,10 @@ statement
     | I2C '(' WRITE ',' expression ')' 
         { 
             if (!if_skip) {
-                if(!platform_i2c_write($5)) warn_print("Received NACK from I2C\n");
+                if($5.type != VAL_INT) 
+                    err_print("Required integer type\n");
+                else
+                    if(!platform_i2c_write($5.as.i)) warn_print("Received NACK from I2C\n");
             }
         }
 
@@ -523,7 +608,10 @@ statement
     | SPI '(' WRITE ',' expression ')'
         {
             if (!if_skip) {
-                platform_spi_read_buffer = platform_spi_transfer($5);
+                if($5.type != VAL_INT) 
+                    err_print("Required integer type\n");
+                else 
+                    platform_spi_read_buffer = platform_spi_transfer($5.as.i);
             }
         }
 
@@ -533,13 +621,12 @@ statement
                 if (loop_top >= LOOP_STACK_DEPTH) {
                     err_print("LOOP stack overflow\n");
                 } else {
-                    int start = $4;
-                    int limit = $6;
-                    int step  = 1;
+                    double start = to_float($4);
+                    double limit = to_float($6);
 
-                    var_set($2, start);
+                    var_set($2, make_float(start));
 
-                    if ((step > 0) ? (start > limit) : (start < limit)) {
+                    if (start > limit) {
                         jump_target = find_end_node(program[pc].num, program[pc].type);
                         if (jump_target < 0) {
                             err_print("Missing matching NEXT\n");
@@ -552,7 +639,7 @@ statement
                         loop_stack[loop_top].type = LOOP_FOR;
                         loop_stack[loop_top].var = toupper($2);
                         loop_stack[loop_top].limit = limit;
-                        loop_stack[loop_top].step = step;
+                        loop_stack[loop_top].step = 1;
                         loop_stack[loop_top].ret_pc = pc + 1;
 
                         loop_top++;
@@ -567,15 +654,15 @@ statement
                 if (loop_top >= LOOP_STACK_DEPTH) {
                     err_print("LOOP stack overflow\n");
                 } else {
-                    int start = $4;
-                    int limit = $6;
-                    int step  = $8;
+                    double start = to_float($4);
+                    double limit = to_float($6);
+                    double step  = to_float($8);
 
                     if (step == 0) {
                         err_print("STEP cannot be zero\n");
                     }
                     else {
-                        var_set($2, start);
+                        var_set($2, make_float(start));
 
                         if ((step > 0) ? (start > limit) : (start < limit)) {
                             jump_target = find_end_node(program[pc].num, program[pc].type);
@@ -613,8 +700,8 @@ statement
                     err_print("Mismatched NEXT variable\n");
                 } else {
                     LoopFrame* f = &loop_stack[loop_top - 1];
-                    int newval = var_get(f->var) + f->step;
-                    var_set(f->var, newval);
+                    double newval = to_float(var_get(f->var)) + f->step;
+                    var_set(f->var, make_float(newval));
 
                     int done = (f->step > 0) ? (newval > f->limit) : (newval < f->limit);
                     if (!done) {
@@ -763,7 +850,7 @@ statement
 
     | GOTO expression
         {
-            if (!if_skip) { jump_pending = JUMP_GOTO; jump_target = $2; }
+            if (!if_skip) { jump_pending = JUMP_GOTO; jump_target = to_int($2); }
         }
 
     | INPUT '(' var_list ')'
@@ -775,7 +862,7 @@ statement
 
     | GOSUB expression
         {
-            if (!if_skip) { jump_pending = JUMP_GOSUB; jump_target = $2; }
+            if (!if_skip) { jump_pending = JUMP_GOSUB; jump_target = to_int($2); }
         }
 
     | RETURN
@@ -832,27 +919,27 @@ expr_item
                 switch(current_print_mode)
                 {
                     case PRINT_HEX:
-                        str_print("%x", $1);
+                        str_print("%x", to_int($1));
                         break;
                     case PRINT_OCT:
-                        str_print("%o", $1);
+                        str_print("%o", to_int($1));
                         break;
                     case PRINT_BIN:
                         {
                             char temp_buffer[INT_SIZE + 1];
-                            int_to_binary($1, temp_buffer, 0);
+                            int_to_binary(to_int($1), temp_buffer, 0);
                             str_print("%s", temp_buffer);
                         }
                         break;
                     case PRINT_BIN_GRP:
                         {
                             char temp_buffer[INT_SIZE + 13];
-                            int_to_binary($1, temp_buffer, 1);
+                            int_to_binary(to_int($1), temp_buffer, 1);
                             str_print("%s", temp_buffer);
                         }
                         break;
                     default:
-                        str_print("%d", $1);
+                        str_print("%g", to_float($1));
                 }
             }
         }
@@ -866,7 +953,7 @@ var_list
                 str_print("? ");
                 
                 v = int_input();
-                var_set($1, v);
+                var_set($1, make_int(v));
             }
         }
     | var_list ',' VAR
@@ -876,7 +963,7 @@ var_list
                 str_print("? ");
                 
                 v = int_input();
-                var_set($3, v);
+                var_set($3, make_int(v));
             }
         }
     ;
@@ -884,23 +971,30 @@ var_list
 expression
     : term                       { $$ = $1;      }
     | '+' term   %prec UPLUS     { $$ = $2;      }
-    | '-' term   %prec UMINUS    { $$ = -$2;     }
-    | INVERT expression          { $$ = !($2);   }
-    | NOT expression             { $$ = ~($2);   }
-    | expression '+' term        { $$ = $1 + $3; }
-    | expression '-' term        { $$ = $1 - $3; }
-    | expression '=' expression    { $$ = ($1 == $3); }
-    | expression REL_NE expression { $$ = ($1 != $3); }
-    | expression REL_LT expression { $$ = ($1 < $3); }
-    | expression REL_LE expression { $$ = ($1 <= $3); }
-    | expression REL_GT expression { $$ = ($1 > $3); }
-    | expression REL_GE expression { $$ = ($1 >= $3); }
-    | expression AND expression    { $$ = ($1 && $3); }
-    | expression OR expression     { $$ = ($1 || $3); }
+    | '-' term   %prec UMINUS    
+        { 
+            if ($2.type == VAL_FLOAT) {
+                $$ = make_float(-$2.as.f);
+            } else {
+                $$ = make_int(-$2.as.i);
+            }
+        }
+    | INVERT expression          { $$ = make_int(!(to_int($2)));   }
+    | NOT expression             { $$ = make_int(~(to_int($2)));   }
+    | expression '+' term        { DO_MATH_OP($$, $1, $3, +); }
+    | expression '-' term        { DO_MATH_OP($$, $1, $3, -); }
+    | expression '=' expression    { DO_REL_OP($$, $1, $3, ==); }
+    | expression REL_NE expression { DO_REL_OP($$, $1, $3, !=); }
+    | expression REL_LT expression { DO_REL_OP($$, $1, $3, <);  }
+    | expression REL_LE expression { DO_REL_OP($$, $1, $3, <=); }
+    | expression REL_GT expression { DO_REL_OP($$, $1, $3, >);  }
+    | expression REL_GE expression { DO_REL_OP($$, $1, $3, >=); }
+    | expression AND expression    { $$ = make_int((to_int($1) && to_int($3))); }
+    | expression OR expression     { $$ = make_int((to_int($1) || to_int($3))); }
     ;
 
 boolean_expr
-    : expression                 { $$ = ($1 != 0); }
+    : expression                 { $$ = (to_float($1) != 0.0); }
     ;
 
 mode
@@ -911,12 +1005,12 @@ mode
 line_args
     : expression
         {
-            if(on_goto_frame.index == on_goto_frame.target) on_goto_frame.target_num = $1;
+            if(on_goto_frame.index == on_goto_frame.target) on_goto_frame.target_num = to_int($1);
             on_goto_frame.index++;
         }
     | line_args ',' expression
         {
-            if(on_goto_frame.index == on_goto_frame.target) on_goto_frame.target_num = $3;
+            if(on_goto_frame.index == on_goto_frame.target) on_goto_frame.target_num = to_int($3);
             on_goto_frame.index++;
         }
 
@@ -927,84 +1021,93 @@ sum_args
        }
     | sum_args ',' expression
        {
-            $$ = $1 + $3;
+            $$ = make_float(to_float($1) + to_float($3));
        }
     ;
 
 sumsq_args
     : expression
        {
-            $$ = ($1 * $1); 
+            $$ = make_float(to_float($1) * to_float($1)); 
        }
     | sumsq_args ',' expression
        {
-            $$ = $1 + ($3 * $3);
+            $$ = make_float(to_float($1) + (to_float($3) * to_float($3)));
        }
     ;
 
 term
     : factor                     { $$ = $1; }
-    | term '*' factor            { $$ = $1 * $3; }
+    | term '*' factor            { DO_MATH_OP($$, $1, $3, *); }
     | term '/' factor
         {
-            if ($3 == 0) { 
+            if (to_float($3) == 0) { 
                 err_print("Division by zero\n"); 
-                $$ = 0; 
+                $$ = make_float(0); 
             }
             else          
-                $$ = $1 / $3;
+                DO_MATH_OP($$, $1, $3, /); 
         }
 
     | term MOD factor
         {
-             if ($3 == 0) { 
+             if (to_float($3) == 0) { 
                 err_print("Division by zero\n"); 
-                $$ = 0; 
+                $$ = make_float(0);  
             }
             else          
-                $$ = $1 % $3;
+                $$ = make_float(to_int($1) % to_int($3));
         }
     
-    | term BAND factor  { $$ = $1 & $3;     }
-    | term BOR factor   { $$ = $1 | $3;     }
-    | term NOR factor   { $$ = !($1 | $3);  }
-    | term NAND factor  { $$ = !($1 & $3);  }
-    | term XNOR factor  { $$ = !($1 ^ $3);  }
-    | term XOR factor   { $$ = $1 ^ $3;     }
-    | term EQV factor   { $$ = ~($1 ^ $3);  }
-    | term IMP factor   { $$ = (~$1) | $3;  }
+    | term BAND factor  { REQUIRE_INT_EX($$, $1, $3, ($1.as.i & $3.as.i));    }
+    | term BOR factor   { REQUIRE_INT_EX($$, $1, $3, ($1.as.i | $3.as.i));    }
+    | term NOR factor   { REQUIRE_INT_EX($$, $1, $3, !($1.as.i | $3.as.i));   }
+    | term NAND factor  { REQUIRE_INT_EX($$, $1, $3, !($1.as.i & $3.as.i));   }
+    | term XNOR factor  { REQUIRE_INT_EX($$, $1, $3, !($1.as.i ^ $3.as.i));   }
+    | term XOR factor   { REQUIRE_INT_EX($$, $1, $3, ($1.as.i ^ $3.as.i));    }
+    | term EQV factor   { REQUIRE_INT_EX($$, $1, $3, ~($1.as.i ^ $3.as.i));   }
+    | term IMP factor   { REQUIRE_INT_EX($$, $1, $3, ((~$1.as.i) | $3.as.i)); }
     ;
 
 factor
-    : VAR                        { $$ = var_get($1); }
-    | NUMBER                     { $$ = $1; }
+    : VAR                        { $$ = var_get($1);    }
+    | NUMBER                     { $$ = make_int($1);   }
+    | FLOAT_NUMBER               { $$ = make_float($1); }
     | '(' expression ')'         { $$ = $2; }
-    | ANALOG '(' factor ')'      { $$ = platform_analog_read($3); }
-    | GET '(' factor ')'         { $$ = platform_digital_read($3); }
-    | HIGH                       { $$ = 1; }
-    | LOW                        { $$ = 0; }
-    | BTRUE                      { $$ = 1; }
-    | BFALSE                     { $$ = 0; }
-    | RAND '(' ')'               { $$ = rand() % 32768; }
-    | ABS '(' expression ')'     { $$ = abs($3); }
-    | MIN '(' expression ',' expression ')'         { $$ = min($3, $5); }
-    | MAX '(' expression ',' expression ')'         { $$ = max($3, $5); }
-    | BYTE '(' expression ')'    { $$ = $3 & 0xFF; }
-    | HBYTE '(' expression ')'   { $$ = $3 & 0xF0; }
-    | LBYTE '(' expression ')'   { $$ = $3 & 0x0F; }
-    | LSHIFT '(' expression ',' expression  ')'     { $$ = $3 << $5; }
-    | RSHIFT '(' expression ',' expression  ')'     { $$ = $3 >> $5; }
+    | ANALOG '(' factor ')'      { REQUIRE_INT($$, $3, platform_analog_read($3.as.i));  }
+    | GET '(' factor ')'         { REQUIRE_INT($$, $3, platform_digital_read($3.as.i)); }
+    | HIGH                       { $$ = make_int(1); }
+    | LOW                        { $$ = make_int(0); }
+    | BTRUE                      { $$ = make_int(1); }
+    | BFALSE                     { $$ = make_int(0); }
+    | RAND '(' ')'               { $$ = make_int(rand() % 32768); }
+    | ABS '(' expression ')'     { $$ = make_float(abs(to_float($3))); }
+    | MIN '(' expression ',' expression ')'         { $$ = make_float(min(to_float($3), to_float($5))); }
+    | MAX '(' expression ',' expression ')'         { $$ = make_float(max(to_float($3), to_float($5))); }
+    | BYTE '(' expression ')'    { REQUIRE_INT($$, $3, $3.as.i & 0xFF); }
+    | HBYTE '(' expression ')'   { REQUIRE_INT($$, $3, $3.as.i & 0xF0); }
+    | LBYTE '(' expression ')'   { REQUIRE_INT($$, $3, $3.as.i & 0x0F); }
+    | LSHIFT '(' expression ',' expression  ')'     { REQUIRE_INT_EX($$, $3, $5, $3.as.i << $5.as.i); }
+    | RSHIFT '(' expression ',' expression  ')'     { REQUIRE_INT_EX($$, $3, $5, $3.as.i >> $5.as.i); }
     | SUMSQ '(' sumsq_args ')'   { $$ = $3; }
     | SUM '(' sum_args ')'       { $$ = $3; }
-    | POW '(' expression ',' expression ')'         { $$ = power($3, $5); }
+    | POW '(' expression ',' expression ')'         { REQUIRE_INT_EX($$, $3, $5, power($3.as.i, $5.as.i)); }
     | IFF '(' boolean_expr ',' expression ',' expression ')'    { $$ = $3 ? $5 : $7; }
     | ASC '(' STRING ')'  
         {
             char* s = $3;
-            $$ = (strlen(s) > 2) ? s[1] : 0;
+            $$ = make_int((strlen(s) > 2) ? s[1] : 0);
         }
-    | I2C '(' READ ',' expression ')' { $$ = platform_i2c_read($5); }
-    | SPI '(' READ ')'           { $$ = platform_spi_read_buffer;   }
+    | I2C '(' READ ',' expression ')' { REQUIRE_INT($$, $5, platform_i2c_read($5.as.i)); }
+    | SPI '(' READ ')'                { $$ = make_int(platform_spi_read_buffer);     }
+    | INT '(' expression ')'          { $$ = make_int(to_int($3)); }
+    | SGN '(' expression ')'
+        {
+            double tmp = to_float($3);
+            if(tmp == 0) $$ = make_int(0);
+            else if(tmp < 0) $$ = make_int(-1);
+            else $$ = make_int(1);
+        }
     ;
 
 %%
