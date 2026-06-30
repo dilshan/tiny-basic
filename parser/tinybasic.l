@@ -96,7 +96,20 @@ hex     [0-9a-fA-F]
 (?i:spi)     { return SPI;    }
 (?i:int)     { return INT;    }
 (?i:sgn)     { return SGN;    }
- 
+(?i:cos)     { return COS;    }
+(?i:sin)     { return SIN;    }
+(?i:tan)     { return TAN;    }
+(?i:acos)    { return ACOS;   }
+(?i:asin)    { return ASIN;   }
+(?i:atan)    { return ATAN;   }
+(?i:cosh)    { return COSH;   }
+(?i:sinh)    { return SINH;   }
+(?i:tanh)    { return TANH;   } 
+(?i:acosh)   { return ACOSH;  }
+(?i:asinh)   { return ASINH;  }
+(?i:atanh)   { return ATANH;  } 
+(?i:atan2)   { return ATAN2;  }
+
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 
 0[xX]{hex}+ {

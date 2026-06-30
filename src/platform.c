@@ -28,3 +28,19 @@ void (*platform_spi_init)(void) = NULL;
 void (*platform_spi_select)(void) = NULL;
 void (*platform_spi_deselect)(void) = NULL;
 unsigned char (*platform_spi_transfer)(unsigned char output_byte) = NULL;
+
+double (*platform_sin)(double num) = NULL;
+double (*platform_cos)(double num) = NULL;
+double (*platform_tan)(double num) = NULL;
+double (*platform_asin)(double num) = NULL;
+double (*platform_acos)(double num) = NULL;
+double (*platform_atan)(double num) = NULL;
+
+double (*platform_sinh)(double num) = NULL;
+double (*platform_cosh)(double num) = NULL;
+double (*platform_tanh)(double num) = NULL;
+double (*platform_asinh)(double num) = NULL;
+double (*platform_acosh)(double num) = NULL;
+double (*platform_atanh)(double num) = NULL;
+
+double (*platform_atan2)(double y, double x) = NULL;

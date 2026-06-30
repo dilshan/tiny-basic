@@ -1,5 +1,7 @@
 #include "platform.h"
 
+#include <cmath>
+
 // DEBUG mode is used for testing the parser on a host machine without Arduino hardware.
 // To use the DEBUG mode, run the make command from the root directory.
 
@@ -119,6 +121,22 @@ void setup()
   platform_spi_deselect = spiDeselect;
   platform_spi_transfer = spiTransfer;
 
+  platform_sin = std::sin;
+  platform_cos = std::cos;
+  platform_tan = std::tan;
+  platform_acos = std::acos;
+  platform_asin = std::asin;
+  platform_atan = std::atan;
+
+  platform_sinh = std::sinh;
+  platform_cosh = std::cosh;
+  platform_tanh = std::tanh;  
+  platform_asinh = std::asinh;
+  platform_acosh = std::acosh;
+  platform_atanh = std::atanh;
+
+  platform_atan2 = std::atan2;
+
   lineIdx = 0;
 
   Serial.begin(9600);
@@ -176,6 +194,22 @@ int main()
   err_print = printf;
   str_print = printf;
   warn_print = printf;
+
+  platform_sin = std::sin;
+  platform_cos = std::cos;
+  platform_tan = std::tan;
+  platform_acos = std::acos;
+  platform_asin = std::asin;
+  platform_atan = std::atan;
+
+  platform_sinh = std::sinh;
+  platform_cosh = std::cosh;
+  platform_tanh = std::tanh;  
+  platform_asinh = std::asinh;
+  platform_acosh = std::acosh;
+  platform_atanh = std::atanh;
+
+  platform_atan2 = std::atan2;
 
   init_parser();
 

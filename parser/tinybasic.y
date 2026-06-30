@@ -474,7 +474,8 @@ static short stack_pop(void) {
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON
-%token I2C SPI START RESTART STOP INIT READ WRITE INT SGN
+%token I2C SPI START RESTART STOP INIT READ WRITE INT SGN COS SIN TAN ACOS ASIN ATAN
+%token SINH COSH TANH ASINH ACOSH ATANH ATAN2
 
 %type <val> expression term factor sum_args sumsq_args
 %type <ival> boolean_expr mode
@@ -1108,6 +1109,21 @@ factor
             else if(tmp < 0) $$ = make_int(-1);
             else $$ = make_int(1);
         }
+    | SIN '(' expression ')'     { $$ = make_float(platform_sin(to_float($3)));  }
+    | COS '(' expression ')'     { $$ = make_float(platform_cos(to_float($3)));  }
+    | TAN '(' expression ')'     { $$ = make_float(platform_tan(to_float($3)));  }
+    | ASIN '(' expression ')'    { $$ = make_float(platform_asin(to_float($3))); }
+    | ACOS '(' expression ')'    { $$ = make_float(platform_acos(to_float($3))); }
+    | ATAN '(' expression ')'    { $$ = make_float(platform_atan(to_float($3))); }    
+
+    | SINH '(' expression ')'    { $$ = make_float(platform_sinh(to_float($3)));  }
+    | COSH '(' expression ')'    { $$ = make_float(platform_cosh(to_float($3)));  }
+    | TANH '(' expression ')'    { $$ = make_float(platform_tanh(to_float($3)));  }
+    | ASINH '(' expression ')'   { $$ = make_float(platform_asinh(to_float($3))); }
+    | ACOSH '(' expression ')'   { $$ = make_float(platform_acosh(to_float($3))); }
+    | ATANH '(' expression ')'   { $$ = make_float(platform_atanh(to_float($3))); }  
+
+    | ATAN2 '(' expression ',' expression ')'   { $$ = make_float(platform_atan2(to_float($3), to_float($5))); }
     ;
 
 %%

@@ -40,6 +40,22 @@ extern unsigned char (*platform_spi_transfer)(unsigned char output_byte);
 
 extern unsigned char platform_spi_read_buffer;
 
+extern double (*platform_sin)(double num);
+extern double (*platform_cos)(double num);
+extern double (*platform_tan)(double num);
+extern double (*platform_asin)(double num);
+extern double (*platform_acos)(double num);
+extern double (*platform_atan)(double num);
+
+extern double (*platform_sinh)(double num);
+extern double (*platform_cosh)(double num);
+extern double (*platform_tanh)(double num);
+extern double (*platform_asinh)(double num);
+extern double (*platform_acosh)(double num);
+extern double (*platform_atanh)(double num);
+
+extern double (*platform_atan2)(double y, double x);
+
 void init_parser(void);
 void do_parse(char *line);
 
