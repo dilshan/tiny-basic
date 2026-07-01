@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright (c) 2026 Dilshan R Jayakody. All rights reserved.
+
 #define PI 3.14159265358979323846
 
 double max(double a, double b)

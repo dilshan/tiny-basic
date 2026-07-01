@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: BSD-3-Clause
+// Copyright (c) 2026 Dilshan R Jayakody. All rights reserved.
+
 #include <stdio.h>
 #include <stdlib.h>
 
