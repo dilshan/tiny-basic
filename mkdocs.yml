@@ -1,0 +1,14 @@
+site_name: Tiny Basic for Arduino
+site_description: A Tiny Basic interpreter for Mid-range Arduino boards
+authors:
+  - name: Dilshan R Jayakody
+    email: jayakody2000lk@gmail.com
+nav:
+  - Home: index.md
+  - Language Reference: language-reference.md
+  - Functions: function-list.md
+theme: readthedocs
+markdown_extensions:
+  - codehilite
+hljs_languages:
+  - basic
