@@ -139,7 +139,7 @@ hex     [0-9a-fA-F]
     return NUMBER;
 }
 
-([0-9]*\.[0-9]+)|([0-9]+\.[0-9]*) {
+({decimal}*\.{decimal}+)|({decimal}+\.{decimal}*) {
     yylval.fval = atof(yytext);
     return FLOAT_NUMBER;
 }

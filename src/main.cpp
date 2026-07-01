@@ -121,6 +121,7 @@ void setup()
   platform_spi_deselect = spiDeselect;
   platform_spi_transfer = spiTransfer;
 
+  // Connect the math function pointers to the standard library functions.
   platform_sin = std::sin;
   platform_cos = std::cos;
   platform_tan = std::tan;
