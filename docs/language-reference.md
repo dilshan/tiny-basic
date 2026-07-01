@@ -26,7 +26,7 @@ The interpreter supports arithmetic, comparisons, and logical expressions.
 ### Arithmetic operators
 
 - `+`, `-`, `*`, `/`
-- `MOD`
+- [MOD](mod.md)
 - Parentheses may be used for grouping.
 
 ### Comparison operators
