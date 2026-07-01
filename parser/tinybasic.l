@@ -114,6 +114,12 @@ hex     [0-9a-fA-F]
 (?i:ceil)    { return CEIL;   }
 (?i:deg)     { return DEG;    }
 (?i:rad)     { return RAD;    }
+(?i:cot)     { return COT;    }
+(?i:sec)     { return SEC;    }
+(?i:csc)     { return CSC;    }
+(?i:acot)    { return ACOT;   }
+(?i:asec)    { return ASEC;   }
+(?i:acsc)    { return ACSC;   }
 
 (?i:pi)      { yylval.fval = 3.14159265358979323846; return FLOAT_NUMBER; }
 (?i:e)       { yylval.fval = 2.71828182845904523536; return FLOAT_NUMBER; }

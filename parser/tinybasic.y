@@ -476,6 +476,7 @@ static short stack_pop(void) {
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON DEG RAD
 %token I2C SPI START RESTART STOP INIT READ WRITE INT SGN COS SIN TAN ACOS ASIN ATAN
 %token SINH COSH TANH ASINH ACOSH ATANH ATAN2 LOG LOG10 EXP SQRT FLOOR CEIL
+%token COT SEC CSC ACOT ASEC ACSC
 
 %type <val> expression term factor sum_args sumsq_args
 %type <ival> boolean_expr mode
@@ -1130,6 +1131,13 @@ factor
 
     | DEG '(' expression ')'      { $$ = make_float(rad_to_deg(to_float($3))); }
     | RAD '(' expression ')'      { $$ = make_float(deg_to_rad(to_float($3))); }
+
+    | COT '(' expression ')'      { $$ = make_float(1 / platform_tan(to_float($3)));  }
+    | SEC '(' expression ')'      { $$ = make_float(1 / platform_cos(to_float($3)));  }
+    | CSC '(' expression ')'      { $$ = make_float(1 / platform_sin(to_float($3)));  }
+    | ACOT '(' expression ')'     { $$ = make_float(platform_atan(1 / to_float($3))); }
+    | ASEC '(' expression ')'     { $$ = make_float(platform_acos(1 / to_float($3))); }
+    | ACSC '(' expression ')'     { $$ = make_float(platform_asin(1 / to_float($3))); }
     ;
 
 %%

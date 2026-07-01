@@ -1,4 +1,5 @@
 #include "platform.h"
+#include "platform_def.h"
 
 #include <cmath>
 
@@ -147,7 +148,7 @@ void setup()
 
   lineIdx = 0;
 
-  Serial.begin(9600);
+  Serial.begin(SERIAL_BAUD_RATE);
   delay(500);
 
   init_parser();

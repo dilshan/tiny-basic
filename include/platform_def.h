@@ -1,6 +1,8 @@
 #ifndef __PLATFORM_SYSTEM_DEF_HEADER__
 #define __PLATFORM_SYSTEM_DEF_HEADER__
 
+#define SERIAL_BAUD_RATE 9600
+
 // Digital pin modes for the platform abstraction.
 #define PIN_MODE_INPUT 0
 #define PIN_MODE_OUTPUT 1
