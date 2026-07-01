@@ -476,7 +476,7 @@ static short stack_pop(void) {
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON DEG RAD
 %token I2C SPI START RESTART STOP INIT READ WRITE INT SGN COS SIN TAN ACOS ASIN ATAN
 %token SINH COSH TANH ASINH ACOSH ATANH ATAN2 LOG LOG10 EXP SQRT FLOOR CEIL
-%token COT SEC CSC ACOT ASEC ACSC
+%token COT SEC CSC ACOT ASEC ACSC ABSMAX ABSMIN BITSET BITCLR BITGET
 
 %type <val> expression term factor sum_args sumsq_args
 %type <ival> boolean_expr mode
@@ -1138,6 +1138,13 @@ factor
     | ACOT '(' expression ')'     { $$ = make_float(platform_atan(1 / to_float($3))); }
     | ASEC '(' expression ')'     { $$ = make_float(platform_acos(1 / to_float($3))); }
     | ACSC '(' expression ')'     { $$ = make_float(platform_asin(1 / to_float($3))); }
+
+    | ABSMAX '(' expression ',' expression ')'  { $$ = make_float(abs(max(to_float($3), to_float($5)))); }
+    | ABSMIN '(' expression ',' expression ')'  { $$ = make_float(abs(min(to_float($3), to_float($5)))); }
+
+    | BITCLR '(' expression ',' expression ')'  { REQUIRE_INT_EX($$, $3, $5, ($3.as.i & ~(1 << $5.as.i))); }
+    | BITSET '(' expression ',' expression ')'  { REQUIRE_INT_EX($$, $3, $5, ($3.as.i | (1 << $5.as.i)));  }
+    | BITGET '(' expression ',' expression ')'  { REQUIRE_INT_EX($$, $3, $5, (($3.as.i >> $5.as.i) & 1));  }
     ;
 
 %%
