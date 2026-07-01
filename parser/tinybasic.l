@@ -44,7 +44,6 @@ hex     [0-9a-fA-F]
 (?i:pin)     { return PIN;    }
 (?i:get)     { return GET;    }
 (?i:set)     { return SET;    }
-
 (?i:in)      { return IN;     }
 (?i:out)     { return OUT;    }
 (?i:while)   { return WHILE;  }

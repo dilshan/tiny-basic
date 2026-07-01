@@ -879,12 +879,12 @@ statement
 
     | CLEAR
         {
-            if (!if_skip) flush_memory(); 
+            if ((!if_skip) && (!running)) flush_memory(); 
         }
 
     | LIST
         {
-            if (!if_skip) {
+            if ((!if_skip) && (!running)) {
                 for (int i = 0; i < prog_size; i++)
                     str_print("%d %s\n", program[i].num, program[i].text);
             }

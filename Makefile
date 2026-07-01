@@ -1,6 +1,3 @@
-## This is a PlatformIO project. To run this project use PlatoformIO commands or IDE extensions. 
-## The Makefile is provided to build a debug version of the project on a host machine without Arduino hardware.
-
 TARGET := tinybasic
 
 CXX := g++
@@ -43,7 +40,13 @@ OBJS := $(OBJS:.c=.o)
 
 DEPS := $(OBJS:.o=.d)
 
-all: parser $(TARGET)
+all:
+	pio run
+
+flash:
+	pio run --target upload
+
+debug: parser $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CXX) -o $@ $(OBJS) $(LIBS)
@@ -84,6 +87,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -x c++ -c $< -o $@
 
 clean:
+	pio run --target clean
 	rm -rf $(BUILD_DIR)
 	rm -f $(TARGET)
 
@@ -96,4 +100,4 @@ rebuild: clean all
 
 -include $(DEPS)
 
-.PHONY: all clean distclean rebuild parser
+.PHONY: all flash debug clean distclean rebuild parser
