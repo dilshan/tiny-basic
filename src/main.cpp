@@ -137,6 +137,13 @@ void setup()
 
   platform_atan2 = std::atan2;
 
+  platform_log = std::log;
+  platform_log10 = std::log10;
+  platform_exp = std::exp;
+  platform_sqrt = std::sqrt;
+  platform_floor = std::floor;
+  platform_ceil = std::ceil;
+
   lineIdx = 0;
 
   Serial.begin(9600);
@@ -210,6 +217,13 @@ int main()
   platform_atanh = std::atanh;
 
   platform_atan2 = std::atan2;
+
+  platform_log = std::log;
+  platform_log10 = std::log10;
+  platform_exp = std::exp;
+  platform_sqrt = std::sqrt;
+  platform_floor = std::floor;
+  platform_ceil = std::ceil;
 
   init_parser();
 

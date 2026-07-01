@@ -44,3 +44,10 @@ double (*platform_acosh)(double num) = NULL;
 double (*platform_atanh)(double num) = NULL;
 
 double (*platform_atan2)(double y, double x) = NULL;
+
+double (*platform_log)(double num) = NULL;
+double (*platform_log10)(double num) = NULL;    
+double (*platform_exp)(double num) = NULL;
+double (*platform_sqrt)(double num) = NULL;
+double (*platform_floor)(double num) = NULL;
+double (*platform_ceil)(double num) = NULL;

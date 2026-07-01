@@ -473,9 +473,9 @@ static short stack_pop(void) {
 %token NEW RAND FOR TO STEP NEXT DELAY ANALOG HIGH LOW PIN IN OUT GET SET ABS
 %token REL_LT REL_LE REL_NE REL_GT REL_GE WHILE WEND EXIT REPEAT UNTIL MIN MAX
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
-%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON
+%token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON DEG RAD
 %token I2C SPI START RESTART STOP INIT READ WRITE INT SGN COS SIN TAN ACOS ASIN ATAN
-%token SINH COSH TANH ASINH ACOSH ATANH ATAN2
+%token SINH COSH TANH ASINH ACOSH ATANH ATAN2 LOG LOG10 EXP SQRT FLOOR CEIL
 
 %type <val> expression term factor sum_args sumsq_args
 %type <ival> boolean_expr mode
@@ -1077,10 +1077,6 @@ factor
     | '(' expression ')'         { $$ = $2; }
     | ANALOG '(' factor ')'      { REQUIRE_INT($$, $3, platform_analog_read($3.as.i));  }
     | GET '(' factor ')'         { REQUIRE_INT($$, $3, platform_digital_read($3.as.i)); }
-    | HIGH                       { $$ = make_int(1); }
-    | LOW                        { $$ = make_int(0); }
-    | BTRUE                      { $$ = make_int(1); }
-    | BFALSE                     { $$ = make_int(0); }
     | RAND '(' ')'               { $$ = make_int(rand() % 32768); }
     | ABS '(' expression ')'     { $$ = make_float(abs(to_float($3))); }
     | MIN '(' expression ',' expression ')'         { $$ = make_float(min(to_float($3), to_float($5))); }
@@ -1124,6 +1120,16 @@ factor
     | ATANH '(' expression ')'   { $$ = make_float(platform_atanh(to_float($3))); }  
 
     | ATAN2 '(' expression ',' expression ')'   { $$ = make_float(platform_atan2(to_float($3), to_float($5))); }
+
+    | LOG '(' expression ')'      { $$ = make_float(platform_log(to_float($3)));   }
+    | LOG10 '(' expression ')'    { $$ = make_float(platform_log10(to_float($3))); }
+    | EXP '(' expression ')'      { $$ = make_float(platform_exp(to_float($3)));   }
+    | SQRT '(' expression ')'     { $$ = make_float(platform_sqrt(to_float($3)));  }
+    | FLOOR '(' expression ')'    { $$ = make_float(platform_floor(to_float($3))); }
+    | CEIL '(' expression ')'     { $$ = make_float(platform_ceil(to_float($3)));  }
+
+    | DEG '(' expression ')'      { $$ = make_float(rad_to_deg(to_float($3))); }
+    | RAD '(' expression ')'      { $$ = make_float(deg_to_rad(to_float($3))); }
     ;
 
 %%

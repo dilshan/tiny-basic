@@ -44,8 +44,7 @@ hex     [0-9a-fA-F]
 (?i:pin)     { return PIN;    }
 (?i:get)     { return GET;    }
 (?i:set)     { return SET;    }
-(?i:high)    { return HIGH;   }
-(?i:low)     { return LOW;    }
+
 (?i:in)      { return IN;     }
 (?i:out)     { return OUT;    }
 (?i:while)   { return WHILE;  }
@@ -68,8 +67,6 @@ hex     [0-9a-fA-F]
 (?i:pow)     { return POW;    }
 (?i:and)     { return AND;    }
 (?i:or)      { return OR;     }
-(?i:true)    { return BTRUE;  }
-(?i:false)   { return BFALSE; }
 (?i:band)    { return BAND;   }
 (?i:bor)     { return BOR;    }
 (?i:nor)     { return NOR;    }
@@ -109,6 +106,21 @@ hex     [0-9a-fA-F]
 (?i:asinh)   { return ASINH;  }
 (?i:atanh)   { return ATANH;  } 
 (?i:atan2)   { return ATAN2;  }
+(?i:log)     { return LOG;    }
+(?i:log10)   { return LOG10;  }
+(?i:exp)     { return EXP;    }
+(?i:sqrt)    { return SQRT;   }
+(?i:floor)   { return FLOOR;  }
+(?i:ceil)    { return CEIL;   }
+(?i:deg)     { return DEG;    }
+(?i:rad)     { return RAD;    }
+
+(?i:pi)      { yylval.fval = 3.14159265358979323846; return FLOAT_NUMBER; }
+(?i:e)       { yylval.fval = 2.71828182845904523536; return FLOAT_NUMBER; }
+(?i:high)    { yylval.ival = 1; return NUMBER; }
+(?i:low)     { yylval.ival = 0; return NUMBER; }
+(?i:true)    { yylval.ival = 1; return NUMBER; }
+(?i:false)   { yylval.ival = 0; return NUMBER; }
 
 {alpha}      { yylval.cval = yytext[0]; return VAR; }           /* Single-letter variable. */
 

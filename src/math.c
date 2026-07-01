@@ -1,3 +1,5 @@
+#define PI 3.14159265358979323846
+
 double max(double a, double b)
 {
     return (a > b) ? a : b;
@@ -23,4 +25,14 @@ int power(int base, int exp)
     }
 
     return result;
+}
+
+double rad_to_deg(double radians)
+{
+    return radians * (180.0 / PI);
+}
+
+double deg_to_rad(double degrees)
+{
+    return degrees * (PI / 180.0);
 }

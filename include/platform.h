@@ -56,6 +56,13 @@ extern double (*platform_atanh)(double num);
 
 extern double (*platform_atan2)(double y, double x);
 
+extern double (*platform_log)(double num);
+extern double (*platform_log10)(double num);
+extern double (*platform_exp)(double num);
+extern double (*platform_sqrt)(double num);
+extern double (*platform_floor)(double num);
+extern double (*platform_ceil)(double num);
+
 void init_parser(void);
 void do_parse(char *line);
 
