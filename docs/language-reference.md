@@ -122,7 +122,7 @@ Notes:
 ```basic
 10 WHILE A < 5
 20 PRINT(A)
-30 A = A + 1
+30 LET A = A + 1
 40 WEND
 ```
 
@@ -134,7 +134,7 @@ Notes:
 ```basic
 10 REPEAT
 20 PRINT(A)
-30 A = A + 1
+30 LET A = A + 1
 40 UNTIL A > 5
 ```
 
