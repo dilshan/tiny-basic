@@ -9,7 +9,7 @@ This page summarizes the language as implemented by the interpreter in the proje
 - Programs are stored as numbered lines, such as `10 [PRINT](print.md) "HELLO"`.
 - Lines can also be executed immediately without numbers in interactive mode.
 - Each line is parsed as a single statement, and program execution begins with [RUN](run.md).
-- The interpreter keeps a program buffer of up to 256 lines and each line can be up to 256 characters long.
+- The interpreter keeps a program buffer that depends on the target platform; for example, on Arduino Due it supports up to 1024 program lines. Each line can be up to 64 characters long.
 
 ## Variables and values
 
