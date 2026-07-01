@@ -1,6 +1,8 @@
 # Tiny Basic for Arduino
 
-Tiny Basic for Arduino is a compact BASIC interpreter designed for mid-range Arduino boards and similar microcontroller platforms. It offers a lightweight, approachable programming environment for experimenting with logic, control flow, and hardware interaction directly on-device.
+Tiny Basic for Arduino is a compact BASIC interpreter designed for mid-range Arduino boards and similar microcontroller platforms. It was created for primary and junior grade students who are new to hardware programming and may not yet have a strong introduction to more complex languages such as C/C++ or Python. The language provides many built-in features that make it easier for newcomers to learn about MCU programming and hardware interaction.
+
+It is especially suitable for low-cost development boards such as the Arduino Due, where students can explore programming concepts while working directly with sensors, LEDs, input/output pins, and other simple hardware components.
 
 ## What this project provides
 
