@@ -60,6 +60,24 @@ To modify an instruction, enter the existing line number followed by the new com
 30 PRINT(A)
 ```
 
+## Deleting Lines
+
+To delete a line, enter the line number followed by a blank line.
+
+**Original Program:**
+```basic
+10 LET A = 0
+20 LET A = A + 10
+30 PRINT(A)
+```
+**Action:** Type `20` and press Enter.
+
+**Result:** Line 20 is deleted. The program now executes as:
+```basic
+10 LET A = 0
+30 PRINT(A)
+```
+
 ## Recovery from infinite loops
 
 If the program enters an infinite loop, you can break out of it by pressing **Esc** key.
