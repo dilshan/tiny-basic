@@ -6,18 +6,15 @@ This page summarizes the language as implemented by the interpreter in the proje
 
 ## Program structure
 
-- Programs are stored as numbered lines, such as `10 [PRINT](print.md) "HELLO"`.
-- Lines can also be executed immediately without numbers in interactive mode.
-- Each line is parsed as a single statement, and program execution begins with [RUN](run.md).
-- The interpreter keeps a program buffer that depends on the target platform; for example, on Arduino Due it supports up to 1024 program lines. Each line can be up to 64 characters long.
+In this programming environment, code is structured using numbered lines, such as `10 PRINT "HELLO"`, which allows for organized, sequential execution. While these numbered lines are used to build structured programs, users also have the flexibility to enter commands without numbers for immediate execution in interactive mode.
+
+When you are ready to process a stored sequence, you simply initiate the [RUN](run.md) command, which triggers the interpreter to execute the program from the first line. The capacity of this system is defined by a program buffer that varies based on the hardware platform; for instance, on an Arduino Due, the interpreter supports a maximum of 1,024 lines, with each individual line limited to 64 characters.
 
 ## Variables and values
 
-- Variables are single-letter names from `A` to `Z`.
-- The interpreter supports 26 variables in total.
-- Variables may hold integer or floating-point values.
-- Assignment is done with [LET](let.md) or by using the [LET](let.md) form explicitly, for example `LET A = 10`.
-- Values are initialized to zero when first used.
+Data management is similarly streamlined, with variables identified by single-letter names ranging from `A` to `Z`. This allows for a total of 26 distinct variables, which are capable of storing either integer or floating-point values. When you first reference a variable, it is automatically initialized to a value of zero. To assign data to these variables, you use the [LET](let.md) command, which can be applied explicitly—for example, `LET A = 10` - to store a value for later use in your program.
+
+It is important to note that these specific constraints, such as the single-letter variable limit and the fixed line lengths, are intentionally implemented. By keeping the interpreter’s memory footprint and processing requirements minimal, the design ensures that this language can run efficiently on as many different microcontrollers as possible.
 
 ## Expressions and comparisons
 
