@@ -5,6 +5,7 @@ authors:
     email: jayakody2000lk@gmail.com
 nav:
   - Home: index.md
+  - In-Hardware Editor: editor.md
   - Language Reference: language-reference.md
   - Functions: function-list.md
 theme: readthedocs
