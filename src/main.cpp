@@ -23,9 +23,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINES 256
-#define MAX_LINE_LEN 256
-
 #endif
 
 // Buffer for the current command line entered over Serial.

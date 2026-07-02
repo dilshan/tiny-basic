@@ -246,6 +246,19 @@ static int is_keyword_end(char c) {
 static void prog_store(int num, const char* text) {
   int i;
 
+  if (text[0] == '\0') {
+    for (i = 0; i < prog_size; i++) {
+      if (program[i].num == num) {
+        if (i < prog_size - 1) {
+          memmove(&program[i], &program[i + 1], (prog_size - 1 - i) * sizeof(Line));
+        }
+        prog_size--;
+        return;
+      }
+    }
+    return;
+  }
+
   for (i = 0; i < prog_size; i++) {
     if (program[i].num == num) {
       strncpy(program[i].text, text, MAX_LINE_LEN - 1);
