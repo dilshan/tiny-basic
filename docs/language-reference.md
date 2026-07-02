@@ -21,7 +21,7 @@ This page summarizes the language as implemented by the interpreter in the proje
 
 ## Expressions and comparisons
 
-The interpreter supports arithmetic, comparisons, and logical expressions.
+The interpreter supports arithmetic, comparisons, bitwise and logical expressions.
 
 ### Arithmetic operators
 
@@ -40,9 +40,19 @@ The interpreter supports arithmetic, comparisons, and logical expressions.
 
 ### Logical operators
 
-- `AND`, `OR`
-- `NOT`
-- `INVERT` (logical negation)
+- [AND](and.md), [OR](or.md)
+- `!` (logical inverse)
+
+### Bitwise operators
+
+- [BAND](band.md)
+- [BOR](bor.md)
+- [EQV](eqv.md)
+- [IMP](imp.md)
+- [NAND](nand.md)
+- [NOR](nor.md)
+- [NOT](not.md)
+- [XOR](xor.md)
 
 Expressions are evaluated using numeric values, and comparisons return `0` for false and `1` for true.
 
@@ -168,8 +178,8 @@ These are implemented as built-in statements and are documented in the command-s
 ## Notes and limitations
 
 - There is no support for arrays or user-defined functions.
-- Strings are only used as literals for printing and simple string-based helpers; they are not full string variables.
-- The language is intentionally compact and optimized for small embedded programs rather than full-scale desktop BASIC.
+- Strings are only used as literals for printing and simple string-based helpers; **they are not full string variables**.
+- The language is **intentionally compact and optimized** for small embedded programs rather than full-scale desktop BASIC.
 
 ## Example
 
