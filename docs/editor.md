@@ -78,6 +78,6 @@ To delete a line, enter the line number followed by a blank line.
 30 PRINT(A)
 ```
 
-## Recovery from infinite loops
+## Recover from infinite loops
 
 If the program enters an infinite loop, you can break out of it by pressing **Esc** key.
