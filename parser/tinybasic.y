@@ -34,6 +34,7 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
         (res) = make_int((a).as.i op (b).as.i); \
     }
 
+// Macro to ensure that a value is an integer before performing an operation.
 #define REQUIRE_INT(res, d, f) \
     if((d).type != VAL_INT) { \
         err_print("Required integer type\n");\
@@ -42,6 +43,7 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
         (res) = make_int(f); \
     }
 
+// Macro to ensure that two values are integers before performing an operation.
 #define REQUIRE_INT_EX(res, d1, d2, f) \
     if(((d1).type != VAL_INT) || ((d2).type != VAL_INT)){ \
         err_print("Required integer type\n");\
