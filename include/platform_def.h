@@ -4,6 +4,22 @@
 #ifndef __PLATFORM_SYSTEM_DEF_HEADER__
 #define __PLATFORM_SYSTEM_DEF_HEADER__
 
+// Maximum number of stored command lines and characters per line.
+#if defined(ARDUINO)
+  #if defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__)
+  // Arduino Due
+  #define MAX_LINES 1024
+  #else
+  #define MAX_LINES 256
+  #endif
+#else
+// Non-Arduino platforms.
+  #define MAX_LINES 256 
+#endif
+
+// Maximum length of a command line, including the null terminator.
+#define MAX_LINE_LEN 64
+
 #define SERIAL_BAUD_RATE 9600
 
 // Digital pin modes for the platform abstraction.

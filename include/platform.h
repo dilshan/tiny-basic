@@ -6,21 +6,6 @@
 
 #define INT_SIZE  32
 
-// Maximum number of stored command lines and characters per line.
-#if defined(ARDUINO)
-  #if defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__)
-  // Arduino Due
-  #define MAX_LINES 1024
-  #else
-  #define MAX_LINES 256
-  #endif
-#else
-// Non-Arduino platforms.
-  #define MAX_LINES 256 
-#endif
-
-#define MAX_LINE_LEN 64
-
 #ifdef __cplusplus
 extern "C" {
 #endif
