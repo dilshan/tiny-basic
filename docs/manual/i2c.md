@@ -15,5 +15,11 @@ Controls Inter-Integrated Circuit (I2C) communication bus peripherals. Supports 
 ## Example
 
 ```basic
-
+10 I2C(START)
+20 I2C(WRITE, 0xA0)
+30 I2C(WRITE, 0x0A)
+40 I2C(RESTART)
+50 I2C(WRITE, 0xA1)
+60 PRINT("VAL = ", I2C(READ, 0))
+70 I2C(STOP)
 ```
