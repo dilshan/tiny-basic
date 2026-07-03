@@ -9,6 +9,7 @@
 #include "value.h"
 #include "tinybasic.tab.h"
 #include "platform.h"
+#include "error.h"
 %}
 
 %option yylineno noyywrap noinput nounput
@@ -185,5 +186,5 @@ hex     [0-9a-fA-F]
 \n           { return CR; }
 [ \t\r]+     { /* ignore. */ }
 
-.            { err_print("Unknown character '%s' at line %d\n", yytext, yylineno); }
+.            { err_print(ERR_UNKNOWN_CHAR, yytext); }
 %%

@@ -9,9 +9,11 @@
 
 #include "value.h"
 #include "platform.h"
+#include "error.h"
 #include "platform_def.h"
 #include "math.h"
 #include "formatter.h"
+#include "version.h"
 
 #ifndef YY_TYPEDEF_YY_BUFFER_STATE
 #define YY_TYPEDEF_YY_BUFFER_STATE
@@ -37,7 +39,7 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
 // Macro to ensure that a value is an integer before performing an operation.
 #define REQUIRE_INT(res, d, f) \
     if((d).type != VAL_INT) { \
-        err_print("Required integer type\n");\
+        err_print(ERR_REQUIRED_INT);\
         (res) = make_int(0); \
     } else { \
         (res) = make_int(f); \
@@ -46,7 +48,7 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
 // Macro to ensure that two values are integers before performing an operation.
 #define REQUIRE_INT_EX(res, d1, d2, f) \
     if(((d1).type != VAL_INT) || ((d2).type != VAL_INT)){ \
-        err_print("Required integer type\n");\
+        err_print(ERR_REQUIRED_INT);\
         (res) = make_int(0); \
     } else { \
         (res) = make_int(f); \
@@ -343,7 +345,7 @@ static void build_conditional_jump_map(void) {
 
             if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE) || (program[i].type == LINE_REPEAT) || (program[i].type == LINE_IF)) {
                 if (cjump_map_size >= (sizeof(cjump_map) / sizeof(cjump_map[0]))) {
-                    err_print("Too many loop blocks\n");
+                    err_print(ERR_TOO_MANY_LOOP_BLOCKS);
                     return;
                 }
 
@@ -395,7 +397,7 @@ static void build_conditional_jump_map(void) {
     // Looking for any missing nodes.
     for (int i = 0; i < cjump_map_size; i++) {
         if (cjump_map[i].end_node_num == -1) {
-            err_print("Missing termination block for line %d\n", cjump_map[i].root_node_num);
+            err_print(ERR_MISSING_TERMINATION, cjump_map[i].root_node_num);
         }
     }
 }
@@ -455,7 +457,7 @@ static short find_end_node_from_else(short else_node) {
 
 static void stack_push(short ret_pc) {
   if (stack_top >= STACK_DEPTH) {
-    err_print("GOSUB stack overflow\n");
+    err_print(ERR_GOSUB_STACK_OVERFLOW);
     return;
   }
 
@@ -464,7 +466,7 @@ static void stack_push(short ret_pc) {
 
 static short stack_pop(void) {
   if (stack_top <= 0) {
-    err_print("RETURN without GOSUB\n");
+    err_print(ERR_MISSING_GOSUB);
     return 0;
   }
 
@@ -540,7 +542,7 @@ statement
             if ((running) && (!if_skip)) { 
 
                 if($2.type != VAL_INT)
-                    err_print("Required integer type\n");
+                    err_print(ERR_REQUIRED_INT);
                 else {
                     on_goto_frame.target = $2.as.i; 
                     on_goto_frame.index = 0; 
@@ -562,7 +564,7 @@ statement
         {
             if (!if_skip) {
                 if($3.type != VAL_INT)
-                    err_print("Required integer type\n");
+                    err_print(ERR_REQUIRED_INT);
                 else {
                     int ms = $3.as.i;
                     if (ms < 0) ms = 0;
@@ -576,7 +578,7 @@ statement
         {
             if (!if_skip) {
                 if($3.type != VAL_INT)
-                    err_print("Required integer type\n");
+                    err_print(ERR_REQUIRED_INT);
                 else
                     platform_pin_mode($3.as.i, $5);
             }
@@ -586,7 +588,7 @@ statement
         {
             if (!if_skip) {
                 if(($3.type != VAL_INT) || ($5.type != VAL_INT))
-                    err_print("Required integer type\n");
+                    err_print(ERR_REQUIRED_INT);
                 else
                     platform_digital_write($3.as.i, $5.as.i);
             }
@@ -597,7 +599,7 @@ statement
             if (!if_skip) {
                 while(is_continue) {
                     if(($3.type != VAL_INT) || ($5.type != VAL_INT))
-                        err_print("Required integer type\n");
+                        err_print(ERR_REQUIRED_INT);
                     else {
                         if(platform_digital_read($3.as.i) == $5.as.i) {
                             break;
@@ -616,9 +618,9 @@ statement
         { 
             if (!if_skip) {
                 if($5.type != VAL_INT) 
-                    err_print("Required integer type\n");
+                    err_print(ERR_REQUIRED_INT);
                 else
-                    if(!platform_i2c_write($5.as.i)) warn_print("Received NACK from I2C\n");
+                    if(!platform_i2c_write($5.as.i)) warn_print(WARN_I2C_RECEIVED_NACK);
             }
         }
 
@@ -629,7 +631,7 @@ statement
         {
             if (!if_skip) {
                 if($5.type != VAL_INT) 
-                    err_print("Required integer type\n");
+                    err_print(ERR_REQUIRED_INT);
                 else 
                     platform_spi_read_buffer = platform_spi_transfer($5.as.i);
             }
@@ -639,7 +641,7 @@ statement
         {
             if ((running) && (!if_skip)) {
                 if (loop_top >= LOOP_STACK_DEPTH) {
-                    err_print("LOOP stack overflow\n");
+                    err_print(ERR_LOOP_STACK_OVERFLOW);
                 } else {
                     double start = to_float($4);
                     double limit = to_float($6);
@@ -649,7 +651,7 @@ statement
                     if (start > limit) {
                         jump_target = find_end_node(program[pc].num, program[pc].type);
                         if (jump_target < 0) {
-                            err_print("Missing matching NEXT\n");
+                            err_print(ERR_MISSING_NEXT);
                         }
                         else {
                             jump_pending = JUMP_CONDITION_SKIP;
@@ -672,14 +674,14 @@ statement
         {
             if ((running) && (!if_skip)) {
                 if (loop_top >= LOOP_STACK_DEPTH) {
-                    err_print("LOOP stack overflow\n");
+                    err_print(ERR_LOOP_STACK_OVERFLOW);
                 } else {
                     double start = to_float($4);
                     double limit = to_float($6);
                     double step  = to_float($8);
 
                     if (step == 0) {
-                        err_print("STEP cannot be zero\n");
+                        err_print(ERR_STEP_CANNOT_ZERO);
                     }
                     else {
                         var_set($2, make_float(start));
@@ -687,7 +689,7 @@ statement
                         if ((step > 0) ? (start > limit) : (start < limit)) {
                             jump_target = find_end_node(program[pc].num, program[pc].type);
                             if (jump_target < 0) {
-                                err_print("Missing matching NEXT\n");
+                                err_print(ERR_MISSING_NEXT);
                             }
                             else {
                                 jump_pending = JUMP_CONDITION_SKIP;
@@ -711,13 +713,13 @@ statement
        {
             if ((running) && (!if_skip)) {
                 if (loop_top == 0) {
-                    err_print("NEXT without matching FOR\n");
+                    err_print(ERR_MISSING_FOR);
                 }
                 else if (loop_stack[loop_top - 1].type != LOOP_FOR) {
-                    err_print("NEXT without matching FOR\n");
+                    err_print(ERR_MISSING_FOR);
                 }
                 else if (loop_stack[loop_top - 1].var != toupper($2)) {
-                    err_print("Mismatched NEXT variable\n");
+                    err_print(ERR_MISMATCH_NEXT_VAR);
                 } else {
                     LoopFrame* f = &loop_stack[loop_top - 1];
                     double newval = to_float(var_get(f->var)) + f->step;
@@ -742,7 +744,7 @@ statement
                     jump_target = find_end_node(program[pc].num, LINE_WHILE);
 
                     if (jump_target < 0)
-                        err_print("Missing WEND\n");
+                        err_print(ERR_MISSING_WEND);
                     else
                         jump_pending = JUMP_CONDITION_SKIP;
                 }
@@ -755,7 +757,7 @@ statement
                 jump_target = find_root_node(program[pc].num, LINE_WHILE);
 
                 if (jump_target < 0)
-                    err_print("WEND without WHILE\n");
+                    err_print(ERR_MISSING_WHILE);
                 else
                     jump_pending = JUMP_GOTO;
             }
@@ -765,7 +767,7 @@ statement
         {
             if ((running) && (!if_skip)) {
                 if(find_end_node(program[pc].num, LINE_REPEAT) < 0) {
-                    err_print("Missing UNTIL\n");
+                    err_print(ERR_MISSING_UNTIL);
                 }
             }
         }
@@ -777,7 +779,7 @@ statement
                     jump_target = find_root_node(program[pc].num, LINE_REPEAT);
 
                     if (jump_target < 0)
-                        err_print("Missing REPEAT\n");
+                        err_print(ERR_MISSING_REPEAT);
                     else
                         jump_pending = JUMP_CONDITION_SKIP;
                 }
@@ -797,14 +799,14 @@ statement
                     }
 
                     if (jump_target < 0) {
-                        err_print("EXIT without a loop\n");
+                        err_print(ERR_EXIT_WITHOUT_LOOP);
                     }
                     else {
                         jump_pending = JUMP_CONDITION_SKIP;
                     }
                 }
                 else {
-                    err_print("EXIT without a loop\n");
+                    err_print(ERR_EXIT_WITHOUT_LOOP);
                 }
             }
         }
@@ -833,7 +835,7 @@ statement
                     }
 
                     if(jump_target < 0) {
-                        err_print("Missing ENDIF\n");
+                        err_print(ERR_MISSING_ENDIF);
                     }
                     else {
                         jump_pending = JUMP_CONDITION_SKIP;
@@ -849,7 +851,7 @@ statement
                 jump_target = find_end_node_from_else(program[pc].num);
 
                 if(jump_target < 0) {
-                    err_print("Missing ENDIF\n");
+                    err_print(ERR_MISSING_ENDIF);
                 }
                 else {
                     jump_pending = JUMP_CONDITION_SKIP;
@@ -862,7 +864,7 @@ statement
             if((running) && (!if_skip)) {
                 if(find_root_node(program[pc].num, LINE_IF) == -1) {
                     if(program[pc].type != LINE_SINGLE_IF) {
-                        err_print("ENDIF without IF\n");
+                        err_print(ERR_ENDIF_WITHOUT_IF);
                     }
                 }
             }
@@ -1062,7 +1064,7 @@ term
     | term '/' factor
         {
             if (to_float($3) == 0) { 
-                err_print("Division by zero\n"); 
+                err_print(ERR_DIVISION_BY_ZERO); 
                 $$ = make_float(0); 
             }
             else          
@@ -1072,7 +1074,7 @@ term
     | term MOD factor
         {
              if (to_float($3) == 0) { 
-                err_print("Division by zero\n"); 
+                err_print(ERR_DIVISION_BY_ZERO); 
                 $$ = make_float(0);  
             }
             else          
@@ -1219,7 +1221,7 @@ static void do_run(void) {
       case JUMP_GOTO: {
         int idx = prog_find(jump_target);
         if (idx < 0) {
-          err_print("Undefined line %d\n", jump_target);
+          err_print(ERR_UNDEFINED_LINE, jump_target);
           goto done;
         }
 
@@ -1230,7 +1232,7 @@ static void do_run(void) {
       case JUMP_GOSUB: {
         int idx = prog_find(jump_target);
         if (idx < 0) {
-          err_print("Undefined line %d\n", jump_target);
+          err_print(ERR_UNDEFINED_LINE, jump_target);
           goto done;
         }
 
@@ -1242,7 +1244,7 @@ static void do_run(void) {
       case JUMP_CONDITION_SKIP: {
         int idx = prog_find(jump_target);
         if (idx < 0) {
-          err_print("Missing conditional boundary\n");
+          err_print(ERR_MISSING_CONDITION_BOUNDRY);
           goto done;
         }
 
@@ -1265,7 +1267,7 @@ done:
 
 void init_parser(void) {
   memset(variables, 0, sizeof(variables));
-  str_print("Tiny BASIC \n");
+  str_print("%s v%s\n", APP_NAME, APP_VERSION_STR);
 }
 
 void do_parse(char *line) {

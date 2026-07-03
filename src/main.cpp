@@ -104,15 +104,16 @@ int printError(const char* format, ...)
   va_start(args, format);
 
 #ifndef DEBUG
-  result = serialPrint(format, args);
+  char buffer[MAX_LINE_LEN];
+  vsnprintf(buffer, sizeof(buffer), format, args);  
+  Serial.print(buffer);
 #else
   result = vprintf(format, args);
 #endif
 
   va_end(args);
 
-  // If an error occurs, we stop the parser from running until 
-  // the user enters a new command line.
+  // If an error occurs, stop the running mode and enters into Immediate mode.
   running = 0;
 
   return result;
