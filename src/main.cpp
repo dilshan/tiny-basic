@@ -5,6 +5,7 @@
 #include "platform_def.h"
 
 #include <cmath>
+#include <stdarg.h>
 
 // DEBUG mode is used for testing the parser on a host machine without Arduino hardware.
 // To use the DEBUG mode, run the make command from the root directory.
@@ -93,11 +94,37 @@ void delayMs(int ms)
   delay(ms);
 }
 
+#endif
+
+int printError(const char* format, ...)
+{  
+  int result = 0;
+
+  va_list args;
+  va_start(args, format);
+
+#ifndef DEBUG
+  result = serialPrint(format, args);
+#else
+  result = vprintf(format, args);
+#endif
+
+  va_end(args);
+
+  // If an error occurs, we stop the parser from running until 
+  // the user enters a new command line.
+  running = 0;
+
+  return result;
+}
+
+#ifndef DEBUG
+
 void setup()
 {
   // Connect the parser's print callbacks to the Serial interface.
+  err_print = printError;
   str_print = serialPrint;
-  err_print = serialPrint;
   warn_print = serialPrint;
 
   // Connect the platform abstraction callbacks.
@@ -200,7 +227,7 @@ void loop()
 
 int main()
 {
-  err_print = printf;
+  err_print = printError;
   str_print = printf;
   warn_print = printf;
 
