@@ -496,7 +496,7 @@ static short stack_pop(void) {
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON DEG RAD
 %token I2C SPI START RESTART STOP INIT READ WRITE INT SGN COS SIN TAN ACOS ASIN ATAN
 %token SINH COSH TANH ASINH ACOSH ATANH ATAN2 LOG LOG10 EXP SQRT FLOOR CEIL
-%token COT SEC CSC ACOT ASEC ACSC ABSMAX ABSMIN BITSET BITCLR BITGET
+%token COT SEC CSC ACOT ASEC ACSC ABSMAX ABSMIN BITSET BITCLR BITGET SOUND
 
 %type <val> expression term factor sum_args sumsq_args
 %type <ival> boolean_expr mode
@@ -634,6 +634,13 @@ statement
                     err_print(ERR_REQUIRED_INT);
                 else 
                     platform_spi_read_buffer = platform_spi_transfer($5.as.i);
+            }
+        }
+
+    | SOUND '(' expression ',' expression ')'
+        {
+            if(!if_skip) {
+                platform_play_tone(to_int($3), to_int($5));
             }
         }
 

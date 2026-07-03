@@ -17,6 +17,7 @@
 #include "platform_io.h"
 #include "platform_i2c.h"
 #include "platform_spi.h"
+#include "platform_tone.h"
 
 #else
 
@@ -134,6 +135,7 @@ void setup()
   platform_pin_mode = setPinMode;
   platform_digital_write = setPinValue;
   platform_digital_read = getPinValue;
+  platform_play_tone = playTone;
   int_input = serialInput;
 
   platform_is_key_pressed = isKeyPressed;

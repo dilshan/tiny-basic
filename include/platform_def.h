@@ -44,4 +44,7 @@
 #define SPI_SCK_PIN   24
 #define SPI_CS_PIN    25
 
+// Pin mapping for tone output.
+#define TONE_PIN      12
+
 #endif /* __PLATFORM_SYSTEM_DEF_HEADER__ */

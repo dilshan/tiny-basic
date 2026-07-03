@@ -16,6 +16,8 @@ void (*platform_pin_mode)(int pin, int mode) = NULL;
 void (*platform_digital_write)(int pin, int value) = NULL;
 int (*platform_digital_read)(int pin) = NULL;
 
+void (*platform_play_tone)(int freq, int duration) = NULL;
+
 int (*platform_is_key_pressed)(void) = NULL;
 
 void (*platform_i2c_init)(void) = NULL;

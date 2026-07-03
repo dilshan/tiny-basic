@@ -31,6 +31,7 @@ CPP_SRCS := \
     $(SRC_DIR)/platform_io.cpp \
     $(SRC_DIR)/platform_i2c.cpp \
     $(SRC_DIR)/platform_spi.cpp \
+    $(SRC_DIR)/platform_tone.cpp \
     $(SRC_DIR)/tinybasic.tab.c \
     $(SRC_DIR)/lex.yy.c
 

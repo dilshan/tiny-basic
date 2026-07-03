@@ -128,6 +128,7 @@ hex     [0-9a-fA-F]
 (?i:bitset)  { return BITSET; }
 (?i:bitclr)  { return BITCLR; }
 (?i:bitget)  { return BITGET; }
+(?i:sound)   { return SOUND;  }
 
 (?i:pi)      { yylval.fval = 3.14159265358979323846; return FLOAT_NUMBER; }
 (?i:e)       { yylval.fval = 2.71828182845904523536; return FLOAT_NUMBER; }

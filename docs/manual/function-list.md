@@ -83,6 +83,7 @@ This page lists the built-in functions and predefined constants documented for T
 - [PIN](pin.md)
 - [READ](read.md)
 - [SET](set.md)
+- [SOUND](sound.md)
 - [SPI](spi.md)
 - [START](start.md)
 - [STOP](stop.md)
