@@ -7,6 +7,11 @@
 
 Returns the ASCII integer code value representing the first character in the string argument.
 
+## See also
+
+- [PRINT](print.md)
+- [INPUT](input.md)
+
 ## Example
 
 ```basic

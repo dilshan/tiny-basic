@@ -7,6 +7,11 @@
 
 Performs a multi-way branch subroutine call (`GOSUB`). Evaluates the expression, truncates to an integer index, and executes a subroutine start to the corresponding line number in the comma-separated arguments list (0 indexed).
 
+## See also
+
+- [GOTO](goto.md)
+- [GOSUB](gosub.md)
+
 ## Example
 
 ```basic

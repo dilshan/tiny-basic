@@ -7,6 +7,11 @@
 
 Returns the exponential value of constant `e` raised to the power of the evaluated expression.
 
+## See also
+
+- [LOG](log.md)
+- [POW](pow.md)
+
 ## Example
 
 ```basic

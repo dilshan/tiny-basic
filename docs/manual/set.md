@@ -7,6 +7,11 @@
 
 Sets the digital output level of the GPIO pin. Values are defined as `HIGH` (1) or `LOW` (0).
 
+## See also
+
+- [LET](let.md)
+- [PRINT](print.md)
+
 ## Example
 
 ```basic

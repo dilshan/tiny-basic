@@ -7,6 +7,11 @@
 
 Returns the arccosine (inverse cosine) of `num` in radians.
 
+## See also
+
+- [ASIN](asin.md)
+- [ATAN](atan.md)
+
 ## Example
 
 ```basic

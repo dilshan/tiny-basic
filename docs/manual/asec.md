@@ -7,6 +7,11 @@
 
 Returns the inverse secant (arcsecant) in radians.
 
+## See also
+
+- [ACOS](acos.md)
+- [COS](cos.md)
+
 ## Example
 
 ```basic

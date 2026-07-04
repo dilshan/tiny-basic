@@ -12,6 +12,11 @@
 
 Evaluates a condition and branches execution. Tiny BASIC supports both a single-line `IF-THEN` statement and a multi-line `IF-THEN-ELSE-ENDIF` block.
 
+## See also
+
+- [THEN](then.md)
+- [ELSE](else.md)
+
 ## Example
 
 ```basic

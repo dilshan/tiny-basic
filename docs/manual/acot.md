@@ -7,6 +7,11 @@
 
 Returns the inverse cotangent (arccotangent) in radians.
 
+## See also
+
+- [ATAN](atan.md)
+- [TAN](tan.md)
+
 ## Example
 
 ```basic

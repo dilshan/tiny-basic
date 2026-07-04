@@ -7,6 +7,11 @@
 
 Returns the value of `base` raised to the power of `exponent` (integers only).
 
+## See also
+
+- [SQRT](sqrt.md)
+- [EXP](exp.md)
+
 ## Example
 
 ```basic

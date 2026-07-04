@@ -7,6 +7,11 @@
 
 Immediately terminates the execution of the innermost active loop construct (`FOR`, `WHILE`, or `REPEAT`) and jumps control flow to the instruction following the loop block.
 
+## See also
+
+- [STOP](stop.md)
+- [END](end.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Command argument for `I2C` transactions to perform a repeated start condition without releasing the bus control.
 
+## See also
+
+- [RUN](run.md)
+- [NEW](new.md)
+
 ## Example
 
 ```basic

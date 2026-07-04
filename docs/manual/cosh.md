@@ -7,6 +7,11 @@
 
 Returns the hyperbolic cosine of the argument.
 
+## See also
+
+- [SINH](sinh.md)
+- [TANH](tanh.md)
+
 ## Example
 
 ```basic

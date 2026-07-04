@@ -7,6 +7,11 @@
 
 Assigns the value of an expression to a single-letter variable (A through Z).
 
+## See also
+
+- [PRINT](print.md)
+- [INPUT](input.md)
+
 ## Example
 
 ```basic

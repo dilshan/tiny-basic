@@ -8,6 +8,11 @@
 
 Outputs strings, numbers, or expressions to the standard output. If multiple arguments are separated by commas, they are printed sequentially. Supports optional format modifiers to change mathematical output layouts (`HEX`, `BIN`, `BIN8`, `OCT`).
 
+## See also
+
+- [INPUT](input.md)
+- [LET](let.md)
+
 ## Example
 
 ```basic

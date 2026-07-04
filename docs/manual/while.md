@@ -7,6 +7,11 @@
 
 Initiates a conditional pre-test loop. The block of statements between `WHILE` and `WEND` executes repeatedly as long as the conditional expression is true.
 
+## See also
+
+- [REPEAT](repeat.md)
+- [WEND](wend.md)
+
 ## Example
 
 ```basic

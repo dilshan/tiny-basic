@@ -7,6 +7,11 @@
 
 Returns the inverse cosecant (arccosecant) in radians.
 
+## See also
+
+- [ASIN](asin.md)
+- [SIN](sin.md)
+
 ## Example
 
 ```basic

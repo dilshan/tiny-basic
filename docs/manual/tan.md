@@ -7,6 +7,11 @@
 
 Returns the trigonometric tangent of the angle argument, which must be specified in radians.
 
+## See also
+
+- [SIN](sin.md)
+- [COS](cos.md)
+
 ## Example
 
 ```basic

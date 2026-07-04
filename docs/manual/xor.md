@@ -7,6 +7,11 @@
 
 Performs a bitwise XOR (exclusive OR) operation on two integers.
 
+## See also
+
+- [OR](or.md)
+- [AND](and.md)
+
 ## Example
 
 ```basic

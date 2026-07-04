@@ -7,6 +7,11 @@
 
 Returns the hyperbolic sine of the argument.
 
+## See also
+
+- [COSH](cosh.md)
+- [TANH](tanh.md)
+
 ## Example
 
 ```basic

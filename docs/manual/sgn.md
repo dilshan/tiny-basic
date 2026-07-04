@@ -7,6 +7,11 @@
 
 Returns the sign of the evaluated expression: -1 if the expression is negative, 0 if it is zero, and 1 if positive.
 
+## See also
+
+- [ABS](abs.md)
+- [INT](int.md)
+
 ## Example
 
 ```basic

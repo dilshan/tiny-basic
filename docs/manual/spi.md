@@ -11,6 +11,11 @@
 
 Manages Serial Peripheral Interface (SPI) bus operations, allowing devices to exchange data synchronously. `SPI(READ)` pulls from a buffer stored during last transactions.
 
+## See also
+
+- [I2C](i2c.md)
+- [WRITE](write.md)
+
 ## Example
 
 ```basic

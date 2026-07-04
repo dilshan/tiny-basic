@@ -7,6 +7,11 @@
 
 Returns the trigonometric sine of the argument, which must be specified in radians.
 
+## See also
+
+- [COS](cos.md)
+- [TAN](tan.md)
+
 ## Example
 
 ```basic

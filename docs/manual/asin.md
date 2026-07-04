@@ -7,6 +7,11 @@
 
 Returns the arcsine (inverse sine) of `num` in radians.
 
+## See also
+
+- [ACOS](acos.md)
+- [ATAN](atan.md)
+
 ## Example
 
 ```basic

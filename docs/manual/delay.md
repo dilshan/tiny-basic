@@ -7,6 +7,11 @@
 
 Pauses the execution of the program for the specified number of milliseconds.
 
+## See also
+
+- [WAIT](wait.md)
+- [SOUND](sound.md)
+
 ## Example
 
 ```basic

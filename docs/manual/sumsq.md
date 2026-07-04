@@ -7,6 +7,11 @@
 
 Takes an arbitrary, comma-separated list of expressions and returns the sum of their squares.
 
+## See also
+
+- [SUM](sum.md)
+- [ABS](abs.md)
+
 ## Example
 
 ```basic

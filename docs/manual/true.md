@@ -7,6 +7,11 @@
 
 Boolean true constant.
 
+## See also
+
+- [FALSE](false.md)
+- [NOT](not.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Sets (sets to 1) the bit and returns the integer state at the 0-indexed position specified by `num_pos`.
 
+## See also
+
+- [BITCLR](bitclr.md)
+- [BITGET](bitget.md)
+
 ## Example
 
 ```basic

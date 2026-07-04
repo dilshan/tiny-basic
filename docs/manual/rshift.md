@@ -7,6 +7,11 @@
 
 Performs a bitwise right-shift on `value` by the number of bits specified in `pos`.
 
+## See also
+
+- [LSHIFT](lshift.md)
+- [BITGET](bitget.md)
+
 ## Example
 
 ```basic

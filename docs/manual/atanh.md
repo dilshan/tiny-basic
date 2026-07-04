@@ -7,6 +7,11 @@
 
 Returns the inverse hyperbolic tangent of the argument.
 
+## See also
+
+- [ASINH](asinh.md)
+- [SINH](sinh.md)
+
 ## Example
 
 ```basic

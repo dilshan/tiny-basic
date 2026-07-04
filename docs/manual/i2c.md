@@ -12,6 +12,11 @@
 
 Controls Inter-Integrated Circuit (I2C) communication bus peripherals. Supports commands for initializing the port, transmitting start/restart/stop conditions, writing bytes, or reading bytes.
 
+## See also
+
+- [SPI](spi.md)
+- [READ](read.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Defines the boundary and loop return point for a conditional `WHILE` loop block.
 
+## See also
+
+- [WHILE](while.md)
+- [REPEAT](repeat.md)
+
 ## Example
 
 ```basic

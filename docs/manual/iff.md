@@ -7,6 +7,11 @@
 
 Inline IF logical evaluation. Evaluates `bool_expr` and returns the evaluation of `true_expr` if the condition is true, or `false_expr` if false.
 
+## See also
+
+- [IF](if.md)
+- [THEN](then.md)
+
 ## Example
 
 ```basic

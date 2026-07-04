@@ -7,6 +7,11 @@
 
 Returns the trigonometric secant of the angle in radians.
 
+## See also
+
+- [COS](cos.md)
+- [TAN](tan.md)
+
 ## Example
 
 ```basic

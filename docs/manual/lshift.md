@@ -7,6 +7,11 @@
 
 Performs a bitwise left-shift on `num` by the number of bits specified in `pos`.
 
+## See also
+
+- [RSHIFT](rshift.md)
+- [BITSET](bitset.md)
+
 ## Example
 
 ```basic

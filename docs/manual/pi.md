@@ -7,6 +7,11 @@
 
 Float constant representing the value of mathematical constant Pi (approx 3.14159265).
 
+## See also
+
+- [DEG](deg.md)
+- [RAD](rad.md)
+
 ## Example
 
 ```basic

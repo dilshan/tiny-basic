@@ -7,6 +7,11 @@
 
 Returns the absolute value of the maximum of the two arguments.
 
+## See also
+
+- [ABSMIN](absmin.md)
+- [MAX](max.md)
+
 ## Example
 
 ```basic

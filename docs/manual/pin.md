@@ -7,6 +7,11 @@
 
 Configures a GPIO pin to act as an input (`IN`) or output (`OUT`).
 
+## See also
+
+- [ANALOG](analog.md)
+- [OUT](out.md)
+
 ## Example
 
 ```basic

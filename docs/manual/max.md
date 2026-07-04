@@ -7,6 +7,11 @@
 
 Returns the larger of the two expressions.
 
+## See also
+
+- [MIN](min.md)
+- [ABS](abs.md)
+
 ## Example
 
 ```basic

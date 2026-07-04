@@ -7,6 +7,11 @@
 
 Masks the input integer to extract the high nibble of its lower byte (bitwise `AND` with `0xF0`).
 
+## See also
+
+- [BYTE](byte.md)
+- [LBYTE](lbyte.md)
+
 ## Example
 
 ```basic

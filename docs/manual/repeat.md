@@ -9,6 +9,11 @@
 
 Begins a conditional post-test loop. Statements within the repeat block execute at least once and continue iterating until the condition in the matching `UNTIL` evaluates to true.
 
+## See also
+
+- [UNTIL](until.md)
+- [WHILE](while.md)
+
 ## Example
 
 ```basic

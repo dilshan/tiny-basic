@@ -7,6 +7,11 @@
 
 Returns the trigonometric cotangent of the argument in radians.
 
+## See also
+
+- [TAN](tan.md)
+- [SIN](sin.md)
+
 ## Example
 
 ```basic

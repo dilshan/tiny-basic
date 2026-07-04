@@ -7,6 +7,11 @@
 
 Performs a bitwise implication operation on two integers.
 
+## See also
+
+- [EQV](eqv.md)
+- [XOR](xor.md)
+
 ## Example
 
 ```basic

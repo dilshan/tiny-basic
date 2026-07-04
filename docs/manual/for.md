@@ -8,6 +8,11 @@
 
 Starts a bounded counting loop block. The loop variable increments by 1 (or the value of `STEP` if defined). Loops continue until the variable value passes `limit`.
 
+## See also
+
+- [NEXT](next.md)
+- [STEP](step.md)
+
 ## Example
 
 ```basic

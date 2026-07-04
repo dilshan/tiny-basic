@@ -7,6 +7,11 @@
 
 Terminates program execution.
 
+## See also
+
+- [STOP](stop.md)
+- [RETURN](return.md)
+
 ## Example
 
 ```basic

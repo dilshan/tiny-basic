@@ -7,6 +7,11 @@
 
 Returns the inverse hyperbolic sine of the argument.
 
+## See also
+
+- [ACOSH](acosh.md)
+- [ATANH](atanh.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Unconditionally jumps program execution to the specified program line number.
 
+## See also
+
+- [GOSUB](gosub.md)
+- [ON](on.md)
+
 ## Example
 
 ```basic

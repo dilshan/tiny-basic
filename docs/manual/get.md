@@ -7,6 +7,11 @@
 
 Reads the digital state input logic level of GPIO pin `pin`. Returns `HIGH` (1) or `LOW` (0).
 
+## See also
+
+- [INPUT](input.md)
+- [READ](read.md)
+
 ## Example
 
 ```basic

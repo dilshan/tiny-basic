@@ -7,6 +7,11 @@
 
 Returns the natural logarithm (base `e`) of the evaluated expression. Argument must be positive.
 
+## See also
+
+- [LOG10](log10.md)
+- [EXP](exp.md)
+
 ## Example
 
 ```basic

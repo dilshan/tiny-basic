@@ -8,6 +8,11 @@
 
 Used within `I2C` or `SPI` function to specify data transmission bytes onto their respective communication channels.
 
+## See also
+
+- [READ](read.md)
+- [SPI](spi.md)
+
 ## Example
 
 ```basic

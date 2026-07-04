@@ -7,6 +7,11 @@
 
 Converts the floating-point argument to a signed integer by truncating any fractional part.
 
+## See also
+
+- [ABS](abs.md)
+- [CEIL](ceil.md)
+
 ## Example
 
 ```basic

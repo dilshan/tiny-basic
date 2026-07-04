@@ -7,6 +7,11 @@
 
 Returns the smallest integer value greater than or equal to the argument expression.
 
+## See also
+
+- [FLOOR](floor.md)
+- [INT](int.md)
+
 ## Example
 
 ```basic

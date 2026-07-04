@@ -7,6 +7,11 @@
 
 Constant expression denoting the GPIO Output mode in `PIN` configurations.
 
+## See also
+
+- [IN](in.md)
+- [PIN](pin.md)
+
 ## Example
 
 ```basic

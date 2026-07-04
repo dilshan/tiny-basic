@@ -7,6 +7,11 @@
 
 Plays a sound with the frequency `freg` in Hz for a `duration` in milliseconds.
 
+## See also
+
+- [DELAY](delay.md)
+- [WAIT](wait.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Converts the argument from degrees to radians.
 
+## See also
+
+- [DEG](deg.md)
+- [PI](pi.md)
+
 ## Example
 
 ```basic

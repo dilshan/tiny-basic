@@ -7,6 +7,11 @@
 
 Prompts the user at the console to input integer values, which are subsequently stored in the listed variables.
 
+## See also
+
+- [PRINT](print.md)
+- [GET](get.md)
+
 ## Example
 
 ```basic

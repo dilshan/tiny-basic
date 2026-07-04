@@ -7,6 +7,11 @@
 
 Terminates a `REPEAT` loop block, testing the condition. If the expression is false, execution loops back to the start of `REPEAT`. If true, execution continues past the loop.
 
+## See also
+
+- [REPEAT](repeat.md)
+- [WHILE](while.md)
+
 ## Example
 
 ```basic

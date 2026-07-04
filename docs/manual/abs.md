@@ -7,6 +7,11 @@
 
 Returns the absolute value (magnitude) of the argument `num`.
 
+## See also
+
+- [ABSMAX](absmax.md)
+- [ABSMIN](absmin.md)
+
 ## Example
 
 ```basic

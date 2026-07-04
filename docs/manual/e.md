@@ -7,6 +7,11 @@
 
 Representing Euler's number (approx 2.71828182).
 
+## See also
+
+- [PI](pi.md)
+- [RAD](rad.md)
+
 ## Example
 
 ```basic

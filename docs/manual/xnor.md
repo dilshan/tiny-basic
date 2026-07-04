@@ -7,6 +7,11 @@
 
 Performs a bitwise XNOR operation on the two integer expressions. Returns true where bits in both operands match.
 
+## See also
+
+- [XOR](xor.md)
+- [EQV](eqv.md)
+
 ## Example
 
 ```basic

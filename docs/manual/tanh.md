@@ -7,6 +7,11 @@
 
 Returns the hyperbolic tangent of the argument.
 
+## See also
+
+- [SINH](sinh.md)
+- [COSH](cosh.md)
+
 ## Example
 
 ```basic

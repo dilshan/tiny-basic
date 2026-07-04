@@ -7,6 +7,11 @@
 
 Performs a bitwise NAND operation on two integers. Both operands must be integers.
 
+## See also
+
+- [NOR](nor.md)
+- [AND](and.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Terminates a multi-line `IF` statement block.
 
+## See also
+
+- [IF](if.md)
+- [ELSE](else.md)
+
 ## Example
 
 ```basic

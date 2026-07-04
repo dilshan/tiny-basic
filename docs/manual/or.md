@@ -7,6 +7,11 @@
 
 Performs a short-circuiting logical OR operation. Returns `True` if either/both expressions are `True`, otherwise returns `False`.
 
+## See also
+
+- [AND](and.md)
+- [XOR](xor.md)
+
 ## Example
 
 ```basic

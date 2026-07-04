@@ -7,6 +7,11 @@
 
 Returns the inverse hyperbolic cosine of the value argument.
 
+## See also
+
+- [ASINH](asinh.md)
+- [ATANH](atanh.md)
+
 ## Example
 
 ```basic

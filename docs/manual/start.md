@@ -8,6 +8,11 @@
 
 Used within `I2C` or `SPI` functions to acquire communication control (SPI chip select or I2C start).
 
+## See also
+
+- [STOP](stop.md)
+- [RUN](run.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Returns the multi-quadrant inverse tangent (arctangent) of elements `num_y` and `num_x` in radians.
 
+## See also
+
+- [ATAN](atan.md)
+- [COS](cos.md)
+
 ## Example
 
 ```basic

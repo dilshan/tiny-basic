@@ -7,6 +7,11 @@
 
 Used as a prefix inside a `PRINT` statement to format output representation of numbers in Hexadecimal format.
 
+## See also
+
+- [BIN](bin.md)
+- [OCT](oct.md)
+
 ## Example
 
 ```basic

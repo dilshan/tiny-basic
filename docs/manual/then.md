@@ -8,6 +8,11 @@
 
 Used in conjunction with the `IF` statement to delineate the boundary between the condition and the action to be performed if true.
 
+## See also
+
+- [IF](if.md)
+- [ELSE](else.md)
+
 ## Example
 
 ```basic

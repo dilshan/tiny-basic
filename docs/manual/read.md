@@ -8,6 +8,11 @@
 
 Used within `I2C` or `SPI` functions to command data retrieval from the bus.
 
+## See also
+
+- [WRITE](write.md)
+- [GET](get.md)
+
 ## Example
 
 ```basic

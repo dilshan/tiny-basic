@@ -7,6 +7,11 @@
 
 Integer constant denoting logical `HIGH` state.
 
+## See also
+
+- [LOW](low.md)
+- [BYTE](byte.md)
+
 ## Example
 
 ```basic

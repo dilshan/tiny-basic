@@ -7,6 +7,11 @@
 
 Defines the alternative execution branch in a multi-line `IF` statement block. Statements following `ELSE` are executed if the condition is false.
 
+## See also
+
+- [IF](if.md)
+- [ENDIF](endif.md)
+
 ## Example
 
 ```basic

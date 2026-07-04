@@ -7,6 +7,11 @@
 
 Returns the arctangent (inverse tangent) of `num` in radians.
 
+## See also
+
+- [ATAN2](atan2.md)
+- [SIN](sin.md)
+
 ## Example
 
 ```basic

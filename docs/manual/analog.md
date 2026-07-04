@@ -7,6 +7,11 @@
 
 Reads the analog voltage from the specified GPIO pin. Returns a value representing the voltage (analog-to-digital converter readout).
 
+## See also
+
+- [PIN](pin.md)
+- [OUT](out.md)
+
 ## Example
 
 ```basic

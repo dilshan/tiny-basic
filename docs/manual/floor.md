@@ -7,6 +7,11 @@
 
 Returns the largest integer value less than or equal to the specified argument.
 
+## See also
+
+- [CEIL](ceil.md)
+- [INT](int.md)
+
 ## Example
 
 ```basic

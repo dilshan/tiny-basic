@@ -7,6 +7,11 @@
 
 Performs a bitwise OR operation on the two integer expressions. Both operands must be integers.
 
+## See also
+
+- [BAND](band.md)
+- [XOR](xor.md)
+
 ## Example
 
 ```basic

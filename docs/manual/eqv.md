@@ -7,6 +7,11 @@
 
 Performs a bitwise equivalence operation on two integer arguments.
 
+## See also
+
+- [IMP](imp.md)
+- [XNOR](xnor.md)
+
 ## Example
 
 ```basic

@@ -7,6 +7,11 @@
 
 Returns the absolute value of the minimum of the two arguments.
 
+## See also
+
+- [ABSMAX](absmax.md)
+- [MIN](min.md)
+
 ## Example
 
 ```basic
