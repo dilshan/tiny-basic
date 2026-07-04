@@ -161,7 +161,7 @@ By using this command, you can efficiently exit a loop as soon as a specific con
 
 ## Loop and stack limitations
 
-The runtime environment is designed around fixed-size internal structures that manage the state of your programs. Specifically, it maintains a limit of 32 for the maximum nested GOSUB depth and a capacity of 16 for nested loop frames.
+The runtime environment is designed around fixed-size internal structures that manage the state of your programs. Specifically, it maintains a limit of 32 for the maximum nested `GOSUB` depth and a capacity of 16 for nested loop frames.
 
 These constraints are important to keep in mind during development, as exceeding them will trigger specific runtime errors. If your program attempts to nest too many subroutines, the interpreter will report a "*GOSUB stack overflow*" while surpassing the capacity for nested loops will result in a "*LOOP stack overflow*". Ensuring your code adheres to these boundaries is essential for stable execution.
 

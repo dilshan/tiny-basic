@@ -5,7 +5,7 @@
 
 ## Description
 
-Blocks program execution until the digital level read from GPIO pin `pin` equals the expected `digital_state` (`HIGH` or `LOW`). Performs read checks recursively.
+Blocks program execution until the digital level read from GPIO pin `pin` equals the expected `digital_state` (`HIGH` or `LOW`).
 
 ## See also
 
