@@ -7,7 +7,7 @@
 #include <cmath>
 #include <stdarg.h>
 
-#ifndef NATIVE
+#ifdef ARDUINO
 
 #include <Arduino.h>
 
@@ -32,7 +32,7 @@ short lineIdx = 0;
 extern unsigned char is_continue;
 extern unsigned char running;
 
-#ifndef NATIVE
+#ifdef ARDUINO
 // Print formatted text to the Serial interface.
 int serialPrint(const char *format, ...)
 {
@@ -101,7 +101,7 @@ int printError(const char* format, ...)
   va_list args;
   va_start(args, format);
 
-#ifndef NATIVE
+#ifdef ARDUINO
   char buffer[MAX_LINE_LEN];
   vsnprintf(buffer, sizeof(buffer), format, args);  
   Serial.print(buffer);
@@ -117,7 +117,7 @@ int printError(const char* format, ...)
   return result;
 }
 
-#ifndef NATIVE
+#ifdef ARDUINO
 
 void setup()
 {

@@ -5,7 +5,7 @@
 #define __PLATFORM_SYSTEM_DEF_HEADER__
 
 // Maximum number of stored command lines and characters per line.
-#if defined(ARDUINO)
+#ifdef ARDUINO
   #if defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__)
   // Arduino Due
   #define MAX_LINES 1024
