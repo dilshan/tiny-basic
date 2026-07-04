@@ -1,4 +1,4 @@
-#ifndef DEBUG
+#ifndef NATIVE
 
 #include <Arduino.h>
 

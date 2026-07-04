@@ -7,10 +7,7 @@
 #include <cmath>
 #include <stdarg.h>
 
-// DEBUG mode is used for testing the parser on a host machine without Arduino hardware.
-// To use the DEBUG mode, run the make command from the root directory.
-
-#ifndef DEBUG
+#ifndef NATIVE
 
 #include <Arduino.h>
 
@@ -35,7 +32,7 @@ short lineIdx = 0;
 extern unsigned char is_continue;
 extern unsigned char running;
 
-#ifndef DEBUG
+#ifndef NATIVE
 // Print formatted text to the Serial interface.
 int serialPrint(const char *format, ...)
 {
@@ -104,7 +101,7 @@ int printError(const char* format, ...)
   va_list args;
   va_start(args, format);
 
-#ifndef DEBUG
+#ifndef NATIVE
   char buffer[MAX_LINE_LEN];
   vsnprintf(buffer, sizeof(buffer), format, args);  
   Serial.print(buffer);
@@ -120,7 +117,7 @@ int printError(const char* format, ...)
   return result;
 }
 
-#ifndef DEBUG
+#ifndef NATIVE
 
 void setup()
 {

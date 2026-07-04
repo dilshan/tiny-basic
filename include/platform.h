@@ -68,12 +68,12 @@ extern double (*platform_ceil)(double num);
 void init_parser(void);
 void do_parse(char *line);
 
-#ifndef DEBUG
+#ifndef NATIVE
 
 // Declrations to remove compiler warninigs.
 char *strcasestr(const char *haystack, const char *needle);
 
-#endif /* DEBUG */
+#endif /* NATIVE */
 
 #ifdef __cplusplus
 }

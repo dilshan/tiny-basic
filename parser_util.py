@@ -14,6 +14,7 @@ def run_parser_generators(env):
     proj_dir = env.get("PROJECT_DIR")
     src_dir = os.path.join(proj_dir, "src")
     include_dir = os.path.join(proj_dir, "include")
+    parser_dir = os.path.join(proj_dir, "parser")
 
     bison_file = os.path.join(proj_dir, "parser", "tinybasic.y")
     flex_file = os.path.join(proj_dir, "parser", "tinybasic.l")
@@ -22,6 +23,7 @@ def run_parser_generators(env):
     os.makedirs(include_dir, exist_ok=True)
 
     for f in [
+        os.path.join(parser_dir, "tinybasic.tab.c"),
         os.path.join(src_dir, "tinybasic.tab.c"),
         os.path.join(src_dir, "lex.yy.c"),
         os.path.join(include_dir, "tinybasic.tab.h"),
@@ -65,8 +67,10 @@ def clean_generated_files(env):
     proj_dir = env.get("PROJECT_DIR")
     src_dir = os.path.join(proj_dir, "src")
     include_dir = os.path.join(proj_dir, "include")
+    parser_dir = os.path.join(proj_dir, "parser")
 
     for f in [
+        os.path.join(parser_dir, "tinybasic.tab.c"),
         os.path.join(src_dir, "tinybasic.tab.c"),
         os.path.join(src_dir, "lex.yy.c"),
         os.path.join(include_dir, "tinybasic.tab.h"),
