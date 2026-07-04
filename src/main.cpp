@@ -4,8 +4,9 @@
 #include "platform.h"
 #include "platform_def.h"
 
+#include <cctype>
 #include <cmath>
-#include <stdarg.h>
+#include <cstdarg>
 
 #ifdef ARDUINO
 
@@ -18,19 +19,52 @@
 
 #else
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #endif
 
+static constexpr int FLOAT_DECIMAL_PLACES = 5;
+static constexpr int FLOAT_MIN_WIDTH = 4;
+
 // Buffer for the current command line entered over Serial.
 char line[MAX_LINE_LEN];
-// Current index into the command line buffer.
-short lineIdx = 0;
+
+#ifdef ARDUINO
+// Current index into the command line buffer (Arduino build only; the
+// host build reads whole lines at once via fgets()).
+static short lineIdx = 0;
+#endif
 
 extern unsigned char is_continue;
 extern unsigned char running;
+
+static void initMathBindings()
+{
+  platform_sin = std::sin;
+  platform_cos = std::cos;
+  platform_tan = std::tan;
+  platform_acos = std::acos;
+  platform_asin = std::asin;
+  platform_atan = std::atan;
+
+  platform_sinh = std::sinh;
+  platform_cosh = std::cosh;
+  platform_tanh = std::tanh;
+  platform_asinh = std::asinh;
+  platform_acosh = std::acosh;
+  platform_atanh = std::atanh;
+
+  platform_atan2 = std::atan2;
+
+  platform_log = std::log;
+  platform_log10 = std::log10;
+  platform_exp = std::exp;
+  platform_sqrt = std::sqrt;
+  platform_floor = std::floor;
+  platform_ceil = std::ceil;
+}
 
 #ifdef ARDUINO
 
@@ -79,11 +113,18 @@ int serialInput()
       }
 
       // Accept only digits and an optional leading minus sign.
-      if ((idx < sizeof(numBuffer) - 1) && (isdigit(c) || (c == '-' && idx == 0)))
+      if ((idx < sizeof(numBuffer) - 1) && (isdigit(static_cast<unsigned char>(c)) || (c == '-' && idx == 0)))
       {
         numBuffer[idx++] = c;
         Serial.print(c);
       }
+    }
+    else
+    {
+      // Yield to the board's background tasks (Wi-Fi stack, watchdog,
+      // etc.) while waiting for input on boards with a cooperative
+      // scheduler. This is a no-op on boards that don't need it.
+      yield();
     }
   }
 }
@@ -97,14 +138,14 @@ void delayMs(int ms)
 
 int printError(const char *format, ...)
 {
-  int result = 0;
+  int result;
 
   va_list args;
   va_start(args, format);
 
 #ifdef ARDUINO
   char buffer[MAX_LINE_LEN];
-  vsnprintf(buffer, sizeof(buffer), format, args);
+  result = vsnprintf(buffer, sizeof(buffer), format, args);
   Serial.print(buffer);
 #else
   result = vprintf(format, args);
@@ -123,10 +164,12 @@ void printFloat(double num)
 #ifdef ARDUINO
 #if defined(ARDUINO_UNOR4_WIFI) || defined(ARDUINO_UNOWIFIR4)
   char floatStr[16];
-  dtostrf(num, 4, 5, floatStr);
+  dtostrf(num, FLOAT_MIN_WIDTH, FLOAT_DECIMAL_PLACES, floatStr);
 
   if (strchr(floatStr, '.'))
   {
+    // Trim trailing zeroes (and a trailing decimal point) produced by
+    // dtostrf()'s fixed-precision formatting.
     for (int i = strlen(floatStr) - 1; i >= 0; i--)
     {
       if (floatStr[i] == '0')
@@ -188,29 +231,7 @@ void setup()
   platform_spi_deselect = spiDeselect;
   platform_spi_transfer = spiTransfer;
 
-  // Connect the math function pointers to the standard library functions.
-  platform_sin = std::sin;
-  platform_cos = std::cos;
-  platform_tan = std::tan;
-  platform_acos = std::acos;
-  platform_asin = std::asin;
-  platform_atan = std::atan;
-
-  platform_sinh = std::sinh;
-  platform_cosh = std::cosh;
-  platform_tanh = std::tanh;
-  platform_asinh = std::asinh;
-  platform_acosh = std::acosh;
-  platform_atanh = std::atanh;
-
-  platform_atan2 = std::atan2;
-
-  platform_log = std::log;
-  platform_log10 = std::log10;
-  platform_exp = std::exp;
-  platform_sqrt = std::sqrt;
-  platform_floor = std::floor;
-  platform_ceil = std::ceil;
+  initMathBindings();
 
   lineIdx = 0;
 
@@ -271,28 +292,7 @@ int main()
   float_print = printFloat;
   warn_print = printf;
 
-  platform_sin = std::sin;
-  platform_cos = std::cos;
-  platform_tan = std::tan;
-  platform_acos = std::acos;
-  platform_asin = std::asin;
-  platform_atan = std::atan;
-
-  platform_sinh = std::sinh;
-  platform_cosh = std::cosh;
-  platform_tanh = std::tanh;
-  platform_asinh = std::asinh;
-  platform_acosh = std::acosh;
-  platform_atanh = std::atanh;
-
-  platform_atan2 = std::atan2;
-
-  platform_log = std::log;
-  platform_log10 = std::log10;
-  platform_exp = std::exp;
-  platform_sqrt = std::sqrt;
-  platform_floor = std::floor;
-  platform_ceil = std::ceil;
+  initMathBindings();
 
   init_parser();
 
@@ -304,14 +304,14 @@ int main()
     if (!fgets(line, sizeof(line), stdin))
       break;
 
-    // strip trailing newline.
-    int len = strlen(line);
+    // Strip trailing newline.
+    size_t len = strlen(line);
     if (len > 0 && line[len - 1] == '\n')
     {
       line[--len] = '\0';
     }
 
-    // skip blank input.
+    // Skip blank input.
     char *p = line;
     while (*p == ' ' || *p == '\t')
       p++;

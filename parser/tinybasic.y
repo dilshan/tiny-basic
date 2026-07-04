@@ -57,6 +57,7 @@ typedef struct yy_buffer_state* YY_BUFFER_STATE;
 // Parser runtime limits.
 #define STACK_DEPTH 32
 #define LOOP_STACK_DEPTH 16
+#define CJUMP_MAP_DEPTH 128
 
 // Control flow actions that can be requested during parsing.
 typedef enum {
@@ -138,7 +139,7 @@ static VarVal variables[26];
 
 static Line program[MAX_LINES];
 static LoopFrame loop_stack[LOOP_STACK_DEPTH];
-static ConditionalJumpMap cjump_map[128];
+static ConditionalJumpMap cjump_map[CJUMP_MAP_DEPTH];
 
 static JumpType jump_pending = JUMP_NONE;
 static short jump_target = 0;
@@ -186,6 +187,10 @@ static inline double to_float(VarVal v) {
     return 0.0;
 }
 
+static inline double native_fabs(double d) {
+    return (d < 0.0) ? -d : d;
+}
+
 static inline VarVal var_get(char c) {
     return variables[toupper((unsigned char)c) - 'A'];
 }
@@ -200,7 +205,7 @@ static int is_keyword_end(char c) {
 // Detect the kind of a program line by examining its leading keyword.
 // This classification is used to build jump targets for FOR/NEXT, WHILE/WEND,
 // IF/ELSE/ENDIF, etc.
- static LineType get_prog_line_type(const char* line) {
+static LineType get_prog_line_type(const char* line) {
     while (isspace((unsigned char)*line))
         line++;
 
@@ -326,7 +331,7 @@ static void flush_memory(void) {
 
 // Helper to avoid matching nested IF/ELSE/ENDIF entries when scanning for the
 // matching line in the conditional jump map.
- static int is_line_already_exists(short num) {
+static int is_line_already_exists(short num) {
     for(int i = 0; i < cjump_map_size; i++) {
         if((cjump_map[i].root_node_num == num) || (cjump_map[i].end_node_num == num) || (cjump_map[i].else_node_num == num)) {
             return 1;
@@ -344,7 +349,7 @@ static void build_conditional_jump_map(void) {
         if(program[i].type != LINE_OTHER) {
 
             if((program[i].type == LINE_FOR) || (program[i].type == LINE_WHILE) || (program[i].type == LINE_REPEAT) || (program[i].type == LINE_IF)) {
-                if (cjump_map_size >= (sizeof(cjump_map) / sizeof(cjump_map[0]))) {
+                if (cjump_map_size >= CJUMP_MAP_DEPTH) {
                     err_print(ERR_TOO_MANY_LOOP_BLOCKS);
                     return;
                 }
@@ -1121,7 +1126,7 @@ factor
     | ANALOG '(' factor ')'      { REQUIRE_INT($$, $3, platform_analog_read($3.as.i));  }
     | GET '(' factor ')'         { REQUIRE_INT($$, $3, platform_digital_read($3.as.i)); }
     | RAND '(' ')'               { $$ = make_int(rand() % 32768); }
-    | ABS '(' expression ')'     { $$ = make_float(abs(to_float($3))); }
+    | ABS '(' expression ')'     { $$ = make_float(native_fabs(to_float($3))); }
     | MIN '(' expression ',' expression ')'         { $$ = make_float(min(to_float($3), to_float($5))); }
     | MAX '(' expression ',' expression ')'         { $$ = make_float(max(to_float($3), to_float($5))); }
     | BYTE '(' expression ')'    { REQUIRE_INT($$, $3, $3.as.i & 0xFF); }
@@ -1137,6 +1142,7 @@ factor
         {
             char* s = $3;
             $$ = make_int((strlen(s) > 2) ? s[1] : 0);
+            free(s);
         }
     | I2C '(' READ ',' expression ')' { REQUIRE_INT($$, $5, platform_i2c_read($5.as.i)); }
     | SPI '(' READ ')'                { $$ = make_int(platform_spi_read_buffer);     }
@@ -1181,8 +1187,8 @@ factor
     | ASEC '(' expression ')'     { $$ = make_float(platform_acos(1 / to_float($3))); }
     | ACSC '(' expression ')'     { $$ = make_float(platform_asin(1 / to_float($3))); }
 
-    | ABSMAX '(' expression ',' expression ')'  { $$ = make_float(abs(max(to_float($3), to_float($5)))); }
-    | ABSMIN '(' expression ',' expression ')'  { $$ = make_float(abs(min(to_float($3), to_float($5)))); }
+    | ABSMAX '(' expression ',' expression ')'  { $$ = make_float(native_fabs(max(to_float($3), to_float($5)))); }
+    | ABSMIN '(' expression ',' expression ')'  { $$ = make_float(native_fabs(min(to_float($3), to_float($5)))); }
 
     | BITCLR '(' expression ',' expression ')'  { REQUIRE_INT_EX($$, $3, $5, ($3.as.i & ~(1 << $5.as.i))); }
     | BITSET '(' expression ',' expression ')'  { REQUIRE_INT_EX($$, $3, $5, ($3.as.i | (1 << $5.as.i)));  }
