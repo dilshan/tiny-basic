@@ -495,7 +495,7 @@ static short stack_pop(void) {
 %token BYTE HBYTE LBYTE LSHIFT RSHIFT MOD WAIT SUM SUMSQ POW AND OR BTRUE BFALSE
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON DEG RAD
 %token I2C SPI START RESTART STOP INIT READ WRITE INT SGN COS SIN TAN ACOS ASIN ATAN
-%token SINH COSH TANH ASINH ACOSH ATANH ATAN2 LOG LOG10 EXP SQRT FLOOR CEIL
+%token SINH COSH TANH ASINH ACOSH ATANH ATAN2 LOG LOG10 EXP SQRT FLOOR CEIL PWM
 %token COT SEC CSC ACOT ASEC ACSC ABSMAX ABSMIN BITSET BITCLR BITGET SOUND
 
 %type <val> expression term factor sum_args sumsq_args
@@ -641,6 +641,21 @@ statement
         {
             if(!if_skip) {
                 platform_play_tone(to_int($3), to_int($5));
+            }
+        }
+
+    | PWM '(' expression ',' expression ')'
+        {
+            if(!if_skip) {
+                if($3.type != VAL_INT) 
+                    err_print(ERR_REQUIRED_INT);
+                else {
+                    int pwm_value = to_int($5);
+                    if(pwm_value > 255)
+                        err_print(ERR_PWM_OUTOF_RANGE, pwm_value);
+                    else
+                        platform_pwm($3.as.i, pwm_value);
+                }
             }
         }
 

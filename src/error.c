@@ -24,5 +24,9 @@ const char ERR_MISSING_CONDITION_BOUNDRY[]  = "Error: Missing conditional bounda
 const char ERR_MISSING_TERMINATION[]        = "Error: Missing termination block for line %d\n";
 const char ERR_UNDEFINED_LINE[]             = "Error: Undefined line %d\n";
 const char ERR_UNKNOWN_CHAR[]               = "Error: Unknown character '%s'\n";
+const char ERR_PWM_OUTOF_RANGE[]            = "Error: PWM value %d is out of range\n";
+const char ERR_INVALID_ANALOG_PIN[]         = "Error: Invalid analog pin: A%d\n";
+const char ERR_INVALID_PIN[]                = "Error: Invalid pin: %d\n";
+const char ERR_INVALID_PIN_MODE[]           = "Error: Invalid mode for pin %d\n";
 
 const char WARN_I2C_RECEIVED_NACK[]         = "Warning: Received NACK from I2C\n";

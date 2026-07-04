@@ -81,6 +81,7 @@ This page lists the built-in functions and predefined constants documented for T
 - [INIT](init.md)
 - [OUT](out.md)
 - [PIN](pin.md)
+- [PWM](pwm.md)
 - [READ](read.md)
 - [SET](set.md)
 - [SOUND](sound.md)

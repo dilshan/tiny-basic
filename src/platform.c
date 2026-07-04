@@ -15,6 +15,7 @@ int (*platform_analog_read)(int pin) = NULL;
 void (*platform_pin_mode)(int pin, int mode) = NULL;
 void (*platform_digital_write)(int pin, int value) = NULL;
 int (*platform_digital_read)(int pin) = NULL;
+void (*platform_pwm)(int pin, unsigned char value) = NULL;
 
 void (*platform_play_tone)(int freq, int duration) = NULL;
 

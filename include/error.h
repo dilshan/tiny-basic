@@ -4,6 +4,10 @@
 #ifndef __ERROR_HEADER__
 #define __ERROR_HEADER__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const char ERR_TOO_MANY_LOOP_BLOCKS[];
 extern const char ERR_REQUIRED_INT[];
 extern const char ERR_LOOP_STACK_OVERFLOW[];
@@ -24,8 +28,16 @@ extern const char ERR_DIVISION_BY_ZERO[];
 extern const char ERR_MISSING_CONDITION_BOUNDRY[];
 extern const char ERR_MISSING_TERMINATION[];
 extern const char ERR_UNDEFINED_LINE[];
+extern const char ERR_PWM_OUTOF_RANGE[];
+extern const char ERR_INVALID_ANALOG_PIN[];
+extern const char ERR_INVALID_PIN[];
+extern const char ERR_INVALID_PIN_MODE[];
 
 extern const char WARN_I2C_RECEIVED_NACK[];
 extern const char ERR_UNKNOWN_CHAR[];
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __ERROR_HEADER__ */

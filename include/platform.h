@@ -22,6 +22,7 @@ extern int (*platform_analog_read)(int pin);
 extern void (*platform_pin_mode)(int pin, int mode);
 extern void (*platform_digital_write)(int pin, int value);
 extern int (*platform_digital_read)(int pin);
+extern void (*platform_pwm)(int pin, unsigned char value);
 
 extern void (*platform_play_tone)(int freq, int duration);
 

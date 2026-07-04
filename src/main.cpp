@@ -135,6 +135,7 @@ void setup()
   platform_pin_mode = setPinMode;
   platform_digital_write = setPinValue;
   platform_digital_read = getPinValue;
+  platform_pwm = setPWM;
   platform_play_tone = playTone;
   int_input = serialInput;
 

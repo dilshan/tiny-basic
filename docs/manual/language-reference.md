@@ -169,7 +169,7 @@ These constraints are important to keep in mind during development, as exceeding
 
 Tiny Basic for Arduino also includes functions for interacting with the hardware environment:
 
-- [DELAY](delay.md), [PIN](pin.md), [SET](set.md), [WAIT](wait.md), [GET](get.md), [ANALOG](analog.md)
+- [DELAY](delay.md), [PIN](pin.md), [SET](set.md), [WAIT](wait.md), [GET](get.md), [ANALOG](analog.md), [SOUND](sound.md), [PWM](pwm.md)
 - [I2C](i2c.md), [SPI](spi.md), [READ](read.md), [WRITE](write.md), [START](start.md), [STOP](stop.md), [RESTART](restart.md), [INIT](init.md)
 
 These are implemented as built-in statements and are documented in the command-specific pages.
