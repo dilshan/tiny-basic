@@ -5,6 +5,7 @@
 #include "platform.h"
 
 int (*str_print)(const char*, ...) = NULL;
+void (*float_print)(double value) = NULL;
 int (*err_print)(const char*, ...) = NULL;
 int (*warn_print)(const char*, ...) = NULL;
 int (*int_input)(void) = NULL;

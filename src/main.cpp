@@ -33,6 +33,7 @@ extern unsigned char is_continue;
 extern unsigned char running;
 
 #ifdef ARDUINO
+
 // Print formatted text to the Serial interface.
 int serialPrint(const char *format, ...)
 {
@@ -94,8 +95,8 @@ void delayMs(int ms)
 
 #endif
 
-int printError(const char* format, ...)
-{  
+int printError(const char *format, ...)
+{
   int result = 0;
 
   va_list args;
@@ -103,7 +104,7 @@ int printError(const char* format, ...)
 
 #ifdef ARDUINO
   char buffer[MAX_LINE_LEN];
-  vsnprintf(buffer, sizeof(buffer), format, args);  
+  vsnprintf(buffer, sizeof(buffer), format, args);
   Serial.print(buffer);
 #else
   result = vprintf(format, args);
@@ -117,6 +118,42 @@ int printError(const char* format, ...)
   return result;
 }
 
+void printFloat(double num)
+{
+#ifdef ARDUINO
+#if defined(ARDUINO_UNOR4_WIFI) || defined(ARDUINO_UNOWIFIR4)
+  char floatStr[16];
+  dtostrf(num, 4, 5, floatStr);
+
+  if (strchr(floatStr, '.'))
+  {
+    for (int i = strlen(floatStr) - 1; i >= 0; i--)
+    {
+      if (floatStr[i] == '0')
+      {
+        floatStr[i] = '\0';
+      }
+      else if (floatStr[i] == '.')
+      {
+        floatStr[i] = '\0';
+        break;
+      }
+      else
+      {
+        break;
+      }
+    }
+  }
+
+  Serial.print(floatStr);
+#else
+  serialPrint("%g", num);
+#endif
+#else
+  printf("%g", num);
+#endif
+}
+
 #ifdef ARDUINO
 
 void setup()
@@ -124,6 +161,7 @@ void setup()
   // Connect the parser's print callbacks to the Serial interface.
   err_print = printError;
   str_print = serialPrint;
+  float_print = printFloat;
   warn_print = serialPrint;
 
   // Connect the platform abstraction callbacks.
@@ -160,7 +198,7 @@ void setup()
 
   platform_sinh = std::sinh;
   platform_cosh = std::cosh;
-  platform_tanh = std::tanh;  
+  platform_tanh = std::tanh;
   platform_asinh = std::asinh;
   platform_acosh = std::acosh;
   platform_atanh = std::atanh;
@@ -230,6 +268,7 @@ int main()
 {
   err_print = printError;
   str_print = printf;
+  float_print = printFloat;
   warn_print = printf;
 
   platform_sin = std::sin;
@@ -241,7 +280,7 @@ int main()
 
   platform_sinh = std::sinh;
   platform_cosh = std::cosh;
-  platform_tanh = std::tanh;  
+  platform_tanh = std::tanh;
   platform_asinh = std::asinh;
   platform_acosh = std::acosh;
   platform_atanh = std::atanh;
@@ -283,7 +322,7 @@ int main()
     do_parse(line);
   }
 
-  printf("\n");
+  printf("\r\n");
 
   return 0;
 }

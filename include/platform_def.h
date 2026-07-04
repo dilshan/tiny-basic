@@ -9,6 +9,9 @@
   #if defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__)
   // Arduino Due
   #define MAX_LINES 1024
+  #elif defined(ARDUINO_UNOR4_WIFI) || defined(ARDUINO_UNOWIFIR4)
+  // Arduino Uno R4 WiFi
+  #define MAX_LINES 264  
   #else
   #define MAX_LINES 256
   #endif
@@ -35,14 +38,46 @@
 #define SET_PULL_UP
 
 // SDA and SCL pin mapping for soft I2C implementation.
-#define I2C_SDA_PIN   20
-#define I2C_SCL_PIN   21
+#ifdef ARDUINO
+  #if defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__)
+  #define I2C_SDA_PIN   20
+  #define I2C_SCL_PIN   21
+  #elif defined(ARDUINO_UNOR4_WIFI) || defined(ARDUINO_UNOWIFIR4)
+  #define I2C_SDA_PIN   5
+  #define I2C_SCL_PIN   6
+  #else
+  #define I2C_SDA_PIN   20
+  #define I2C_SCL_PIN   21
+  #endif
+#else
+  #define I2C_SDA_PIN   20
+  #define I2C_SCL_PIN   21  
+#endif
 
 // MOSI, MISO, SCK and CS pin mapping for soft SPI implementation.
-#define SPI_MOSI_PIN  22
-#define SPI_MISO_PIN  23
-#define SPI_SCK_PIN   24
-#define SPI_CS_PIN    25
+#ifdef ARDUINO
+  #if defined(ARDUINO_SAM_DUE) || defined(__SAM3X8E__)
+  #define SPI_MOSI_PIN  22
+  #define SPI_MISO_PIN  23
+  #define SPI_SCK_PIN   24
+  #define SPI_CS_PIN    25
+  #elif defined(ARDUINO_UNOR4_WIFI) || defined(ARDUINO_UNOWIFIR4)
+  #define SPI_MOSI_PIN  8
+  #define SPI_MISO_PIN  9
+  #define SPI_SCK_PIN   10
+  #define SPI_CS_PIN    11
+  #else
+  #define SPI_MOSI_PIN  22
+  #define SPI_MISO_PIN  23
+  #define SPI_SCK_PIN   24
+  #define SPI_CS_PIN    25
+  #endif
+#else
+  #define SPI_MOSI_PIN  22
+  #define SPI_MISO_PIN  23
+  #define SPI_SCK_PIN   24
+  #define SPI_CS_PIN    25
+#endif
 
 // Pin mapping for tone output.
 #define TONE_PIN      12

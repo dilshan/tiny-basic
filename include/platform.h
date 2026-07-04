@@ -12,6 +12,7 @@ extern "C" {
 
 // Function pointers provided by the platform implementation.
 extern int (*str_print)(const char*, ...);
+extern void (*float_print)(double value);
 extern int (*err_print)(const char*, ...);
 extern int (*warn_print)(const char*, ...);
 extern int (*int_input)(void);

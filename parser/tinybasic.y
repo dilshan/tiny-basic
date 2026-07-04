@@ -523,19 +523,19 @@ line
     ;
 
 statement
-    : PRINT '(' expr_list ')'          { if (!if_skip) str_print("\n"); }
+    : PRINT '(' expr_list ')'          { if (!if_skip) str_print("\r\n"); }
 
     | PRINT '(' HEX ','                { if (!if_skip) current_print_mode = PRINT_HEX; }   
-    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\r\n"); } }
 
     | PRINT '(' BIN ','                { if (!if_skip) current_print_mode = PRINT_BIN; }   
-    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\r\n"); } }
 
     | PRINT '(' BIN8 ','               { if (!if_skip) current_print_mode = PRINT_BIN_GRP; }   
-    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }   
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\r\n"); } }   
 
     | PRINT '(' OCT ','                { if (!if_skip) current_print_mode = PRINT_OCT; }   
-    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\n"); } }  
+    expr_list ')'                      { if (!if_skip) { current_print_mode = PRINT_DEC; str_print("\r\n"); } }  
 
     | ON expression ','                
         { 
@@ -928,7 +928,7 @@ statement
         {
             if ((!if_skip) && (!running)) {
                 for (int i = 0; i < prog_size; i++)
-                    str_print("%d %s\n", program[i].num, program[i].text);
+                    str_print("%d %s\r\n", program[i].num, program[i].text);
             }
         }
 
@@ -982,8 +982,8 @@ expr_item
                             str_print("%s", temp_buffer);
                         }
                         break;
-                    default:
-                        str_print("%g", to_float($1));
+                    default:   
+                        float_print(to_float($1));
                 }
             }
         }
@@ -1191,7 +1191,7 @@ factor
 
 %%
 
-void yyerror(const char* s) { err_print("Error: %s\n", s); }
+void yyerror(const char* s) { err_print("Error: %s\r\n", s); }
 
 static void do_run(void) {
   jump_pending = JUMP_NONE;
@@ -1210,17 +1210,17 @@ static void do_run(void) {
   build_conditional_jump_map();
 
 #ifdef DEBUG
-  printf("Conditional Jump Map\n");
+  printf("Conditional Jump Map\r\n");
   for(int i = 0; i < cjump_map_size; i++) {
-      printf("Type=%d, Root=%d, End=%d, Else=%d\n", cjump_map[i].type, cjump_map[i].root_node_num, 
+      printf("Type=%d, Root=%d, End=%d, Else=%d\r\n", cjump_map[i].type, cjump_map[i].root_node_num, 
         cjump_map[i].end_node_num, cjump_map[i].else_node_num);
   }
-  printf("--------------------------------\n");
+  printf("--------------------------------\r\n");
 #endif
 
   while (running && pc < prog_size) {
     char exec[MAX_LINE_LEN + 2];
-    snprintf(exec, sizeof(exec), "%s\n", program[pc].text);
+    snprintf(exec, sizeof(exec), "%s\r\n", program[pc].text);
 
     jump_pending = JUMP_NONE;
     if_skip = 0;
@@ -1289,7 +1289,7 @@ done:
 
 void init_parser(void) {
   memset(variables, 0, sizeof(variables));
-  str_print("%s v%s\n", APP_NAME, APP_VERSION_STR);
+  str_print("%s v%s\r\n", APP_NAME, APP_VERSION_STR);
 }
 
 void do_parse(char *line) {
@@ -1316,7 +1316,7 @@ void do_parse(char *line) {
     // Immediate mode: parse and execute.
     char with_nl[MAX_LINE_LEN + 2];
 
-    snprintf(with_nl, sizeof(with_nl), "%s\n", line);
+    snprintf(with_nl, sizeof(with_nl), "%s\r\n", line);
 
     running = 0;
     jump_pending = JUMP_NONE;
