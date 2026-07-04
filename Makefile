@@ -27,6 +27,7 @@ CPP_SRCS := \
     $(SRC_DIR)/main.cpp \
     $(SRC_DIR)/platform.c \
     $(SRC_DIR)/math.c \
+    $(SRC_DIR)/error.c \
     $(SRC_DIR)/formatter.c \
     $(SRC_DIR)/platform_io.cpp \
     $(SRC_DIR)/platform_i2c.cpp \

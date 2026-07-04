@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2026 Dilshan R Jayakody. All rights reserved.
 
-#include "errno.h"
+#include "error.h"
 
 const char ERR_TOO_MANY_LOOP_BLOCKS[]       = "Error: Too many loop blocks\n";
 const char ERR_REQUIRED_INT[]               = "Error: Required integer type\n";
