@@ -219,12 +219,12 @@ void setup()
 
   platform_is_key_pressed = isKeyPressed;
 
-  platform_i2c_init = i2cInit;
-  platform_i2c_start = i2cStart;
-  platform_i2c_restart = i2cRestart;
-  platform_i2c_stop = i2cStop;
-  platform_i2c_write = i2cWrite;
-  platform_i2c_read = i2cRead;
+  platform_i2c_init = PlatformI2C::init;
+  platform_i2c_start = PlatformI2C::start;
+  platform_i2c_restart = PlatformI2C::restart;
+  platform_i2c_stop = PlatformI2C::stop;
+  platform_i2c_write = PlatformI2C::write;
+  platform_i2c_read = PlatformI2C::read;
 
   platform_spi_init = spiInit;
   platform_spi_select = spiSelect;

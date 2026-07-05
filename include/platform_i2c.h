@@ -4,14 +4,17 @@
 #ifndef __PLATFORM_I2C_HEADER__
 #define __PLATFORM_I2C_HEADER__
 
-void i2cInit();
+class PlatformI2C {
+  public:
+    PlatformI2C() = delete;
+    
+    static void init();
+    static void start();
+    static void restart();
+    static void stop();
 
-void i2cStart();
-void i2cRestart();
-
-unsigned char i2cWrite(unsigned char data);
-unsigned char i2cRead(unsigned char send_ack);
-
-void i2cStop();
+    static unsigned char write(unsigned char data);
+    static unsigned char read(unsigned char send_ack);
+};
 
 #endif /* __PLATFORM_I2C_HEADER__ */

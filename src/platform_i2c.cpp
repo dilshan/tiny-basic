@@ -11,27 +11,27 @@
 // Set to 100kHz standard mode speed.
 #define I2C_DELAY() delayMicroseconds(4)
 
-void i2cInit() {
+void PlatformI2C::init () {
     pinMode(I2C_SDA_PIN, INPUT);
     pinMode(I2C_SCL_PIN, INPUT);
 }
 
-void i2cStart() {
+void PlatformI2C::start() {
     pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
     I2C_DELAY();
     pinMode(I2C_SCL_PIN, OUTPUT); digitalWrite(I2C_SCL_PIN, LOW);
     I2C_DELAY();
 }
 
-void i2cRestart() {
+void PlatformI2C::restart() {
     pinMode(I2C_SDA_PIN, INPUT);
     I2C_DELAY();
     pinMode(I2C_SCL_PIN, INPUT);
     I2C_DELAY();
-    i2cStart();
+    start();
 }
 
-unsigned char i2cWrite(unsigned char data) {
+unsigned char PlatformI2C::write(unsigned char data) {
     // Clock out 8-bits.
     for (int i = 0; i < 8; i++) {
         if (data & 0x80) {
@@ -59,7 +59,7 @@ unsigned char i2cWrite(unsigned char data) {
     return ack; 
 }
 
-unsigned char i2cRead(unsigned char send_ack) {
+unsigned char PlatformI2C::read(unsigned char send_ack) {
     unsigned char data = 0;
     pinMode(I2C_SDA_PIN, INPUT);
     
@@ -88,7 +88,7 @@ unsigned char i2cRead(unsigned char send_ack) {
     return data;
 }
 
-void i2cStop() {
+void PlatformI2C::stop() {
     pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
     I2C_DELAY();
     pinMode(I2C_SCL_PIN, INPUT);
