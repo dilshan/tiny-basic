@@ -5,7 +5,7 @@
 #include "platform_def.h"
 #include "platform_tone.h"
 
-void playTone(int freq, int duration)
+void platformTone::play(int freq, int duration)
 {
   pinMode(TONE_PIN, OUTPUT);
   

@@ -17,6 +17,7 @@
 #include "platform_spi.h"
 #include "platform_tone.h"
 #include "platform_chardrv.h"
+#include "platform_sys.h"
 
 #else
 
@@ -66,17 +67,6 @@ static void initMathBindings()
   platform_floor = std::floor;
   platform_ceil = std::ceil;
 }
-
-#ifdef ARDUINO
-
-
-
-void delayMs(int ms)
-{
-  delay(ms);
-}
-
-#endif
 
 int printError(const char *format, ...)
 {
@@ -151,8 +141,8 @@ void setup()
   int_input = PlatformCharDrv::input;
   platform_is_key_pressed = PlatformCharDrv::isKeyPressed;
 
-  platform_delay_ms = delayMs;
-  platform_play_tone = playTone;
+  platform_delay_ms = platformSys::delayMs;
+  platform_play_tone = platformTone::play;
 
   platform_analog_read = platformIO::getAnalogPortValue;
   platform_pin_mode = platformIO::setPinMode;

@@ -4,6 +4,11 @@
 #ifndef __PLATFORM_TONE_HEADER__
 #define __PLATFORM_TONE_HEADER__
 
-void playTone(int freq, int duration);
+class platformTone {
+  public:
+    platformTone() = delete;
+
+    static void play(int freq, int duration);
+};
 
 #endif /* __PLATFORM_TONE_HEADER__ */
