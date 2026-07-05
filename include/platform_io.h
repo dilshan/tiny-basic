@@ -4,13 +4,18 @@
 #ifndef __PLATFORM_IO_HEADER__
 #define __PLATFORM_IO_HEADER__
 
-int getAnalogPortValue(int pin);
-void setPWM(int pin, unsigned char value);
+class platformIO {
+  public:
+    platformIO() = delete;
 
-void setPinMode(int pin, int mode);
-void setPinValue(int pin, int value);
-int getPinValue(int pin);
+    static int getAnalogPortValue(int pin);
+    static void setPWM(int pin, unsigned char value);
 
-int isKeyPressed();
+    static void setPinMode(int pin, int mode);
+    static void setPinValue(int pin, int value);
+    static int getPinValue(int pin);
+
+    static int isKeyPressed();
+};
 
 #endif /* __PLATFORM_IO_HEADER__ */

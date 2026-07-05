@@ -10,7 +10,7 @@
 #include "platform_def.h"
 #include "platform.h"
 
-int getAnalogPortValue(int pin)
+int platformIO::getAnalogPortValue(int pin)
 {
   // On Arduino Due, the analog pins are labeled A0-A15 and correspond to digital pins 54-69.
   if(pin < 0 || pin > (MAX_ANALOG_PIN_COUNT - 1)) {
@@ -22,7 +22,7 @@ int getAnalogPortValue(int pin)
   return value;
 }
 
-void setPWM(int pin, unsigned char value)
+void platformIO::setPWM(int pin, unsigned char value)
 {
   if (pin < 0 || pin > (MAX_DIGITAL_PIN_COUNT - 1)) {
     err_print(ERR_INVALID_PIN, pin);
@@ -32,7 +32,7 @@ void setPWM(int pin, unsigned char value)
   analogWrite(pin, value);
 }
 
-void setPinMode(int pin, int mode)
+void platformIO::setPinMode(int pin, int mode)
 {
   if (pin < 0 || pin > (MAX_DIGITAL_PIN_COUNT - 1)) {
     err_print(ERR_INVALID_PIN, pin);
@@ -53,7 +53,7 @@ void setPinMode(int pin, int mode)
   pinMode(pin, mode);
 }
 
-void setPinValue(int pin, int value)
+void platformIO::setPinValue(int pin, int value)
 {
   if (pin < 0 || pin > (MAX_DIGITAL_PIN_COUNT - 1)) {
     err_print(ERR_INVALID_PIN, pin);
@@ -64,7 +64,7 @@ void setPinValue(int pin, int value)
   digitalWrite(pin, pinValue);
 }
 
-int getPinValue(int pin)
+int platformIO::getPinValue(int pin)
 {
   if (pin < 0 || pin > (MAX_DIGITAL_PIN_COUNT - 1)) {
     err_print(ERR_INVALID_PIN, pin);
@@ -72,15 +72,6 @@ int getPinValue(int pin)
   }
 
   return digitalRead(pin);
-}
-
-int isKeyPressed()
-{
-  if(Serial.available()) {
-    return Serial.read();
-  }
-
-  return -1;
 }
 
 #endif

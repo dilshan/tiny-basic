@@ -129,6 +129,15 @@ int serialInput()
   }
 }
 
+int isKeyPressed()
+{
+  if(Serial.available()) {
+    return Serial.read();
+  }
+
+  return -1;
+}
+
 void delayMs(int ms)
 {
   delay(ms);
@@ -209,15 +218,15 @@ void setup()
 
   // Connect the platform abstraction callbacks.
   platform_delay_ms = delayMs;
-  platform_analog_read = getAnalogPortValue;
-  platform_pin_mode = setPinMode;
-  platform_digital_write = setPinValue;
-  platform_digital_read = getPinValue;
-  platform_pwm = setPWM;
   platform_play_tone = playTone;
   int_input = serialInput;
-
   platform_is_key_pressed = isKeyPressed;
+
+  platform_analog_read = platformIO::getAnalogPortValue;
+  platform_pin_mode = platformIO::setPinMode;
+  platform_digital_write = platformIO::setPinValue;
+  platform_digital_read = platformIO::getPinValue;
+  platform_pwm = platformIO::setPWM;
 
   platform_i2c_init = PlatformI2C::init;
   platform_i2c_start = PlatformI2C::start;
