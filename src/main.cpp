@@ -16,6 +16,7 @@
 #include "platform_i2c.h"
 #include "platform_spi.h"
 #include "platform_tone.h"
+#include "platform_chardrv.h"
 
 #else
 
@@ -68,75 +69,7 @@ static void initMathBindings()
 
 #ifdef ARDUINO
 
-// Print formatted text to the Serial interface.
-int serialPrint(const char *format, ...)
-{
-  char buffer[MAX_LINE_LEN];
-  va_list args;
-  va_start(args, format);
-  int len = vsnprintf(buffer, sizeof(buffer), format, args);
-  va_end(args);
 
-  Serial.print(buffer);
-
-  return len;
-}
-
-// Read an integer from Serial input, echoing characters back to the user.
-int serialInput()
-{
-  char numBuffer[16];
-  size_t idx = 0;
-
-  while (true)
-  {
-    if (Serial.available())
-    {
-      char c = Serial.read();
-
-      if (c == '\n')
-        continue; // Ignore newline characters; only CR terminates input.
-
-      if (c == '\r')
-      {
-        numBuffer[idx] = '\0';
-        Serial.println();
-        return atoi(numBuffer);
-      }
-
-      if ((c == '\b' || c == 127) && idx > 0)
-      {
-        // Handle a backspace/delete by removing last digit.
-        idx--;
-        Serial.print("\b \b");
-        continue;
-      }
-
-      // Accept only digits and an optional leading minus sign.
-      if ((idx < sizeof(numBuffer) - 1) && (isdigit(static_cast<unsigned char>(c)) || (c == '-' && idx == 0)))
-      {
-        numBuffer[idx++] = c;
-        Serial.print(c);
-      }
-    }
-    else
-    {
-      // Yield to the board's background tasks (Wi-Fi stack, watchdog,
-      // etc.) while waiting for input on boards with a cooperative
-      // scheduler. This is a no-op on boards that don't need it.
-      yield();
-    }
-  }
-}
-
-int isKeyPressed()
-{
-  if(Serial.available()) {
-    return Serial.read();
-  }
-
-  return -1;
-}
 
 void delayMs(int ms)
 {
@@ -212,15 +145,14 @@ void setup()
 {
   // Connect the parser's print callbacks to the Serial interface.
   err_print = printError;
-  str_print = serialPrint;
   float_print = printFloat;
-  warn_print = serialPrint;
+  str_print = PlatformCharDrv::print;
+  warn_print = PlatformCharDrv::print;
+  int_input = PlatformCharDrv::input;
+  platform_is_key_pressed = PlatformCharDrv::isKeyPressed;
 
-  // Connect the platform abstraction callbacks.
   platform_delay_ms = delayMs;
   platform_play_tone = playTone;
-  int_input = serialInput;
-  platform_is_key_pressed = isKeyPressed;
 
   platform_analog_read = platformIO::getAnalogPortValue;
   platform_pin_mode = platformIO::setPinMode;
