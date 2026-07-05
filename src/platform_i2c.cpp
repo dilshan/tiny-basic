@@ -97,4 +97,6 @@ void PlatformI2C::stop() {
     I2C_DELAY();
 }
 
+#undef I2C_DELAY
+
 #endif

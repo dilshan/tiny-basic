@@ -226,10 +226,10 @@ void setup()
   platform_i2c_write = PlatformI2C::write;
   platform_i2c_read = PlatformI2C::read;
 
-  platform_spi_init = spiInit;
-  platform_spi_select = spiSelect;
-  platform_spi_deselect = spiDeselect;
-  platform_spi_transfer = spiTransfer;
+  platform_spi_init = PlatformSPI::init;
+  platform_spi_select = PlatformSPI::select;
+  platform_spi_deselect = PlatformSPI::deselect;
+  platform_spi_transfer = PlatformSPI::transfer;
 
   initMathBindings();
 

@@ -11,7 +11,7 @@
 // Set to 250 kHz clock speed.
 #define SPI_DELAY() delayMicroseconds(2)
 
-void spiInit() {
+void PlatformSPI::init() {
     pinMode(SPI_MOSI_PIN, OUTPUT);
     pinMode(SPI_MISO_PIN, INPUT);
     pinMode(SPI_SCK_PIN, OUTPUT);
@@ -22,17 +22,17 @@ void spiInit() {
     digitalWrite(SPI_MOSI_PIN, LOW);
 }
 
-void spiSelect() {
+void PlatformSPI::select() {
     digitalWrite(SPI_CS_PIN, LOW);
     SPI_DELAY();
 }
 
-void spiDeselect() {
+void PlatformSPI::deselect() {
     digitalWrite(SPI_CS_PIN, HIGH);
     SPI_DELAY();
 }
 
-unsigned char spiTransfer(unsigned char output_byte) {
+unsigned char PlatformSPI::transfer(unsigned char output_byte) {
     unsigned char input_byte = 0;
     
     for (int i = 0; i < 8; i++) {
@@ -57,5 +57,7 @@ unsigned char spiTransfer(unsigned char output_byte) {
     
     return input_byte;
 }
+
+#undef SPI_DELAY
 
 #endif

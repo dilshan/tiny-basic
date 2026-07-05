@@ -4,11 +4,15 @@
 #ifndef __PLATFORM_SPI_HEADER__
 #define __PLATFORM_SPI_HEADER__
 
-void spiInit();
+class PlatformSPI {
+  public:
+    PlatformSPI() = delete;
 
-void spiSelect();
-void spiDeselect();
+    static void init();
+    static void select();
+    static void deselect();
 
-unsigned char spiTransfer(unsigned char output_byte);
+    static unsigned char transfer(unsigned char output_byte);
+};
 
 #endif /* __PLATFORM_SPI_HEADER__ */
