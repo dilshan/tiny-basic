@@ -94,4 +94,6 @@ To retrieve your code for backup or editing, use the [LIST](list.md) command. Th
 
 ## Recover from infinite loops
 
-If the program enters an infinite loop, you can break out of it by pressing **Esc** key.
+When testing your code, it is easy to accidentally find yourself stuck in an infinite loop where the program runs indefinitely without stopping.
+
+Tiny Basic for Arduino includes a built-in safety mechanism specifically designed to handle runaway programs during execution. If your program enters an infinite loop, simply press the **Esc** key on your keyboard, and the environment will immediately detect the keypress, interrupt the execution cycle, safely break out of the loop, and return control back to the command prompt.
