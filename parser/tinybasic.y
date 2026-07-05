@@ -377,8 +377,8 @@ static short stack_pop(void) {
   return call_stack[--stack_top];
 }
 
-static int read_terminal_line(char *buffer, uint8_t max_len) {
-    uint8_t index = 0;
+static int read_terminal_line(char *buffer, unsigned char max_len) {
+    unsigned char index = 0;
     char key;
 
     while(1) {
@@ -429,10 +429,10 @@ static void load_program_from_terminal(void)
             return;
         }
 
-        uint16_t line_num = 0;
+        unsigned short line_num = 0;
         char *digit_start = p;
         while (isdigit((unsigned char)*p)) {
-            line_num = (uint16_t)(line_num * 10 + (uint8_t)(*p - '0'));
+            line_num = (unsigned short)(line_num * 10 + (unsigned char)(*p - '0'));
             p++;
         }
 
