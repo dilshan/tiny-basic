@@ -219,8 +219,8 @@ void loop()
 int main()
 {
   err_print = printError;
-  str_print = printf;
   float_print = printFloat;
+  str_print = printf;
   warn_print = printf;
 
   initMathBindings();
