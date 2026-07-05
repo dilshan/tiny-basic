@@ -11,6 +11,7 @@ Resets the runtime interpreter state. All variables are cleared and reset. This 
 
 - [NEW](new.md)
 - [RUN](run.md)
+- [LOAD](load.md)
 
 ## Example
 

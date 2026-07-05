@@ -11,6 +11,7 @@ Starts execution of the currently stored program lines from the lowest line numb
 
 - [NEW](new.md)
 - [LIST](list.md)
+- [LOAD](load.md)
 
 ## Example
 

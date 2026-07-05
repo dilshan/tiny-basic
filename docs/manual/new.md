@@ -11,6 +11,7 @@ Erases the stored program lines and flushes the runtime memory completely. Retur
 
 - [CLEAR](clear.md)
 - [RUN](run.md)
+- [LOAD](load.md)
 
 ## Example
 

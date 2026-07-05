@@ -7,7 +7,9 @@ The Tiny Basic system for Arduino is designed for simplicity, removing the need 
 In *Immediate Mode*, the system executes commands as soon as you press Enter. This is useful for testing functions or managing the workspace without saving code to memory.
 
 **Example:** To test a function, type the following and press Enter:
+
 `> PRINT("Hello World")`
+
 *The system immediately responds: `Hello World`*
 
 Other management commands include:
@@ -77,6 +79,18 @@ To delete a line, enter the line number followed by a blank line.
 10 LET A = 0
 30 PRINT(A)
 ```
+
+## Bulk loading mode
+
+Tiny BASIC for Arduino keeps programs entirely in RAM. By avoiding onboard flash or EEPROM for program storage, the interpreter behaves identically across all supported microcontrollers, without needing to account for each chip's storage size, write-cycle limits, or wear leveling.
+
+Since code isn't permanently saved on the chip, **typing long programs directly into the terminal isn't recommended**. Instead:
+
+1. Write your program in any external text editor.
+2. Enter the [LOAD](load.md) command.
+3. Paste your complete code directly into the terminal.
+
+To retrieve your code for backup or editing, use the [LIST](list.md) command. This prints the entire program back to the terminal so you can easily copy and save it.
 
 ## Recover from infinite loops
 

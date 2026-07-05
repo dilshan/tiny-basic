@@ -80,6 +80,7 @@ To manage the execution and organization of your program, you can utilize a set 
 * [LIST](list.md) allows you to review your work by displaying the stored, numbered program currently in the buffer.
 * [CLEAR](clear.md) is useful for resetting the runtime state—such as clearing variables or stack data—without deleting the actual lines of your program.
 * [NEW](new.md) performs a comprehensive reset by clearing the program buffer entirely and wiping the associated memory, effectively providing a blank slate for new development.
+* [LOAD](load.md) enters interactive program entry mode, allowing you to type or paste a BASIC program line by line directly from the terminal.
 
 ### Jumping
 
