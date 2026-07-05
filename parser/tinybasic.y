@@ -92,6 +92,7 @@ static inline double native_fabs(double d) {
 static inline VarVal var_get(char c) {
     return variables[toupper((unsigned char)c) - 'A'];
 }
+
 static inline void var_set(char c, VarVal v) {
     variables[toupper((unsigned char)c) - 'A'] = v;
 }
