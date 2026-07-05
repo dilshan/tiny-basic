@@ -137,6 +137,7 @@ void setup()
   err_print = printError;
   float_print = printFloat;
   str_print = PlatformCharDrv::print;
+  chr_print = PlatformCharDrv::printChar;
   warn_print = PlatformCharDrv::print;
   int_input = PlatformCharDrv::input;
   platform_is_key_pressed = PlatformCharDrv::isKeyPressed;

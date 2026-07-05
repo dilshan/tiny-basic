@@ -377,6 +377,84 @@ static short stack_pop(void) {
   return call_stack[--stack_top];
 }
 
+static int read_terminal_line(char *buffer, uint8_t max_len) {
+    uint8_t index = 0;
+    char key;
+
+    while(1) {
+        key = platform_is_key_pressed();
+
+        if (key == 27) {
+            return -1;
+        }
+        if (key == '\r') {
+            chr_print('\r'); chr_print('\n');
+            break;
+        }
+        if (key >= 32 && key <= 126 && index < (max_len - 1)) {
+            chr_print(key);
+            buffer[index++] = key;
+        }
+    }
+
+    buffer[index] = '\0';
+    return (int)index;
+}
+
+static void load_program_from_terminal(void)
+{
+    char line_buffer[MAX_LINE_LEN];
+    char is_first_line = 1;
+
+    str_print("Paste or type your program. To finish press Enter twice.\r\n");
+    str_print("Press Esc to cancel.\r\n");
+
+    while(1) {
+        int len = read_terminal_line(line_buffer, MAX_LINE_LEN);
+
+        if (len <= 0) {
+            return;
+        }
+
+        char *p = line_buffer;
+        while (*p == ' ' || *p == '\t') {
+            p++;
+        }
+        if (*p == '\0') {
+            return;
+        }
+
+        if (!isdigit((unsigned char)*p)) {
+            err_print(ERR_INVALID_LINE_NUM);
+            return;
+        }
+
+        uint16_t line_num = 0;
+        char *digit_start = p;
+        while (isdigit((unsigned char)*p)) {
+            line_num = (uint16_t)(line_num * 10 + (uint8_t)(*p - '0'));
+            p++;
+        }
+
+        if (p == digit_start || line_num == 0) {
+            err_print(ERR_INVALID_LINE_NUM);
+            return;
+        }
+
+        while (*p == ' ' || *p == '\t') {
+            p++;
+        }
+
+        if (is_first_line) {
+            flush_memory();
+            prog_size = 0;
+            is_first_line = 0;
+        }
+
+        prog_store(line_num, p);
+    }
+}
+
 %}
 
 %union {
@@ -400,7 +478,7 @@ static short stack_pop(void) {
 %token BAND BOR NOR NAND NOT XNOR XOR HEX BIN BIN8 OCT IFF EQV IMP ASC ON DEG RAD
 %token I2C SPI START RESTART STOP INIT READ WRITE INT SGN COS SIN TAN ACOS ASIN ATAN
 %token SINH COSH TANH ASINH ACOSH ATANH ATAN2 LOG LOG10 EXP SQRT FLOOR CEIL PWM
-%token COT SEC CSC ACOT ASEC ACSC ABSMAX ABSMIN BITSET BITCLR BITGET SOUND
+%token COT SEC CSC ACOT ASEC ACSC ABSMAX ABSMIN BITSET BITCLR BITGET SOUND LOAD
 
 %type <val> expression term factor sum_args sumsq_args
 %type <ival> boolean_expr mode
@@ -837,6 +915,8 @@ statement
         }
 
     | RUN   { if (!if_skip) { if(!running) { running = 1; pc = 0; } } }
+
+    | LOAD  { if (!if_skip) { if(!running) { load_program_from_terminal(); } }  }
 
     | END   { if (!if_skip) { if(!running) is_continue = 0; else running = 0; } }
     ;

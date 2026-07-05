@@ -26,6 +26,11 @@ int PlatformCharDrv::print(const char *format, ...)
   return len;
 }
 
+void PlatformCharDrv::printChar(char c)
+{
+  Serial.print(c);
+}
+
 // Read an integer from Serial input, echoing characters back to the user.
 int PlatformCharDrv::input()
 {

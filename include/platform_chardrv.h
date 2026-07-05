@@ -9,6 +9,8 @@ class PlatformCharDrv {
     PlatformCharDrv() = delete;
     
     static int print(const char *format, ...);
+    static void printChar(char c);
+
     static int input();
     static int isKeyPressed();
 };

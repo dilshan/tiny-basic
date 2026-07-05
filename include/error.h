@@ -32,6 +32,7 @@ extern const char ERR_PWM_OUTOF_RANGE[];
 extern const char ERR_INVALID_ANALOG_PIN[];
 extern const char ERR_INVALID_PIN[];
 extern const char ERR_INVALID_PIN_MODE[];
+extern const char ERR_INVALID_LINE_NUM[];
 
 extern const char WARN_I2C_RECEIVED_NACK[];
 extern const char ERR_UNKNOWN_CHAR[];

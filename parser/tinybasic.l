@@ -130,6 +130,7 @@ hex     [0-9a-fA-F]
 (?i:bitget)  { return BITGET; }
 (?i:sound)   { return SOUND;  }
 (?i:pwm)     { return PWM;    }
+(?i:load)    { return LOAD;   }
 
 (?i:pi)      { yylval.fval = 3.14159265358979323846; return FLOAT_NUMBER; }
 (?i:e)       { yylval.fval = 2.71828182845904523536; return FLOAT_NUMBER; }

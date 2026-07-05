@@ -28,5 +28,6 @@ const char ERR_PWM_OUTOF_RANGE[]            = "Error: PWM value %d is out of ran
 const char ERR_INVALID_ANALOG_PIN[]         = "Error: Invalid analog pin: A%d\r\n";
 const char ERR_INVALID_PIN[]                = "Error: Invalid pin: %d\r\n";
 const char ERR_INVALID_PIN_MODE[]           = "Error: Invalid mode for pin %d\r\n";
+const char ERR_INVALID_LINE_NUM[]           = "Error: Invalid line number\r\n";
 
 const char WARN_I2C_RECEIVED_NACK[]         = "Warning: Received NACK from I2C\r\n";
