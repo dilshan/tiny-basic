@@ -111,7 +111,7 @@ Because RAM is volatile and typing lengthy programs over a serial stream can be 
 ### Recommended Workflow for Large Programs:
 
 1. Write and save your BASIC program using an external text editor on your host computer.
-2. In the terminal, enter the [LOAD](https://www.google.com/search?q=load.md) command.
+2. In the terminal, enter the [LOAD](load.md) command.
 3. Paste your complete code directly into the terminal window.
 4. To backup or retrieve your modified code from the hardware, issue the [LIST](list.md) command. Copy the output printed in the terminal and save it back to your host computer.
 

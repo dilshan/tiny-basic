@@ -5,6 +5,7 @@
 .vscode/ipch
 
 /build/
+/site/
 
 src/tinybasic.tab.c
 src/lex.yy.c

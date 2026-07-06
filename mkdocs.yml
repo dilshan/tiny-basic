@@ -8,6 +8,7 @@ repo_name: dilshan/tiny-basic
 
 theme:
   name: material
+  logo: logo/tinybasic.svg
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
