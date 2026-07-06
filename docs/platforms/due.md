@@ -43,7 +43,7 @@ When connecting peripherals, sensors, or displays to your Tiny Basic setup, use 
 
 To upload your Tiny Basic firmware and access the interactive command line / editor, connect your computer to the board using the *Programming Port* (the micro-USB port closest to the DC power jack, managed by the ATMEGA16U2 chip).
 
-Once connected, open your preferred serial terminal emulator (e.g., Arduino Serial Monitor, PuTTY, or minicim) and select the corresponding COM port to start coding in Tiny Basic for Arduino.
+Once connected, open your preferred serial terminal emulator (e.g., *Arduino Serial Monitor*, *PuTTY*, or *minicom*) and select the corresponding COM port to start coding in Tiny Basic for Arduino.
 
 ## See also
 
