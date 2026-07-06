@@ -8,7 +8,8 @@ repo_name: dilshan/tiny-basic
 
 theme:
   name: material
-  logo: logo/tinybasic.svg
+  logo: logo/tinybasic.png
+  favicon: logo/tinybasic.png
   palette:
     # Light mode
     - media: "(prefers-color-scheme: light)"
@@ -27,6 +28,7 @@ theme:
         icon: material/brightness-4
         name: Switch to light mode
   features:
+    - navigation.instant
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
