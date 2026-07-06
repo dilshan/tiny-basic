@@ -12,11 +12,11 @@ Tiny Basic is engineered specifically to run on mid-range microcontrollers (MCUs
 
 * This compiler is written from scratch using standard C/C++. If you plan on rebuilding or modifying the interpreter from source, we highly recommend using a Linux-based environment for the best toolchain compatibility.
 
-* The entire project is structured, configured, and built using the PlatformIO ecosystem, making it cross-platform and incredibly easy to clone, tweak, and flash.
+* The entire project is structured, configured, and built using the [PlatformIO](https://platformio.org/) ecosystem, making it cross-platform and incredibly easy to clone, tweak, and flash.
 
 ## Historical Roots
 
-The framework draws significant inspiration from two foundational milestones in personal computing:
+The Tiny Basic for Arduino project draws significant inspiration from two foundational milestones in personal computing:
 
 * The Original [Tiny BASIC Project](https://en.wikipedia.org/wiki/Tiny_BASIC): Conceived by *Dennis Allison* in the mid-1970s as a lightweight, accessible alternative to resource-heavy interpreters.
 
