@@ -11,6 +11,7 @@ Initiates a conditional pre-test loop. The block of statements between `WHILE` a
 
 - [REPEAT](repeat.md)
 - [WEND](wend.md)
+- [EXIT](exit.md)
 
 ## Example
 

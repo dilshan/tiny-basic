@@ -11,6 +11,7 @@ Terminates a `REPEAT` loop block, testing the condition. If the expression is fa
 
 - [REPEAT](repeat.md)
 - [WHILE](while.md)
+- [EXIT](exit.md)
 
 ## Example
 

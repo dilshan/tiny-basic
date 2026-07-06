@@ -13,6 +13,7 @@ Begins a conditional post-test loop. Statements within the repeat block execute 
 
 - [UNTIL](until.md)
 - [WHILE](while.md)
+- [EXIT](exit.md)
 
 ## Example
 

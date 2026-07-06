@@ -11,6 +11,7 @@ Defines the boundary and loop return point for a conditional `WHILE` loop block.
 
 - [WHILE](while.md)
 - [REPEAT](repeat.md)
+- [EXIT](exit.md)
 
 ## Example
 
