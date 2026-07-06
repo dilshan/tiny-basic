@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
 <svg
-   width="20.477434mm"
-   height="23.511124mm"
-   viewBox="0 0 20.477434 23.511124"
+   width="184"
+   height="216"
+   viewBox="0 0 184 216"
+   role="img"
    version="1.1"
-   id="svg5"
-   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   id="svg540"
    sodipodi:docname="tinybasic.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs544" />
   <sodipodi:namedview
-     id="namedview7"
+     id="namedview542"
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
@@ -22,45 +26,58 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="34.648232"
-     inkscape:cy="72.478445"
-     inkscape:window-width="1854"
-     inkscape:window-height="1011"
+     inkscape:zoom="0.54414077"
+     inkscape:cx="62.483832"
+     inkscape:cy="165.39838"
+     inkscape:window-width="1920"
+     inkscape:window-height="1043"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="text234" />
-  <defs
-     id="defs2">
-    <rect
-       x="177.78088"
-       y="276.21725"
-       width="363.71378"
-       height="281.4646"
-       id="rect236" />
-  </defs>
+     inkscape:current-layer="svg540" />
+  <title
+     id="title528">TinyBasic for Arduino logo - monogram badge</title>
+  <desc
+     id="desc530">A flat hexagonal chip badge with a bold TB monogram and a blinking cursor, evoking a BASIC command prompt on a microcontroller.</desc>
+  <!-- hexagon chip badge -->
+  <polygon
+     points="220,184 128,236 36,184 36,72 128,20 220,72 "
+     fill="#16213e"
+     id="polygon532"
+     style="fill:#3771c8"
+     transform="translate(-36,-20)" />
+  <polygon
+     points="202,174 128,216 54,174 54,82 128,40 202,82 "
+     fill="#0f1730"
+     id="polygon534"
+     style="fill:#162d50"
+     transform="translate(-36,-20)" />
+  <!-- TB monogram -->
+  <!-- cursor accent -->
   <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(-45.788381,-72.6988)">
-    <g
-       aria-label="TB"
-       transform="scale(0.26458333)"
-       id="text234"
-       style="font-size:96px;line-height:1.25;white-space:pre;shape-inside:url(#rect236)">
-      <path
-         d="m 199.42959,287.29264 44.39078,0.17098 h 6.576 v -6.288 -6.288 l -77.33792,-0.1205 v 12.576 h 13.152 v 76.28494 l 13.152,-0.0263"
-         style="font-weight:600;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic Semi-Bold'"
-         id="path398"
-         sodipodi:nodetypes="cccccccccc" />
-      <path
-         d="m 204.37348,363.56423 h 18.912 c 7.872,0 13.632,-1.248 17.952,-3.936 5.856,-3.552 9.216,-9.888 9.216,-17.184 0,-4.512 -1.248,-8.736 -3.456,-11.616 -2.016,-2.688 -4.032,-4.032 -8.64,-5.952 5.76,-2.976 7.872,-6.624 7.872,-13.344 0,-6.624 -2.88,-12.192 -8.064,-15.456 -4.224,-2.688 -8.64,-3.456 -19.2,-3.456 h -14.592 z m 13.152,-12.576 v -18.144 h 6.24 c 9.12,0 13.44,2.976 13.44,9.216 0,6.24 -3.936,8.928 -13.152,8.928 z m 0,-31.008 v -14.496 h 5.376 c 6.912,0 10.176,2.304 10.176,7.2 0,5.088 -3.36,7.296 -11.328,7.296 z"
-         style="font-weight:600;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic Semi-Bold'"
-         id="path400" />
-    </g>
+     aria-label="TB"
+     id="text767"
+     style="font-size:96px;line-height:1.25;fill:#ffffff;fill-opacity:1;stroke:#3771c8;stroke-width:3;stroke-dasharray:none;stroke-opacity:1"
+     transform="translate(-28.672125,-11.615383)">
+    <path
+       d="m 88.249866,162.45177 0.247462,-72.833611 -18.687096,0.01459 0.05711,-15.645534 93.432048,0.205584 c 7.49225,0.0054 7.00387,15.844418 -0.0571,15.645534 l -58.39205,-0.205584 -0.24746,72.833601 z"
+       style="font-weight:800;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Ultra-Bold';fill:#ffffff;fill-opacity:1;stroke:#3771c8;stroke-width:3;stroke-dasharray:none;stroke-opacity:1"
+       id="path394"
+       sodipodi:nodetypes="ccccccccc" />
+    <path
+       d="m 141.51216,171.82958 c -7.84682,-0.16424 -16.48601,0.18571 -22.60468,-0.0194 l 0.38798,-68.26263 c 7.75046,-0.0305 14.04603,-0.24492 21.88629,0.2513 5.84557,0.3872 9.03436,0.44678 13.38636,1.59878 4.352,1.152 7.776,3.104 10.272,5.856 2.496,2.688 3.744,6.4 3.744,11.136 0,2.624 -0.64,4.992 -1.92,7.104 -1.28,2.112 -3.2,3.936 -5.76,5.472 4.224,1.6 7.104,3.776 8.64,6.528 1.536,2.752 2.304,5.856 2.304,9.312 0,6.976 -2.56,12.224 -7.68,15.744 -5.056,3.52 -12.608,5.28 -22.656,5.28 z m 0.192,-12.288 c 3.008,0 5.632,-0.256 7.872,-0.768 2.24,-0.576 3.968,-1.504 5.184,-2.784 1.28,-1.344 1.92,-3.168 1.92,-5.472 0,-3.072 -1.152,-5.248 -3.456,-6.528 -2.304,-1.344 -5.6,-2.016 -9.888,-2.016 h -9.408 v 17.184 c 1.088,0.128 2.272,0.224 3.552,0.288 1.28,0.064 2.688,0.096 4.224,0.096 z m -7.776,-28.992 h 7.296 c 3.072,0 5.536,-0.256 7.392,-0.768 1.92,-0.512 3.296,-1.312 4.128,-2.4 0.896,-1.152 1.344,-2.592 1.344,-4.32 0,-2.688 -1.024,-4.576 -3.072,-5.664 -2.048,-1.088 -5.056,-1.632 -9.024,-1.632 -1.28,0 -2.656,0.032 -4.128,0.096 -1.472,0 -2.784,0.064 -3.936,0.192 z"
+       style="font-weight:800;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Ultra-Bold';fill:#ffffff;fill-opacity:1;stroke:#3771c8;stroke-width:3;stroke-dasharray:none;stroke-opacity:1"
+       id="path396"
+       sodipodi:nodetypes="ccccscsscsscscccscsccsscsccssscccs" />
   </g>
+  <metadata
+     id="metadata2769">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>TinyBasic for Arduino logo - monogram badge</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>
