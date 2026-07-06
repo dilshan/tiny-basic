@@ -9,6 +9,9 @@ Immediately terminates the execution of the innermost active loop construct (`FO
 
 ## See also
 
+- [FOR](for.md)
+- [WHILE](while.md)
+- [REPEAT](repeat.md)
 - [STOP](stop.md)
 - [END](end.md)
 
