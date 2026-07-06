@@ -122,7 +122,7 @@ void printFloat(double num)
 
   Serial.print(floatStr);
 #else
-  serialPrint("%g", num);
+  PlatformCharDrv::print("%g", num);
 #endif
 #else
   printf("%g", num);
