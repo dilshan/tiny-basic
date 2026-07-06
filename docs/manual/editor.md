@@ -4,7 +4,7 @@ The Tiny Basic for Arduino operates as an in-hardware editor, eliminating the ne
 
 ## 1. Terminal Connection Setup
 
-To connect to the system, use a serial terminal emulation program such as **minicom** (Linux), **PuTTY** (Windows), or **CoolTerm** (macOS).
+To connect to the system, use a serial terminal emulation program such as **[minicom](https://man7.org/linux/man-pages/man1/minicom.1.html)** (Linux), **[PuTTY](https://putty.org)** (Windows), or **[CoolTerm](https://freeware.the-meiers.org)** (macOS).
 
 Configure your terminal connection with the following parameters:
 
