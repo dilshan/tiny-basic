@@ -9,8 +9,10 @@ Command argument for `I2C` transactions to perform a repeated start condition wi
 
 ## See also
 
-- [RUN](run.md)
-- [NEW](new.md)
+- [I2C](i2c.md)
+- [START](start.md)
+- [READ](read.md)
+- [WRITE](write.md)
 
 ## Example
 

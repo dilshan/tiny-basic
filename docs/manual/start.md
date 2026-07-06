@@ -10,8 +10,10 @@ Used within `I2C` or `SPI` functions to acquire communication control (SPI chip 
 
 ## See also
 
+- [I2C](i2c.md)
+- [SPI](spi.md)
 - [STOP](stop.md)
-- [RUN](run.md)
+- [RESTART](restart.md)
 
 ## Example
 

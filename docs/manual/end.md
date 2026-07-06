@@ -9,8 +9,8 @@ Terminates program execution.
 
 ## See also
 
-- [STOP](stop.md)
 - [RETURN](return.md)
+- [RUN](run.md)
 
 ## Example
 

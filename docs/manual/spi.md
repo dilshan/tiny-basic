@@ -15,6 +15,8 @@ Manages Serial Peripheral Interface (SPI) bus operations, allowing devices to ex
 
 - [I2C](i2c.md)
 - [WRITE](write.md)
+- [START](start.md)
+- [STOP](stop.md)
 
 ## Example
 

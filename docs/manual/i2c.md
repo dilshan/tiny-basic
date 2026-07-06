@@ -16,6 +16,10 @@ Controls Inter-Integrated Circuit (I2C) communication bus peripherals. Supports 
 
 - [SPI](spi.md)
 - [READ](read.md)
+- [WRITE](write.md)
+- [START](start.md)
+- [STOP](stop.md)
+- [RESTART](restart.md)
 
 ## Example
 

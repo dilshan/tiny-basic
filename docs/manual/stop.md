@@ -10,8 +10,10 @@ Used as a command argument within `I2C` or `SPI` to release the communication se
 
 ## See also
 
+- [I2C](i2c.md)
+- [SPI](spi.md)
 - [START](start.md)
-- [END](end.md)
+- [RESTART](restart.md)
 
 ## Example
 

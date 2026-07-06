@@ -12,6 +12,7 @@ Used within `I2C` or `SPI` function to specify data transmission bytes onto thei
 
 - [READ](read.md)
 - [SPI](spi.md)
+- [I2C](i2c.md)
 
 ## Example
 
