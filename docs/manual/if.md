@@ -10,7 +10,7 @@
 
 ## Description
 
-Evaluates a condition and branches execution. Tiny BASIC supports both a single-line `IF-THEN` statement and a multi-line `IF-THEN-ELSE-ENDIF` block.
+Evaluates a condition and branches execution. Tiny Basic for Arduino supports both a single-line `IF-THEN` statement and a multi-line `IF-THEN-ELSE-ENDIF` block.
 
 ## See also
 

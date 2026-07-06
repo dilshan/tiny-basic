@@ -1,6 +1,6 @@
-# The Tiny Basic In-Hardware Editor
+# The Tiny Basic for Arduino In-Hardware Editor
 
-The Tiny Basic system for Arduino operates as an in-hardware editor, eliminating the need for a dedicated integrated development environment (IDE). You can enter, view, and execute programs directly through a standard serial terminal.
+The Tiny Basic for Arduino operates as an in-hardware editor, eliminating the need for a dedicated integrated development environment (IDE). You can enter, view, and execute programs directly through a standard serial terminal.
 
 ## 1. Terminal Connection Setup
 
@@ -16,8 +16,6 @@ Configure your terminal connection with the following parameters:
 | **Stop Bits** | `1` | Single stop bit
 
 Once successfully connected, the system will display the `>` prompt, indicating it is ready to receive commands.
-
----
 
 ## 2. Operating Modes
 
@@ -42,23 +40,13 @@ Hello World
 Use the following immediate mode commands to manage your environment:
 
 * **`LIST`**: Displays the current program stored in memory.
-
-
 * **`RUN`**: Executes the program currently stored in memory.
-
-
 * **`NEW`**: Deletes the current program and clears the program memory.
-
-
 * **`CLEAR`**: Resets all variables and loop counters while preserving the stored program code.
-
-
 
 ### Programming Mode
 
-**Programming Mode** is triggered by prefixing any instruction with a line number. Instead of executing immediately, the system stores the line in RAM. Tiny Basic automatically organizes stored instructions in sequential numerical order.
-
----
+**Programming Mode** is triggered by prefixing any instruction with a line number. Instead of executing immediately, the system stores the line in RAM. Tiny Basic for Arduino automatically organizes stored instructions in sequential numerical order.
 
 ## 3. Line Editing & Program Management
 
@@ -76,9 +64,7 @@ To add a new step between existing instructions, enter a new instruction using a
 
 ```
 
-
 * **Action:** Type `25 LET A = 5` and press **Enter**.
-
 
 * **Result:**
 ```basic
@@ -89,14 +75,11 @@ To add a new step between existing instructions, enter a new instruction using a
 
 ```
 
-
-
 ### Replacing Code
 
 To modify an existing instruction, enter the target line number followed by the new command. This completely overwrites the previous entry stored at that line number.
 
 * **Action:** Type `20 LET A = A + 50` and press **Enter**.
-
 
 * **Result:**
 ```basic
@@ -106,14 +89,11 @@ To modify an existing instruction, enter the target line number followed by the 
 
 ```
 
-
-
 ### Deleting Lines
 
 To remove a line from memory, enter the target line number followed immediately by pressing **Enter** (a blank line).
 
 * **Action:** Type `20` and press **Enter**.
-
 
 * **Result:**
 ```basic
@@ -121,10 +101,6 @@ To remove a line from memory, enter the target line number followed immediately 
 30 PRINT(A)
 
 ```
-
-
-
----
 
 ## 4. Bulk Loading Mode & Program Storage
 
@@ -135,27 +111,15 @@ Because RAM is volatile and typing lengthy programs over a serial stream can be 
 ### Recommended Workflow for Large Programs:
 
 1. Write and save your BASIC program using an external text editor on your host computer.
-
-
 2. In the terminal, enter the [LOAD](https://www.google.com/search?q=load.md) command.
-
-
 3. Paste your complete code directly into the terminal window.
-
-
 4. To backup or retrieve your modified code from the hardware, issue the [LIST](list.md) command. Copy the output printed in the terminal and save it back to your host computer.
-
-
-
----
 
 ## 5. Breaking Infinite Loops
 
 When testing code, execution may occasionally get trapped in an infinite loop where the program runs indefinitely.
 
-Tiny Basic includes a built-in hardware safety interrupt to recover from runaway programs. If your program becomes unresponsive or enters an infinite loop:
+Tiny Basic for Arduino includes a built-in hardware safety interrupt to recover from runaway programs. If your program becomes unresponsive or enters an infinite loop:
 
 1. Press the **Esc** key on your keyboard.
-
-
 2. The environment will immediately detect the interrupt, break out of the execution cycle safely, and return control to the command prompt (`>`).
