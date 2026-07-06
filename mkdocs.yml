@@ -1,6 +1,7 @@
 site_name: Tiny Basic for Arduino
 site_description: A Tiny Basic interpreter for Mid-range Arduino boards
 site_author: Dilshan R Jayakody
+copyright: 'Made by <a href="https://github.com/dilshan/">Dilshan R Jayakody</a>'
 
 repo_url: https://github.com/dilshan/tiny-basic 
 repo_name: dilshan/tiny-basic
@@ -44,8 +45,15 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - User Manual:
+  - Documentation:
     - Overview: manual/index.md
     - In-Hardware Editor: manual/editor.md
     - Language Reference: manual/language-reference.md
     - Functions: manual/function-list.md
+  - Platforms:
+    - Arduino Due: platforms/due.md
+    - Arduino Uno R4 WiFi: platforms/r4wifi.md
+  - Support: https://github.com/dilshan/tiny-basic/issues
+
+extra:
+  generator: false

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="20.477434mm"
+   height="23.511124mm"
+   viewBox="0 0 20.477434 23.511124"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="tinybasic.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="34.648232"
+     inkscape:cy="72.478445"
+     inkscape:window-width="1854"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="text234" />
+  <defs
+     id="defs2">
+    <rect
+       x="177.78088"
+       y="276.21725"
+       width="363.71378"
+       height="281.4646"
+       id="rect236" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-45.788381,-72.6988)">
+    <g
+       aria-label="TB"
+       transform="scale(0.26458333)"
+       id="text234"
+       style="font-size:96px;line-height:1.25;white-space:pre;shape-inside:url(#rect236)">
+      <path
+         d="m 199.42959,287.29264 44.39078,0.17098 h 6.576 v -6.288 -6.288 l -77.33792,-0.1205 v 12.576 h 13.152 v 76.28494 l 13.152,-0.0263"
+         style="font-weight:600;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic Semi-Bold'"
+         id="path398"
+         sodipodi:nodetypes="cccccccccc" />
+      <path
+         d="m 204.37348,363.56423 h 18.912 c 7.872,0 13.632,-1.248 17.952,-3.936 5.856,-3.552 9.216,-9.888 9.216,-17.184 0,-4.512 -1.248,-8.736 -3.456,-11.616 -2.016,-2.688 -4.032,-4.032 -8.64,-5.952 5.76,-2.976 7.872,-6.624 7.872,-13.344 0,-6.624 -2.88,-12.192 -8.064,-15.456 -4.224,-2.688 -8.64,-3.456 -19.2,-3.456 h -14.592 z m 13.152,-12.576 v -18.144 h 6.24 c 9.12,0 13.44,2.976 13.44,9.216 0,6.24 -3.936,8.928 -13.152,8.928 z m 0,-31.008 v -14.496 h 5.376 c 6.912,0 10.176,2.304 10.176,7.2 0,5.088 -3.36,7.296 -11.328,7.296 z"
+         style="font-weight:600;font-family:'URW Gothic';-inkscape-font-specification:'URW Gothic Semi-Bold'"
+         id="path400" />
+    </g>
+  </g>
+</svg>

@@ -34,14 +34,14 @@ Expressions are evaluated using numeric values. All comparison operators return 
 
 ### Comparison Operators
 
-| Operator | Description
-| --- | --- | --- | --- |
-| `=` | Equal to
-| `<=` | Less than or equal to
-| `<` | Less than
-| `>=` | Greater than or equal to
-| `>` | Greater than
-| `<>` | Not equal to
+| Operator | Description |
+| --- | --- |
+| `=` | Equal to |
+| `<=` | Less than or equal to |
+| `<` | Less than |
+| `>=` | Greater than or equal to |
+| `>` | Greater than |
+| `<>` | Not equal to |
 
 ### Logical & Bitwise Operators
 
@@ -132,13 +132,10 @@ Provides an immediate, clean exit from the innermost enclosing `FOR`, `WHILE`, o
 
 To ensure stable execution on embedded hardware, the runtime environment enforces strict structural boundaries:
 
-| Structure | Maximum Depth | Triggered Error
-|
+| Structure | Maximum Depth | Triggered Error |
 | --- | --- | --- |
-| **Subroutines (`GOSUB`)** | 32 nested calls
-| `GOSUB stack overflow`<br> |
-| **Loop Frames** | 16 nested loops
-| `LOOP stack overflow`<br> |
+| **Subroutines (`GOSUB`)** | 32 nested calls | `GOSUB stack overflow` |
+| **Loop Frames** | 16 nested loops | `LOOP stack overflow` |
 
 ## 8. Hardware I/O Functions
 
