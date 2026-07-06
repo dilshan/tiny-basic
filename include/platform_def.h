@@ -30,8 +30,13 @@
 #define PIN_MODE_OUTPUT 1
 
 // Maximum supported analog and digital pins for the target board.
-#define MAX_ANALOG_PIN_COUNT 16
-#define MAX_DIGITAL_PIN_COUNT 54
+#if defined(ARDUINO_UNOR4_WIFI) || defined(ARDUINO_UNOWIFIR4)
+  #define MAX_ANALOG_PIN_COUNT 6
+  #define MAX_DIGITAL_PIN_COUNT 14
+#else
+  #define MAX_ANALOG_PIN_COUNT 16
+  #define MAX_DIGITAL_PIN_COUNT 54
+#endif
 
 // Enable internal use of pull-up resistors when available.
 // If enabled, the SET operation always activate the internal pull-ups of the MCU digital inputs.

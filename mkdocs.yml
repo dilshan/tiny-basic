@@ -1,7 +1,7 @@
 site_name: Tiny Basic for Arduino
 site_description: A Tiny Basic interpreter for Mid-range Arduino boards
 site_author: Dilshan R Jayakody
-copyright: 'Made by <a href="https://github.com/dilshan/">Dilshan R Jayakody</a>'
+copyright: 'An open-source project by <a href="https://github.com/dilshan/" target="_blank" rel="noopener noreferrer">Dilshan R Jayakody</a>. | Contribute on <a target="_blank" rel="noopener noreferrer" href="https://github.com/dilshan/tiny-basic/">GitHub</a>.'
 
 repo_url: https://github.com/dilshan/tiny-basic 
 repo_name: dilshan/tiny-basic
