@@ -82,7 +82,6 @@ The [IF](if.md) command evaluates a boolean expression to direct program flow. B
 30 ELSE
 40   PRINT("NON-POSITIVE")
 50 ENDIF
-
 ```
 
 ## 6. Iteration & Loops
@@ -95,7 +94,6 @@ Iterates using a single-letter control variable. The optional [STEP](step.md) pa
 10 FOR A = 1 TO 5 STEP 1
 20   PRINT(A)
 30 NEXT A
-
 ```
 
 ### WHILE / WEND
@@ -107,7 +105,6 @@ Evaluates the condition at the *start* of the loop. Enclosed statements execute 
 20   PRINT(A)
 30   LET A = A + 1
 40 WEND
-
 ```
 
 ### REPEAT / UNTIL
@@ -119,7 +116,6 @@ Evaluates the condition at the *end* of the loop, ensuring the body executes at 
 20   PRINT(A)
 30   LET A = A + 1
 40 UNTIL A > 5
-
 ```
 
 ### EXIT
@@ -160,5 +156,4 @@ The following program demonstrates variable initialization, assignment, loop mec
 40   LET A = A + 1
 50 NEXT B
 60 END
-
 ```
