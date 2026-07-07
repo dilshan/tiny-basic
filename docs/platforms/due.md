@@ -2,7 +2,7 @@
 
 The *Arduino Due* is the flagship microcontroller board for this project, based on the powerful 32-bit ARM Cortex-M3 processor (SAM3X8E). Thanks to its abundant memory and high processing speed, it serves as the ultimate playground for running Tiny Basic for Arduino.
 
-> **CRITICAL VOLTAGE WARNING:** Unlike older 5V Arduino boards (like the Uno or Mega), the Arduino Due operates strictly at **3.3V**.
+> **CRITICAL VOLTAGE WARNING:** Unlike older 5V Arduino boards (like the UNO or Mega), the Arduino Due operates strictly at **3.3V**.
 > All I/O pins are **not 5V tolerant**.
 > Connecting 5V signals to any pin can permanently damage the board. **Always use logic level shifters** when interfacing with 5V components.
 
