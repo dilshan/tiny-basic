@@ -4,9 +4,7 @@ This guide will help you write and run your first "Hello World" program using Ti
 
 ## Step 1: Connect the Arduino Due to Your Computer
 
-1. Connect the Arduino Due:
-    
-    Use a USB cable to connect the *Programming Port* (labeled "PROGRAMMING" on the Arduino Due) to your computer. Ensure the cable supports both power and data transfer. The Programming Port is the USB port closest to the DC power jack.
+1. Use a USB cable to connect the *Programming Port* (labeled "PROGRAMMING" on the Arduino Due) to your computer. Ensure the cable supports both power and data transfer. The Programming Port is the USB port closest to the DC power jack.
 
 2. Identify the Serial Port:
     
@@ -18,8 +16,7 @@ This guide will help you write and run your first "Hello World" program using Ti
 
 ## Step 2: Access the Serial Interface
 
-1. Open a Serial Terminal:
-    Use a terminal emulator like `minicom`, `screen`, or `picocom`. For example, to use `screen`, run:
+1. Open a Serial Terminal. Use a terminal emulator like `minicom`, `screen`, or `picocom`. For example, to use `screen`, run:
      ```bash
      screen /dev/ttyACM0 9600
      ```
@@ -31,7 +28,8 @@ This guide will help you write and run your first "Hello World" program using Ti
 
 3. Verify the Connection:
    
-     Press `Enter` in the terminal. You should see the Tiny Basic prompt (`>`).
+     * Press `Enter` in the terminal. You should see the Tiny Basic prompt (`>`).
+     * Or, press RESET button in the Arduino Due. You should see the Tiny Basic version details and prompt (`>`).
 
 ## Step 3: Write the "Hello World" Program
 
