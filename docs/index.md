@@ -8,7 +8,7 @@ hide:
   <h1>Tiny Basic for Arduino</h1>
   <p>A lightweight, fast, and fully-featured BASIC interpreter designed specifically for mid-range Arduino boards and MCUs. Write, edit, and run code directly on the hardware.</p>
   <div class="hero-buttons">
-    <a href="guide/introduction/" class="md-button md-button--primary">User Guide</a>
+    <a href="guide" class="md-button md-button--primary">User Guide</a>
     <a href="https://github.com/dilshan/tiny-basic/releases" class="md-button">Download</a>
   </div>
 </div>

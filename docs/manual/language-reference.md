@@ -78,9 +78,9 @@ The [IF](if.md) command evaluates a boolean expression to direct program flow. B
 
 // Multi-line block syntax[cite: 2]
 10 IF A > 0 THEN
-20 PRINT("POSITIVE")
+20   PRINT("POSITIVE")
 30 ELSE
-40 PRINT("NON-POSITIVE")
+40   PRINT("NON-POSITIVE")
 50 ENDIF
 
 ```
@@ -93,7 +93,7 @@ Iterates using a single-letter control variable. The optional [STEP](step.md) pa
 
 ```basic
 10 FOR A = 1 TO 5 STEP 1
-20 PRINT(A)
+20   PRINT(A)
 30 NEXT A
 
 ```
@@ -104,8 +104,8 @@ Evaluates the condition at the *start* of the loop. Enclosed statements execute 
 
 ```basic
 10 WHILE A < 5
-20 PRINT(A)
-30 LET A = A + 1
+20   PRINT(A)
+30   LET A = A + 1
 40 WEND
 
 ```
@@ -116,8 +116,8 @@ Evaluates the condition at the *end* of the loop, ensuring the body executes at 
 
 ```basic
 10 REPEAT
-20 PRINT(A)
-30 LET A = A + 1
+20   PRINT(A)
+30   LET A = A + 1
 40 UNTIL A > 5
 
 ```
@@ -156,8 +156,8 @@ The following program demonstrates variable initialization, assignment, loop mec
 ```basic
 10 LET A = 1
 20 FOR B = 1 TO 3
-30 PRINT(A)
-40 LET A = A + 1
+30   PRINT(A)
+40   LET A = A + 1
 50 NEXT B
 60 END
 
