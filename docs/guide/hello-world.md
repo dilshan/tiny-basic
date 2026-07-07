@@ -64,7 +64,8 @@ Congratulations! You've successfully written and executed your first Tiny Basic 
 
 ## Additional Resources
 
+- [PRINT](../manual/print.md)
 - [Tiny Basic Language Reference](../manual/language-reference.md)
 - [Tiny Basic Editor](../manual/editor.md)
-- [Arduino Due Setup Guide](https://docs.arduino.cc/hardware/due)
+- [Arduino Due](../platforms/due.md)
 - [Serial Terminal Configuration](https://linux.die.net/man/1/screen)

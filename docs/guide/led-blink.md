@@ -32,13 +32,26 @@ Type `NEW` to clear the previous script, and enter the following code in your te
 ```basic
 10 PIN(13, OUT)
 20 WHILE TRUE
-30   LET A = NOT A
+30   LET A = !A
 40   SET(13, A)
 50   DELAY(500)
 60 WEND
 
 ```
 
+> In Tiny BASIC, `A = !A` is a logical operator that strictly toggles the value of A between `1` (True) and `0` (False), which is perfect for blinking an LED because hardware pins expect exactly `1` (ON) or `0` (OFF). On the other hand, `A = NOT A` is a bitwise operator that flips every binary bit, causing A to toggle between `0` and `-1`.
+
 ### How the Optimization Works
 
 Instead of manually turning the pin on and off over multiple lines, line 30 continually reverses the state of variable `A` (switching it from `TRUE` to `FALSE`). Line 40 feeds this toggled value straight to the pin. Note that we keep the `DELAY(500)` at line 50; without it, the loop would execute too quickly for the human eye to see the flashing!
+
+## See also
+
+- [SET](../manual/set.md)
+- [PIN](../manual/pin.md)
+- [LET](../manual/let.md)
+- [DELAY](../manual/delay.md)
+- [WHILE](../manual/while.md)
+- [WEND](../manual/wend.md)
+- [Tiny Basic Language Reference](../manual/language-reference.md)
+- [Arduino Due](../platforms/due.md)
