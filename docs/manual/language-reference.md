@@ -124,7 +124,14 @@ Evaluates the condition at the *end* of the loop, ensuring the body executes at 
 
 ### EXIT
 
-Provides an immediate, clean exit from the innermost enclosing `FOR`, `WHILE`, or `REPEAT` loop, transferring execution directly to the statement following the loop block.
+The [EXIT](exit.md) provides an immediate, clean exit from the innermost enclosing `FOR`, `WHILE`, or `REPEAT` loop, transferring execution directly to the statement following the loop block.
+
+```basic
+10 FOR I = 1 TO 10
+20   IF I = 5 THEN EXIT
+30   PRINT(I)
+40 NEXT I
+```
 
 ## 7. Runtime Architecture & Stack Limits
 

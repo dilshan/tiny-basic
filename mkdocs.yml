@@ -55,7 +55,7 @@ nav:
     - Functions: manual/function-list.md
   - Platforms:
     - Arduino Due: platforms/due.md
-    - Arduino Uno R4 WiFi: platforms/r4wifi.md
+    - Arduino UNO R4 WiFi: platforms/r4wifi.md
   - Support: https://github.com/dilshan/tiny-basic/issues
 
 extra:
