@@ -60,7 +60,7 @@ void platformIO::setPinValue(int pin, int value)
     return;
   }
 
-  int pinValue = (value > 0) ? HIGH : LOW;
+  int pinValue = (value == 0) ? LOW : HIGH;
   digitalWrite(pin, pinValue);
 }
 
