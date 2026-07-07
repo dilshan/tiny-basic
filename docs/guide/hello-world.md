@@ -68,4 +68,4 @@ Congratulations! You've successfully written and executed your first Tiny Basic 
 - [Tiny Basic Language Reference](../manual/language-reference.md)
 - [Tiny Basic Editor](../manual/editor.md)
 - [Arduino Due](../platforms/due.md)
-- [Serial Terminal Configuration](https://linux.die.net/man/1/screen)
+- [Screen](https://linux.die.net/man/1/screen)

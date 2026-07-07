@@ -25,7 +25,7 @@ Type `RUN` in the Tiny Basic terminal to execute the program.
 
 ## Step 3: Optimized Version of the Blinking Program
 
-We can significantly reduce the number of lines in the program by replacing the explicit `HIGH` and `LOW` statements with a bitwise negation trick to toggle a single variable.
+We can significantly reduce the number of lines in the program by replacing the explicit `HIGH` and `LOW` statements with a logical invert trick to toggle a single variable.
 
 Type `NEW` to clear the previous script, and enter the following code in your terminal:
 
