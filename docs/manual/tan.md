@@ -15,6 +15,6 @@ Returns the trigonometric tangent of the angle argument, which must be specified
 ## Example
 
 ```basic
-10 LET A = TAN(3.14159 / 4)
+10 LET A = TAN(PI / 4)
 20 PRINT(A)
 ```

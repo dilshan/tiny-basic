@@ -3,7 +3,7 @@ site_description: A Tiny Basic interpreter for Mid-range Arduino boards and MCUs
 site_author: Dilshan R Jayakody
 copyright: 'Copyright &copy; 2026 Dilshan R Jayakody'
 
-repo_url: https://github.com/dilshan/tiny-basic 
+repo_url: https://github.com/dilshan/tiny-basic
 repo_name: dilshan/tiny-basic
 
 theme:
@@ -29,6 +29,7 @@ theme:
         name: Switch to light mode
   features:
     - navigation.instant
+    - navigation.top
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
@@ -60,3 +61,6 @@ nav:
 
 extra:
   generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/dilshan/tiny-basic
