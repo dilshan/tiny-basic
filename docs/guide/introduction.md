@@ -2,7 +2,8 @@
 
 Welcome to **Tiny Basic for Arduino**, an open-source project designed to bring the simplicity and rapid prototyping power of the classic BASIC language to modern microcontrollers.
 
-> **Terminology Note**: Throughout this documentation, the terms *Tiny Basic for Arduino* and *Tiny Basic* are used interchangeably for brevity.
+!!! note
+    Throughout this documentation, the terms *Tiny Basic for Arduino* and *Tiny Basic* are used interchangeably for brevity.
 
 ## About the BASIC Language
 

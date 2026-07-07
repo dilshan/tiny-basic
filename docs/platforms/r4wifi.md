@@ -17,7 +17,8 @@ When connecting peripherals or sensors to your Tiny Basic environment on the UNO
 * **SDA (Data):** Pin 5
 * **SCL (Clock):** Pin 6
 
-> **NOTE:** The I2C pins on this board **require external pull-up resistors** (typically 4.7kΩ to 5V or 3.3V, depending on your peripheral) for reliable communication, as internal pull-ups are not sufficient for standard I2C operation.
+!!! note 
+    The I2C pins on this board **require external pull-up resistors** (typically 4.7kΩ to 5V or 3.3V, depending on your peripheral) for reliable communication, as internal pull-ups are not sufficient for standard I2C operation.
 
 ### SPI Interface
 

@@ -21,7 +21,8 @@ Enter the following code in the Tiny Basic terminal:
 
 Type `RUN` in the Tiny Basic terminal to execute the program.
 
-> **Tip:** Press the *Escape (Esc)* key at any time to halt execution.
+!!! tip
+    Press the *Escape (Esc)* key at any time to halt execution.
 
 ## Step 3: Optimized Version of the Blinking Program
 
@@ -39,7 +40,8 @@ Type `NEW` to clear the previous script, and enter the following code in your te
 
 ```
 
-> In Tiny BASIC, `A = !A` is a logical operator that strictly toggles the value of A between `1` (True) and `0` (False), which is perfect for blinking an LED because hardware pins expect exactly `1` (ON) or `0` (OFF). On the other hand, `A = NOT A` is a bitwise operator that flips every binary bit, causing A to toggle between `0` and `-1`.
+!!! info
+    In Tiny BASIC, `A = !A` is a logical operator that strictly toggles the value of A between `1` (True) and `0` (False), which is perfect for blinking an LED because hardware pins expect exactly `1` (ON) or `0` (OFF). On the other hand, `A = NOT A` is a bitwise operator that flips every binary bit, causing A to toggle between `0` and `-1`.
 
 ### How the Optimization Works
 
