@@ -1,6 +1,6 @@
 # Tiny Basic for Arduino
 
-Tiny Basic for Arduino is a lightweight, fast, and fully featured BASIC interpreter designed for mid-range Arduino boards and other microcontroller targets. It lets you write, edit, and run BASIC programs directly on hardware, making it a practical choice for education, rapid prototyping, and embedded experimentation.
+Tiny Basic for Arduino is a lightweight, fast, and fully featured [BASIC](https://en.wikipedia.org/wiki/BASIC) interpreter designed for mid-range Arduino boards and other microcontroller targets. It lets you write, edit, and run BASIC programs directly on hardware, making it a practical choice for education, rapid prototyping, and embedded experimentation.
 
 ## Overview
 
@@ -80,14 +80,14 @@ RUN
 
 The project documentation is available online at:
 
-- Tiny Basic for Arduino homepage: http://dilshan.github.io/tiny-basic/
-- Getting started guide: http://dilshan.github.io/tiny-basic/guide/
-- Building and flashing: http://dilshan.github.io/tiny-basic/guide/building/
-- Hello World example: http://dilshan.github.io/tiny-basic/guide/hello-world/
-- User manual: http://dilshan.github.io/tiny-basic/manual/
-- Language reference: http://dilshan.github.io/tiny-basic/manual/language-reference/
-- Editor guide: http://dilshan.github.io/tiny-basic/manual/editor/
-- Function reference: http://dilshan.github.io/tiny-basic/manual/function-list/
+- [Tiny Basic for Arduino homepage](http://dilshan.github.io/tiny-basic/)
+- [Getting started guide](http://dilshan.github.io/tiny-basic/guide/)
+- [Building and flashing](http://dilshan.github.io/tiny-basic/guide/building/)
+- [Hello World example](http://dilshan.github.io/tiny-basic/guide/hello-world/)
+- [User manual](http://dilshan.github.io/tiny-basic/manual/)
+- [Language reference](http://dilshan.github.io/tiny-basic/manual/language-reference/)
+- [Editor guide](http://dilshan.github.io/tiny-basic/manual/editor/)
+- [Function reference](http://dilshan.github.io/tiny-basic/manual/function-list/)
 
 ## Contributing
 
@@ -102,4 +102,4 @@ If you find a bug or have a feature request, please open an issue on the GitHub 
 
 ## License
 
-This project is licensed under the BSD 3-Clause License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the [BSD 3-Clause License](LICENSE).
