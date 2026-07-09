@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2026 Dilshan R Jayakody. All rights reserved.
 
+/**
+ * @brief Defines the platform abstraction interface for Tiny Basic.
+ * @details This file wires the runtime to platform-specific callback hooks for
+ *          console I/O, timing, pin access, I2C/SPI, audio, and math operations.
+ */
+
 #include <stddef.h>
 #include "platform.h"
 

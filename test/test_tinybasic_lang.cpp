@@ -13,12 +13,21 @@ extern "C"
 static char g_output[4096];
 static size_t g_output_len = 0;
 
+/**
+ * @brief Resets the output buffer and its length to prepare for capturing new output.
+ */
 static void reset_output(void)
 {
     g_output[0] = '\0';
     g_output_len = 0;
 }
 
+/**
+ * @brief Captures formatted output into a global buffer.
+ * @param fmt The format string.
+ * @param ... The arguments for the format string.
+ * @return The number of characters written.    
+ */
 static int capture_print(const char *fmt, ...)
 {
     va_list args;
@@ -43,6 +52,10 @@ static int capture_print(const char *fmt, ...)
     return written;
 }
 
+/**
+ * @brief Captures a floating-point value and formats it into the global output buffer.
+ * @param value The floating-point value to capture.
+ */
 static void capture_float_print(double value)
 {
     (void)capture_print("%g", value);
@@ -116,6 +129,10 @@ static unsigned char no_op_spi_transfer(unsigned char output_byte)
     return 0;
 }
 
+/**
+ * @brief Sets up the test environment before each test case.
+ * This function initializes the output capture functions and resets the parser state.
+ */
 void setUp(void)
 {
     reset_output();
@@ -174,30 +191,13 @@ void setUp(void)
     reset_output();
 }
 
+/**
+ * @brief Cleans up the test environment after each test case.
+ * This function is currently empty but can be used for any necessary cleanup.
+ */
 void tearDown(void)
 {
 }
-
-void test_abs_function_returns_positive_value(void);
-void test_sin_function_returns_expected_value(void);
-void test_cos_function_returns_expected_value(void);
-void test_tan_function_returns_expected_value(void);
-void test_log10_function_returns_expected_value(void);
-void test_exp_function_returns_expected_value(void);
-void test_sqrt_function_returns_expected_value(void);
-void test_floor_and_ceil_functions(void);
-void test_int_function_truncates_value(void);
-void test_acos_function_returns_expected_value(void);
-void test_asin_function_returns_expected_value(void);
-void test_atan_function_returns_expected_value(void);
-void test_sinh_function_returns_expected_value(void);
-void test_cosh_function_returns_expected_value(void);
-void test_tanh_function_returns_expected_value(void);
-void test_asinh_function_returns_expected_value(void);
-void test_acosh_function_returns_expected_value(void);
-void test_atanh_function_returns_expected_value(void);
-void test_atan2_function_returns_expected_value(void);
-void test_log_function_returns_expected_value(void);
 
 void test_immediate_let_and_print(void)
 {

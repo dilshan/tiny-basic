@@ -59,6 +59,11 @@ unsigned char running = 0;
 
 void yyerror(const char* s);
 
+/**
+ * @brief Create a new integer variable value.
+ * @param i Integer value to store.
+ * @return Variable value containing the integer.
+ */
 static inline VarVal make_int(int i) { 
     VarVal v; 
     v.type = VAL_INT; 
@@ -66,6 +71,11 @@ static inline VarVal make_int(int i) {
     return v; 
 }
 
+/**
+ * @brief Create a new floating point variable value.
+ * @param f Floating point value to store.
+ * @return Variable value containing the floating point number.
+ */
 static inline VarVal make_float(double f) { 
     VarVal v; 
     v.type = VAL_FLOAT; 
@@ -73,37 +83,74 @@ static inline VarVal make_float(double f) {
     return v; 
 }
 
+/**
+ * @brief Convert a variable value to integer.
+ * @param v The variable value.
+ * @return The integer representation of the value.
+ */
 static inline int to_int(VarVal v) {
     if (v.type == VAL_INT) return v.as.i;
     if (v.type == VAL_FLOAT) return (int)v.as.f;
     return 0;
 }
 
+/**
+ * @brief Convert a variable value to floating point.
+ * @param v The variable value.
+ * @return The floating point representation of the value.
+ */
 static inline double to_float(VarVal v) {
     if (v.type == VAL_FLOAT) return v.as.f;
     if (v.type == VAL_INT) return (double)v.as.i;
     return 0.0;
 }
 
+/**
+ * @brief Compute the absolute value of a floating point number.
+ * @param d The number.
+ * @return The absolute value.
+ */
 static inline double native_fabs(double d) {
     return (d < 0.0) ? -d : d;
 }
 
+/**
+ * @brief Retrieve a variable value by its single letter identifier.
+ * @param c The variable name (A-Z).
+ * @return The current value of the variable.
+ */
 static inline VarVal var_get(char c) {
     return variables[toupper((unsigned char)c) - 'A'];
 }
 
+/**
+ * @brief Set the value of a variable.
+ * @param c The variable name (A-Z).
+ * @param v The value to set.
+ */
 static inline void var_set(char c, VarVal v) {
     variables[toupper((unsigned char)c) - 'A'] = v;
 }
 
+/**
+ * @brief Check if a character signifies the end of a keyword.
+ * @param c The character to check.
+ * @return Non-zero if the character is whitespace or null terminator.
+ */
 static int is_keyword_end(char c) {
     return c == '\0' || isspace((unsigned char)c);
 }
 
-// Detect the kind of a program line by examining its leading keyword.
-// This classification is used to build jump targets for FOR/NEXT, WHILE/WEND,
-// IF/ELSE/ENDIF, etc.
+/**
+ * @brief Determine the type of a program line from its text.
+ * 
+ * Detect the kind of a program line by examining its leading keyword.
+ * This classification is used to build jump targets for FOR/NEXT, WHILE/WEND,
+ * IF/ELSE/ENDIF, etc.
+ * 
+ * @param line The program line text.
+ * @return The detected line type.
+ */
 static LineType get_prog_line_type(const char* line) {
     while (isspace((unsigned char)*line))
         line++;
@@ -150,7 +197,15 @@ static LineType get_prog_line_type(const char* line) {
     return LINE_OTHER;
 }
 
-// Store a numbered program line in the program buffer, keeping lines sorted.
+/**
+ * @brief Store a numbered program line in memory.
+ * 
+ * Store a numbered program line in the program buffer, keeping lines sorted.
+ * If the text is empty, the line with the matching number is deleted.
+ * 
+ * @param num The line number.
+ * @param text The text of the program line.
+ */
 static void prog_store(int num, const char* text) {
   int i;
 
@@ -200,6 +255,11 @@ static void prog_store(int num, const char* text) {
   }
 }
 
+/**
+ * @brief Find the index of a program line by its line number.
+ * @param num The line number to find.
+ * @return The index in the program buffer, or -1 if not found.
+ */
 static int prog_find(int num) {
   for (int i = 0; i < prog_size; i++)
     if (program[i].num == num) return i;
@@ -207,7 +267,11 @@ static int prog_find(int num) {
   return -1;
 }
 
-// Reset runtime state for a fresh program or after CLEAR.
+/**
+ * @brief Reset the parser's runtime memory state.
+ * 
+ * Reset runtime state for a fresh program or after a CLEAR command.
+ */
 static void flush_memory(void) {
     pc = 0;
 
@@ -240,6 +304,13 @@ static int is_line_already_exists(short num) {
     return 0;
 }
 
+/**
+ * @brief Build the jump map for control flow structures.
+ * 
+ * Scans the program buffer to pair up structural boundaries like FOR/NEXT,
+ * WHILE/WEND, REPEAT/UNTIL, and IF/ELSE/ENDIF, populating the conditional
+ * jump map to quickly resolve jump targets during execution.
+ */
 static void build_conditional_jump_map(void) {
     LineType expected_root_node = LINE_OTHER;
     cjump_map_size = 0;
@@ -306,6 +377,12 @@ static void build_conditional_jump_map(void) {
     }
 }
 
+/**
+ * @brief Find the lowest loop node encompassing a given node.
+ * @param current_node_num The current line number.
+ * @param node Pointer to store the found loop node.
+ * @return Non-zero if a loop node was found, zero otherwise.
+ */
 static unsigned char find_lowest_loop_node(short current_node_num, ConditionalJumpMap **node) {   
     for(int i = cjump_map_size - 1; i >= 0; i--) {
         if((cjump_map[i].type == LINE_FOR) || (cjump_map[i].type == LINE_WHILE) || (cjump_map[i].type == LINE_REPEAT)) {
@@ -319,6 +396,12 @@ static unsigned char find_lowest_loop_node(short current_node_num, ConditionalJu
     return 0;
 }
 
+/**
+ * @brief Find the end node for a given parent node type and line number.
+ * @param parent_node_num The line number of the root node (e.g., FOR, WHILE).
+ * @param node_type The type of the root node.
+ * @return The line number of the end node, or -1 if not found.
+ */
 static short find_end_node(short parent_node_num, LineType node_type) {
     for(int i = 0; i < cjump_map_size; i++) {
         if((cjump_map[i].type == node_type) && (cjump_map[i].root_node_num == parent_node_num)) {
@@ -329,6 +412,12 @@ static short find_end_node(short parent_node_num, LineType node_type) {
     return -1;
 }
 
+/**
+ * @brief Find the root node corresponding to an end node.
+ * @param end_node_num The line number of the end node (e.g., NEXT, WEND).
+ * @param node_type The type of the root node.
+ * @return The line number of the root node, or -1 if not found.
+ */
 static short find_root_node(short end_node_num, LineType node_type) {
     for (int i = 0; i < cjump_map_size; i++) {
         if (cjump_map[i].type == node_type && cjump_map[i].end_node_num == end_node_num) {
@@ -339,6 +428,11 @@ static short find_root_node(short end_node_num, LineType node_type) {
     return -1;
 }
 
+/**
+ * @brief Find the ELSE node for an IF statement.
+ * @param parent_node_num The line number of the IF statement.
+ * @return The line number of the ELSE node, or -1 if not found.
+ */
 static short find_else_node(short parent_node_num) {
     for(int i = 0; i < cjump_map_size; i++) {
         if((cjump_map[i].type == LINE_IF) && (cjump_map[i].root_node_num == parent_node_num)) {
@@ -349,6 +443,11 @@ static short find_else_node(short parent_node_num) {
     return -1;
 }
 
+/**
+ * @brief Find the ENDIF node corresponding to an ELSE node.
+ * @param else_node The line number of the ELSE node.
+ * @return The line number of the ENDIF node, or -1 if not found.
+ */
 static short find_end_node_from_else(short else_node) {
     for(int i = 0; i < cjump_map_size; i++) {
         if((cjump_map[i].type == LINE_IF) && (cjump_map[i].else_node_num == else_node)) {
@@ -359,6 +458,10 @@ static short find_end_node_from_else(short else_node) {
     return -1;
 }
 
+/**
+ * @brief Push a return address onto the call stack for GOSUB.
+ * @param ret_pc The program counter index to return to.
+ */
 static void stack_push(short ret_pc) {
   if (stack_top >= STACK_DEPTH) {
     err_print(ERR_GOSUB_STACK_OVERFLOW);
@@ -368,6 +471,10 @@ static void stack_push(short ret_pc) {
   call_stack[stack_top++] = ret_pc;
 }
 
+/**
+ * @brief Pop a return address from the call stack for RETURN.
+ * @return The program counter index to return to.
+ */
 static short stack_pop(void) {
   if (stack_top <= 0) {
     err_print(ERR_MISSING_GOSUB);
@@ -377,6 +484,12 @@ static short stack_pop(void) {
   return call_stack[--stack_top];
 }
 
+/**
+ * @brief Read a line of text from the terminal.
+ * @param buffer The buffer to store the read text.
+ * @param max_len The maximum length of the buffer.
+ * @return The number of characters read, or -1 on escape.
+ */
 static int read_terminal_line(char *buffer, unsigned char max_len) {
     unsigned char index = 0;
     char key;
@@ -401,6 +514,9 @@ static int read_terminal_line(char *buffer, unsigned char max_len) {
     return (int)index;
 }
 
+/**
+ * @brief Interactively load a program from the terminal.
+ */
 static void load_program_from_terminal(void)
 {
     char line_buffer[MAX_LINE_LEN];
@@ -1176,8 +1292,15 @@ factor
 
 %%
 
+/**
+ * @brief Parser error handling function.
+ * @param s The error message.
+ */
 void yyerror(const char* s) { err_print("Error: %s\r\n", s); }
 
+/**
+ * @brief Execute the loaded program.
+ */
 static void do_run(void) {
   jump_pending = JUMP_NONE;
   
@@ -1272,11 +1395,18 @@ done:
   running = 0;
 }
 
+/**
+ * @brief Initialize the parser state.
+ */
 void init_parser(void) {
   memset(variables, 0, sizeof(variables));
   str_print("%s v%s\r\n", APP_NAME, APP_VERSION_STR);
 }
 
+/**
+ * @brief Parse and handle a single line of input (immediate or program code).
+ * @param line The null-terminated input string.
+ */
 void do_parse(char *line) {
   int len = strlen(line);
   if (len > 0 && line[len - 1] == '\n') {

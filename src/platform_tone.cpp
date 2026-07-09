@@ -8,6 +8,12 @@
 #include "platform_def.h"
 #include "platform_tone.h"
 
+/**
+ * @brief Generates a square wave of the specified frequency and duration on the TONE_PIN.
+ * @param freq Frequency of the tone in Hertz (Hz). Must be greater than or equal to 31 Hz. If less than 31 Hz, the function will simply delay for the specified duration without generating a tone.
+ * @param duration Duration of the tone in milliseconds (ms). If less than or equal to 0, the function will return immediately without generating a tone.
+ * @note The TONE_PIN must be configured as an output pin before calling this function.
+ */
 void platformTone::play(int freq, int duration)
 {
   pinMode(TONE_PIN, OUTPUT);

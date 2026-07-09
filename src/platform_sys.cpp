@@ -8,6 +8,10 @@
 #include "platform_def.h"
 #include "platform_sys.h"
 
+/**
+ * @brief Delays the program execution for a specified number of milliseconds.
+ * @param ms The number of milliseconds to delay.
+ */
 void platformSys::delayMs(int ms)
 {
   delay(ms);

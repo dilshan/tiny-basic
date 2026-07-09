@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Copyright (c) 2026 Dilshan R Jayakody. All rights reserved.
 
+/**
+ * @brief Defines the runtime error and warning message strings used by Tiny Basic.
+ * @details This file centralizes the human-readable diagnostics emitted by the
+ *          parser and runtime components, making error reporting consistent and
+ *          easy to maintain across the project.
+ */
+
 #include "error.h"
 
 const char ERR_TOO_MANY_LOOP_BLOCKS[]       = "Error: Too many loop blocks\r\n";

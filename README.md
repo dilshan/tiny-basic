@@ -54,7 +54,7 @@ pio run -e due -t upload
 
 ### Build for the native host
 
-For local testing and debugging on a desktop machine:
+**This step is optional** and is only required when you want to validate or test parser-related functionality on a desktop machine. Hardware-specific operations are not implemented in this mode, so calling those functions may lead to unexpected results or application crashes.
 
 ```bash
 pio run -e native
@@ -88,6 +88,23 @@ The project documentation is available online at:
 - [Language reference](http://dilshan.github.io/tiny-basic/manual/language-reference/)
 - [Editor guide](http://dilshan.github.io/tiny-basic/manual/editor/)
 - [Function reference](http://dilshan.github.io/tiny-basic/manual/function-list/)
+
+### Building the documentation
+
+The documentation is built with MkDocs. To generate the static HTML pages for the Tiny Basic home page and the rest of the documentation site, install the required Python packages and run the build command:
+
+```bash
+pip install -U mkdocs mkdocs-material
+mkdocs build
+```
+
+This will generate the HTML output under the `site/` directory, including the homepage and manual pages. For local preview while editing content, you can run:
+
+```bash
+mkdocs serve
+```
+
+Then open the local URL shown by MkDocs in your browser.
 
 ## License
 

@@ -4,6 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Converts an integer value into its binary string representation.
+ *        The output is written into the provided buffer, skipping leading zero bits.
+ *        When splitting is enabled, a space is inserted between each 8-bit group.
+ * @param num Integer value to convert.
+ * @param buffer Destination buffer that receives the binary string.
+ * @param is_split If non-zero, inserts spaces between byte-sized groups.
+ */
 void int_to_binary(int num, char *buffer, unsigned char is_split)
 {
   if (buffer == NULL)

@@ -12,7 +12,13 @@
 #include "platform_chardrv.h"
 #include "platform_def.h"
 
-// Print formatted text to the Serial interface.
+/**
+ * @brief Formats and writes a message to the serial console.
+ *
+ * @param format printf-style format string.
+ * @param ... Optional values used by the format string.
+ * @return Number of characters produced by the formatted output.
+ */
 int PlatformCharDrv::print(const char *format, ...)
 {
   char buffer[MAX_LINE_LEN];
@@ -26,12 +32,25 @@ int PlatformCharDrv::print(const char *format, ...)
   return len;
 }
 
+/**
+ * @brief Writes a single character to the serial console.
+ *
+ * @param c Character to emit.
+ */
 void PlatformCharDrv::printChar(char c)
 {
   Serial.print(c);
 }
 
-// Read an integer from Serial input, echoing characters back to the user.
+/**
+ * @brief Reads an integer from the serial input stream.
+ *
+ * The input is echoed back to the console while being collected. Newline
+ * characters are ignored, carriage return terminates the entry, and backspace
+ * removes the last digit.
+ *
+ * @return Parsed integer value entered by the user.
+ */
 int PlatformCharDrv::input()
 {
   char numBuffer[16];
@@ -78,6 +97,11 @@ int PlatformCharDrv::input()
   }
 }
 
+/**
+ * @brief Checks whether a character is pending in the serial input buffer.
+ *
+ * @return The next available character if input is pending, otherwise -1.
+ */
 int PlatformCharDrv::isKeyPressed()
 {
   if(Serial.available()) {

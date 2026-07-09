@@ -11,11 +11,18 @@
 // Set to 100kHz standard mode speed.
 #define I2C_DELAY() delayMicroseconds(4)
 
+/**
+ * @brief Initializes the I2C bus by configuring the SDA and SCL pins as inputs.
+ * @note This function should be called before any other I2C operations.
+ */
 void PlatformI2C::init () {
     pinMode(I2C_SDA_PIN, INPUT);
     pinMode(I2C_SCL_PIN, INPUT);
 }
 
+/**
+ * @brief Generates an I2C start condition on the bus.
+ */
 void PlatformI2C::start() {
     pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
     I2C_DELAY();
@@ -23,6 +30,11 @@ void PlatformI2C::start() {
     I2C_DELAY();
 }
 
+/**
+ * @brief Generates an I2C restart condition on the bus.
+ * @note This function is typically used when the master wants to initiate a new
+ *       communication sequence without releasing the bus.
+ */
 void PlatformI2C::restart() {
     pinMode(I2C_SDA_PIN, INPUT);
     I2C_DELAY();
@@ -31,6 +43,11 @@ void PlatformI2C::restart() {
     start();
 }
 
+/**
+ * @brief Generates an I2C stop condition on the bus.
+ * @note This function should be called after completing a communication sequence
+ *       to release the bus for other devices.
+ */
 unsigned char PlatformI2C::write(unsigned char data) {
     // Clock out 8-bits.
     for (int i = 0; i < 8; i++) {
@@ -59,6 +76,12 @@ unsigned char PlatformI2C::write(unsigned char data) {
     return ack; 
 }
 
+/**
+ * @brief Reads a byte of data from the I2C bus and sends an ACK or NACK signal.
+ * @param send_ack If true, sends an ACK signal after reading; otherwise, sends a
+ * NACK signal.
+ * @return The byte of data read from the I2C bus.
+ */
 unsigned char PlatformI2C::read(unsigned char send_ack) {
     unsigned char data = 0;
     pinMode(I2C_SDA_PIN, INPUT);
@@ -88,6 +111,11 @@ unsigned char PlatformI2C::read(unsigned char send_ack) {
     return data;
 }
 
+/**
+ * @brief Generates an I2C stop condition on the bus.
+ * @note This function should be called after completing a communication sequence
+ *       to release the bus for other devices.
+ */
 void PlatformI2C::stop() {
     pinMode(I2C_SDA_PIN, OUTPUT); digitalWrite(I2C_SDA_PIN, LOW);
     I2C_DELAY();
