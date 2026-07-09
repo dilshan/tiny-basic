@@ -178,6 +178,27 @@ void tearDown(void)
 {
 }
 
+void test_abs_function_returns_positive_value(void);
+void test_sin_function_returns_expected_value(void);
+void test_cos_function_returns_expected_value(void);
+void test_tan_function_returns_expected_value(void);
+void test_log10_function_returns_expected_value(void);
+void test_exp_function_returns_expected_value(void);
+void test_sqrt_function_returns_expected_value(void);
+void test_floor_and_ceil_functions(void);
+void test_int_function_truncates_value(void);
+void test_acos_function_returns_expected_value(void);
+void test_asin_function_returns_expected_value(void);
+void test_atan_function_returns_expected_value(void);
+void test_sinh_function_returns_expected_value(void);
+void test_cosh_function_returns_expected_value(void);
+void test_tanh_function_returns_expected_value(void);
+void test_asinh_function_returns_expected_value(void);
+void test_acosh_function_returns_expected_value(void);
+void test_atanh_function_returns_expected_value(void);
+void test_atan2_function_returns_expected_value(void);
+void test_log_function_returns_expected_value(void);
+
 void test_immediate_let_and_print(void)
 {
     char line1[] = "LET A = 4 + 3";
@@ -506,6 +527,54 @@ void test_run_executes_repeat_loop_with_conditional_assignment_and_nested_if(voi
     do_parse(line11);
 
     TEST_ASSERT_TRUE(strstr(g_output, "6") != NULL);
+}
+
+void test_run_executes_gosub_and_return(void)
+{
+    char line1[] = "10 GOSUB 100";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "100 LET A = 42";
+    char line5[] = "110 RETURN";
+    char line6[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+    do_parse(line5);
+    do_parse(line6);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "42") != NULL);
+}
+
+void test_run_executes_on_gosub_and_return(void)
+{
+    char line1[] = "10 LET A = 1";
+    char line2[] = "20 ON A, 50, 70, 90";
+    char line3[] = "30 PRINT(A)";
+    char line4[] = "40 END";
+    char line5[] = "50 LET A = 2";
+    char line6[] = "60 RETURN";
+    char line7[] = "70 LET A = 3";
+    char line8[] = "80 RETURN";
+    char line9[] = "90 LET A = 4";
+    char line10[] = "100 RETURN";
+    char line11[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+    do_parse(line5);
+    do_parse(line6);
+    do_parse(line7);
+    do_parse(line8);
+    do_parse(line9);
+    do_parse(line10);
+    do_parse(line11);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "3") != NULL);
 }
 
 void test_logical_and_both_true(void)
@@ -936,6 +1005,386 @@ void test_bitwise_operators_in_conditional(void)
     TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
 }
 
+void test_abs_function_returns_positive_value(void)
+{
+  char line1[] = "10 LET A = ABS(-7)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "7") != NULL);
+}
+
+void test_sin_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = SIN(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_cos_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = COS(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_tan_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = TAN(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_log10_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = LOG10(100)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "2") != NULL);
+}
+
+void test_exp_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = EXP(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_sqrt_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = SQRT(16)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "4") != NULL);
+}
+
+void test_floor_and_ceil_functions(void)
+{
+  char line1[] = "10 LET A = FLOOR(2.9)";
+  char line2[] = "20 LET B = CEIL(2.1)";
+  char line3[] = "30 PRINT(A)";
+  char line4[] = "40 PRINT(B)";
+  char line5[] = "50 END";
+  char line6[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+  do_parse(line5);
+  do_parse(line6);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "2") != NULL);
+  TEST_ASSERT_TRUE(strstr(g_output, "3") != NULL);
+}
+
+void test_int_function_truncates_value(void)
+{
+  char line1[] = "10 LET A = INT(2.9)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "2") != NULL);
+}
+
+void test_acos_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = ACOS(1)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_asin_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = ASIN(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_atan_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = ATAN(1)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0.785") != NULL);
+}
+
+void test_sinh_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = SINH(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_cosh_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = COSH(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_tanh_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = TANH(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_asinh_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = ASINH(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_acosh_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = ACOSH(1)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_atanh_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = ATANH(0)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_atan2_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = ATAN2(1, 1)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0.785") != NULL);
+}
+
+void test_log_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = LOG(1)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_deg_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = DEG(3.141592653589793)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "180") != NULL);
+}
+
+void test_rad_function_returns_expected_value(void)
+{
+  char line1[] = "10 LET A = RAD(180)";
+  char line2[] = "20 PRINT(A)";
+  char line3[] = "30 END";
+  char line4[] = "RUN";
+
+  do_parse(line1);
+  do_parse(line2);
+  do_parse(line3);
+  do_parse(line4);
+
+  TEST_ASSERT_TRUE(strstr(g_output, "3.14159") != NULL);
+}
+
+void test_formatter_binary(void)
+{
+    char line1[] = "10 LET A = 10";
+    char line2[] = "20 PRINT(BIN, A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1010") != NULL);
+}
+
+void test_formatter_hexadecimal(void)
+{
+    char line1[] = "10 LET A = 127";
+    char line2[] = "20 PRINT(HEX, A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "7f") != NULL);
+}
+
+void test_formatter_octal(void)
+{
+    char line1[] = "10 LET A = 127";
+    char line2[] = "20 PRINT(OCT, A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "177") != NULL);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -956,6 +1405,9 @@ int main(void)
     RUN_TEST(test_run_executes_for_loop_with_conditional_assignment_and_step_negative);
     RUN_TEST(test_run_executes_repeat_loop_with_conditional_assignment);
     RUN_TEST(test_run_executes_repeat_loop_with_conditional_assignment_and_nested_if);
+
+    RUN_TEST(test_run_executes_gosub_and_return);
+    RUN_TEST(test_run_executes_on_gosub_and_return);
 
     RUN_TEST(test_logical_and_both_true);
     RUN_TEST(test_logical_and_one_false);
@@ -989,5 +1441,35 @@ int main(void)
     RUN_TEST(test_multiple_logical_operators);
     RUN_TEST(test_bitwise_operators_in_conditional);
 
+    RUN_TEST(test_abs_function_returns_positive_value);
+
+    RUN_TEST(test_log10_function_returns_expected_value);
+    RUN_TEST(test_exp_function_returns_expected_value);
+    RUN_TEST(test_sqrt_function_returns_expected_value);
+    RUN_TEST(test_floor_and_ceil_functions);
+    RUN_TEST(test_int_function_truncates_value);
+
+    RUN_TEST(test_sin_function_returns_expected_value);
+    RUN_TEST(test_cos_function_returns_expected_value);
+    RUN_TEST(test_tan_function_returns_expected_value);
+    RUN_TEST(test_acos_function_returns_expected_value);
+    RUN_TEST(test_asin_function_returns_expected_value);
+    RUN_TEST(test_atan_function_returns_expected_value);
+    RUN_TEST(test_sinh_function_returns_expected_value);
+    RUN_TEST(test_cosh_function_returns_expected_value);
+    RUN_TEST(test_tanh_function_returns_expected_value);
+    RUN_TEST(test_asinh_function_returns_expected_value);
+    RUN_TEST(test_acosh_function_returns_expected_value);
+    RUN_TEST(test_atanh_function_returns_expected_value);
+    RUN_TEST(test_atan2_function_returns_expected_value);
+    RUN_TEST(test_log_function_returns_expected_value);
+
+    RUN_TEST(test_deg_function_returns_expected_value);
+    RUN_TEST(test_rad_function_returns_expected_value);
+
+    RUN_TEST(test_formatter_binary);
+    RUN_TEST(test_formatter_hexadecimal);
+    RUN_TEST(test_formatter_octal);
+    
     return UNITY_END();
 }
