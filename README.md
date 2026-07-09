@@ -106,6 +106,11 @@ mkdocs serve
 
 Then open the local URL shown by MkDocs in your browser.
 
+## Additional documents
+- [The Tiny Basic Project Philosophy](philosophy.md)
+- [Guidelines for opening issues or support requests](support.md)
+- [Code of Conduct](code_of_conduct.md)
+
 ## License
 
 This project is licensed under the [BSD 3-Clause License](LICENSE).
