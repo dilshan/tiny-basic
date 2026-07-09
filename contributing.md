@@ -4,10 +4,11 @@ We love contributions! Whether you are fixing an instruction decoding bug, optim
 
 ## How to Propose Changes
 
-1.  **Search First:** Before diving into code, check the issue tracker to see if your bug or feature request has already been discussed.
-2.  **Open an Issue:** For significant code changes, refactors, or new syntax features, please open an issue first to discuss the design layout. This keeps our core architectural goals aligned.
-3.  **Fork and Branch:** Fork the repository and create your feature branch from the development branch (e.g., `git checkout -b feature/optimized-integer-math`).
-4.  **Keep it Focused:** A single Pull Request should solve exactly one issue or add one cohesive capability.
+1. **[Read about the project's philosophy](philosophy.md):** Gain insight into the overall philosophy behind the Tiny Basic for Arduino project. 
+2. **Search First:** Before diving into code, check the issue tracker to see if your bug or feature request has already been discussed.
+3. **Open an Issue:** For significant code changes, refactors, or new syntax features, please open an issue first to discuss the design layout. This keeps our core architectural goals aligned.
+4. **Fork and Branch:** Fork the repository and create your feature branch from the development branch (e.g., `git checkout -b feature/optimized-integer-math`).
+5. **Keep it Focused:** A single Pull Request should solve exactly one issue or add one cohesive capability.
 
 ## Code Quality and Style Rules
 
