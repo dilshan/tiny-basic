@@ -508,6 +508,434 @@ void test_run_executes_repeat_loop_with_conditional_assignment_and_nested_if(voi
     TEST_ASSERT_TRUE(strstr(g_output, "6") != NULL);
 }
 
+void test_logical_and_both_true(void)
+{
+    char line1[] = "10 LET A = (1 > 0) AND (2 > 1)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_logical_and_one_false(void)
+{
+    char line1[] = "10 LET A = (1 > 0) AND (2 < 1)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_logical_and_both_false(void)
+{
+    char line1[] = "10 LET A = (1 < 0) AND (2 < 1)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_logical_or_both_true(void)
+{
+    char line1[] = "10 LET A = (1 > 0) OR (2 > 1)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_logical_or_one_true(void)
+{
+    char line1[] = "10 LET A = (1 > 0) OR (2 < 1)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_logical_or_both_false(void)
+{
+    char line1[] = "10 LET A = (1 < 0) OR (2 < 1)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_logical_not(void)
+{
+    char line1[] = "10 LET A = NOT 0";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "-1") != NULL);
+}
+
+void test_logical_and_short_circuit(void)
+{
+    char line1[] = "10 LET A = 0";
+    char line2[] = "20 LET B = (0 > 1) AND (A = 1)";
+    char line3[] = "30 PRINT(B)";
+    char line4[] = "40 PRINT(A)";
+    char line5[] = "50 END";
+    char line6[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+    do_parse(line5);
+    do_parse(line6);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_bitwise_and_basic(void)
+{
+    char line1[] = "10 LET A = 12 BAND 10";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "8") != NULL);
+}
+
+void test_bitwise_or_basic(void)
+{
+    char line1[] = "10 LET A = 12 BOR 10";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "14") != NULL);
+}
+
+void test_bitwise_xor_basic(void)
+{
+    char line1[] = "10 LET A = 12 XOR 10";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "6") != NULL);
+}
+
+void test_bitwise_nand_basic(void)
+{
+    char line1[] = "10 LET A = 12 NAND 10";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "-9") != NULL);
+}
+
+void test_bitwise_nor_basic(void)
+{
+    char line1[] = "10 LET A = 12 NOR 10";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "-15") != NULL);
+}
+
+void test_bitwise_eqv_basic(void)
+{
+    char line1[] = "10 LET A = 12 EQV 10";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "-7") != NULL);
+}
+
+void test_bitwise_imp_basic(void)
+{
+    char line1[] = "10 LET A = 12 IMP 10";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "-5") != NULL);
+}
+
+void test_bitwise_and_with_zero(void)
+{
+    char line1[] = "10 LET A = 15 BAND 0";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_bitwise_or_with_zero(void)
+{
+    char line1[] = "10 LET A = 15 BOR 0";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "15") != NULL);
+}
+
+void test_bitwise_xor_same_values(void)
+{
+    char line1[] = "10 LET A = 15 XOR 15";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_left_shift_basic(void)
+{
+    char line1[] = "10 LET A = LSHIFT(1, 4)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "16") != NULL);
+}
+
+void test_left_shift_multiple(void)
+{
+    char line1[] = "10 LET A = LSHIFT(3, 2)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "12") != NULL);
+}
+
+void test_right_shift_basic(void)
+{
+    char line1[] = "10 LET A = RSHIFT(16, 2)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "4") != NULL);
+}
+
+void test_right_shift_multiple(void)
+{
+    char line1[] = "10 LET A = RSHIFT(12, 2)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "3") != NULL);
+}
+
+void test_logical_and_with_arithmetic(void)
+{
+    char line1[] = "10 LET A = (5 + 3 > 5) AND (10 - 2 < 20)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_logical_or_with_arithmetic(void)
+{
+    char line1[] = "10 LET A = (5 + 3 < 5) OR (10 - 2 < 20)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_bitwise_and_with_shift(void)
+{
+    char line1[] = "10 LET A = LSHIFT(1, 2) BAND LSHIFT(1, 3)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "0") != NULL);
+}
+
+void test_bitwise_or_with_shift(void)
+{
+    char line1[] = "10 LET A = LSHIFT(1, 2) BOR LSHIFT(1, 3)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "12") != NULL);
+}
+
+void test_multiple_logical_operators(void)
+{
+    char line1[] = "10 LET A = (1 < 5) AND (2 < 3) OR (4 > 5)";
+    char line2[] = "20 PRINT(A)";
+    char line3[] = "30 END";
+    char line4[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
+void test_bitwise_operators_in_conditional(void)
+{
+    char line1[] = "10 LET A = 0";
+    char line2[] = "20 LET B = 5 BAND 3";
+    char line3[] = "30 IF B > 0 THEN LET A = 1";
+    char line4[] = "40 PRINT(A)";
+    char line5[] = "50 END";
+    char line6[] = "RUN";
+
+    do_parse(line1);
+    do_parse(line2);
+    do_parse(line3);
+    do_parse(line4);
+    do_parse(line5);
+    do_parse(line6);
+
+    TEST_ASSERT_TRUE(strstr(g_output, "1") != NULL);
+}
+
 int main(void)
 {
     UNITY_BEGIN();
@@ -528,6 +956,38 @@ int main(void)
     RUN_TEST(test_run_executes_for_loop_with_conditional_assignment_and_step_negative);
     RUN_TEST(test_run_executes_repeat_loop_with_conditional_assignment);
     RUN_TEST(test_run_executes_repeat_loop_with_conditional_assignment_and_nested_if);
+
+    RUN_TEST(test_logical_and_both_true);
+    RUN_TEST(test_logical_and_one_false);
+    RUN_TEST(test_logical_and_both_false);
+    RUN_TEST(test_logical_or_both_true);
+    RUN_TEST(test_logical_or_one_true);
+    RUN_TEST(test_logical_or_both_false);
+    RUN_TEST(test_logical_not);
+    RUN_TEST(test_logical_and_short_circuit);
+
+    RUN_TEST(test_bitwise_and_basic);
+    RUN_TEST(test_bitwise_or_basic);
+    RUN_TEST(test_bitwise_xor_basic);
+    RUN_TEST(test_bitwise_nand_basic);
+    RUN_TEST(test_bitwise_nor_basic);
+    RUN_TEST(test_bitwise_eqv_basic);
+    RUN_TEST(test_bitwise_imp_basic);
+    RUN_TEST(test_bitwise_and_with_zero);
+    RUN_TEST(test_bitwise_or_with_zero);
+    RUN_TEST(test_bitwise_xor_same_values);
+
+    RUN_TEST(test_left_shift_basic);
+    RUN_TEST(test_left_shift_multiple);
+    RUN_TEST(test_right_shift_basic);
+    RUN_TEST(test_right_shift_multiple);
+
+    RUN_TEST(test_logical_and_with_arithmetic);
+    RUN_TEST(test_logical_or_with_arithmetic);
+    RUN_TEST(test_bitwise_and_with_shift);
+    RUN_TEST(test_bitwise_or_with_shift);
+    RUN_TEST(test_multiple_logical_operators);
+    RUN_TEST(test_bitwise_operators_in_conditional);
 
     return UNITY_END();
 }

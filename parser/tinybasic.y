@@ -1089,9 +1089,9 @@ term
     
     | term BAND factor  { REQUIRE_INT_EX($$, $1, $3, ($1.as.i & $3.as.i));    }
     | term BOR factor   { REQUIRE_INT_EX($$, $1, $3, ($1.as.i | $3.as.i));    }
-    | term NOR factor   { REQUIRE_INT_EX($$, $1, $3, !($1.as.i | $3.as.i));   }
-    | term NAND factor  { REQUIRE_INT_EX($$, $1, $3, !($1.as.i & $3.as.i));   }
-    | term XNOR factor  { REQUIRE_INT_EX($$, $1, $3, !($1.as.i ^ $3.as.i));   }
+    | term NOR factor   { REQUIRE_INT_EX($$, $1, $3, ~($1.as.i | $3.as.i));   }
+    | term NAND factor  { REQUIRE_INT_EX($$, $1, $3, ~($1.as.i & $3.as.i));   }
+    | term XNOR factor  { REQUIRE_INT_EX($$, $1, $3, ~($1.as.i ^ $3.as.i));   }
     | term XOR factor   { REQUIRE_INT_EX($$, $1, $3, ($1.as.i ^ $3.as.i));    }
     | term EQV factor   { REQUIRE_INT_EX($$, $1, $3, ~($1.as.i ^ $3.as.i));   }
     | term IMP factor   { REQUIRE_INT_EX($$, $1, $3, ((~$1.as.i) | $3.as.i)); }
