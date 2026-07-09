@@ -13,10 +13,15 @@ We love contributions! Whether you are fixing an instruction decoding bug, optim
 ## Code Quality and Style Rules
 
 Because this project targets strict readability and constraint-driven environments, please adhere to these implementation rules:
+
 * **Language Standards:** For C/C++ core engines, stick to strict ANSI C (C89) or minimal modern subsets without heavy runtime overhead. For assembly ports, comment every logical block.
+
 * **Formatting:** Follow the repository's formatting style guide (e.g., spaces instead of tabs, explicit brace placement, and camelCase or snake_case conventions as established in the current code).
+
 * **Low Footprint:** Ensure that your changes do not drastically inflate the binary footprint or introduce dynamic memory allocations. Every byte matters.
+
 * **Backward Compatibility**: If you modify the behavior of an existing function or a core parser component, ensure that it remains compatible with the syntax supported by previous versions.
+
 * **Add or Update Documentation**: If you modify the behavior of an existing function or introduce a new function, update the existing documentation or add new documentation in the `/docs/manual` directory.
 
 ## Testing and Validation
