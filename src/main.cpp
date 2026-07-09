@@ -216,6 +216,7 @@ void loop()
 }
 
 #else
+#if !defined(PIO_UNIT_TESTING) && !defined(UNIT_TEST)
 
 int main()
 {
@@ -259,4 +260,5 @@ int main()
   return 0;
 }
 
+#endif
 #endif

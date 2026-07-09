@@ -12,6 +12,7 @@ If you encounter unexpected behavior, run into configuration blocks on custom ha
     * Expected vs. actual behavior (including console or output dumps if applicable).
 
 ## Reference Reading and External Links
+
 To better understand the historical architecture and theoretical limitations of standard Tiny BASIC implementations, we highly recommend checking out these resources:
 
 * *Dr. Dobb's Journal of Computer Calisthenics & Orthodontia* (1976 copies covering classic 8080/6800 interpreter architectures).
