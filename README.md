@@ -89,17 +89,6 @@ The project documentation is available online at:
 - [Editor guide](http://dilshan.github.io/tiny-basic/manual/editor/)
 - [Function reference](http://dilshan.github.io/tiny-basic/manual/function-list/)
 
-## Contributing
-
-Contributions are welcome. To contribute:
-
-1. Fork the repository.
-2. Create a feature or bugfix branch.
-3. Make your changes and test them.
-4. Submit a pull request with a **clear description of the update**.
-
-If you find a bug or have a feature request, please open an issue on the GitHub repository.
-
 ## License
 
 This project is licensed under the [BSD 3-Clause License](LICENSE).
