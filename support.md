@@ -1,4 +1,4 @@
-# 4. Support Resources
+# Support
 
 If you encounter unexpected behavior, run into configuration blocks on custom hardware, or simply want to share your homebrew creations, here is where you can find help.
 
