@@ -91,7 +91,7 @@ The project documentation is available online at:
 
 ### Building the documentation
 
-The documentation is built with MkDocs. To generate the static HTML pages for the Tiny Basic home page and the rest of the documentation site, install the required Python packages and run the build command:
+The documentation is built with [MkDocs](https://www.mkdocs.org). To generate the static HTML pages for the Tiny Basic home page and the rest of the documentation site, install the required Python packages and run the build command:
 
 ```bash
 pip install -U mkdocs mkdocs-material
