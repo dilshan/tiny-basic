@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://dilshan.github.io/tiny-basic/logo/tinybasic.png" width="80" />
+</p>
+
 # Tiny Basic for Arduino
 
 Tiny Basic for Arduino is a lightweight, fast, and fully featured [BASIC](https://en.wikipedia.org/wiki/BASIC) interpreter designed for mid-range Arduino boards and other microcontroller targets. It lets you write, edit, and run BASIC programs directly on hardware, making it a practical choice for education, rapid prototyping, and embedded experimentation.
