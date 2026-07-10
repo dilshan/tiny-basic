@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://dilshan.github.io/tiny-basic/logo/tinybasic.png" width="80" />
+  <a href="https://dilshan.github.io/tiny-basic/" target="_blank" rel="noopener noreferrer"><img src="https://dilshan.github.io/tiny-basic/logo/tinybasic.png" width="80" /></a>
 </p>
 
 # Tiny Basic for Arduino
