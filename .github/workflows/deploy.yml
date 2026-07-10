@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
- contents: read
+  contents: read
   pages: write
   id-token: write
 
@@ -25,24 +25,32 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: |
+      - name: Install dependencies
+        run: |
           pip install mkdocs mkdocs-material
 
-      - run: mkdocs build
+      - name: Build site
+        run: mkdocs build
 
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: ./site
 
   deploy:
+    needs: build
+
+    permissions:
+      pages: write
+      id-token: write
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
-    needs: build
-
     runs-on: ubuntu-latest
 
     steps:
-      - id: deployment
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
