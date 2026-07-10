@@ -30,7 +30,7 @@ This project brings the familiar simplicity of BASIC to embedded development. Wi
 To build the project, you will need:
 
 - Python 3
-- PlatformIO
+- [PlatformIO](https://platformio.org/)
 - `bison` and `yacc`
 - A C/C++ build toolchain such as `build-essential`.
 
