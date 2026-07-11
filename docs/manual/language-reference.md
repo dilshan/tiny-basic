@@ -73,10 +73,10 @@ Expressions are evaluated using numeric values. All comparison operators return 
 The [IF](if.md) command evaluates a boolean expression to direct program flow. Block forms must be properly terminated with [ENDIF](endif.md); because conditional jump mappings are built during parsing, unclosed blocks will cause structural runtime errors.
 
 ```basic
-// Single-line syntax[cite: 2]
+// Single-line syntax
 10 IF A > 0 THEN PRINT "POSITIVE"
 
-// Multi-line block syntax[cite: 2]
+// Multi-line block syntax
 10 IF A > 0 THEN
 20   PRINT("POSITIVE")
 30 ELSE

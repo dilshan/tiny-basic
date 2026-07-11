@@ -1,4 +1,4 @@
-# POW
+# PWM
 
 **Category:** Function  
 **Syntax:** `PWM(pin, level)`
@@ -11,6 +11,7 @@ The PWM function generates a Pulse Width Modulation signal on a specified pin. T
 
 - [ANALOG](analog.md)
 - [PIN](pin.md)
+- [SET](set.md)
 
 ## Example
 
